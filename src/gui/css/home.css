@@ -1,0 +1,47 @@
+/*#tabOneTitleUnderline {*/
+/*    border-top: 1px solid rgba(255, 255, 255, 0.47);*/
+/*    margin-top: 11px;*/
+/*}*/
+
+#MyFirstPythonDesktopApp, #listView {
+    background-color: #fff;
+}
+
+#homeIntroLabelTabTitle_1 {
+    font-size: 28px;
+    padding-bottom: 6px;
+    margin: 0;
+}
+
+#homeTabTitleFrame_2 {
+    font-size: 28px;
+    padding-bottom: 6px;
+    margin: 0;
+}
+
+#homeIntroLabelTabTitle_2 {
+    font-size: 28px;
+    padding-bottom: 6px;
+    margin: 0;
+}
+
+#homeIntroTitleFrameTab_1 {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.47);
+    margin: 0;
+}
+
+#homeIntroTitleFrameTab_2 {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.47);
+    margin: 0;
+}
+
+#homeTabWidgetFrame {
+    border: none;
+}
+
+#homeViewTitleWidget {
+    border: none;
+}
+
