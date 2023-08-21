@@ -5,8 +5,6 @@
 
 """
 
-from PyQt6 import QtCore
-from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow
 
 from core.Controllers.WindowController import WindowController
