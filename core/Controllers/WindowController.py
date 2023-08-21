@@ -10,6 +10,12 @@ class WindowController:
 
     active_window = None
 
+    """
+    
+        Methods support loading multiple windows between switches triggered by the user
+        
+    """
+
     @staticmethod
     def show_home_window():
         from views.HomeView import HomeView
