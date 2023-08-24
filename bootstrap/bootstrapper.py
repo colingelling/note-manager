@@ -29,5 +29,5 @@ class Bootstrapper:
     def setup_controller():
         from core.Controllers.WindowController import WindowController
         class_instance = WindowController()
-        class_method = class_instance.show_home_window()
+        class_method = class_instance.show_overview_window()
         return class_method

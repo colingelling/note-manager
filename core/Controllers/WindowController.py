@@ -17,13 +17,13 @@ class WindowController:
     """
 
     @staticmethod
-    def show_home_window():
-        from views.HomeView import HomeView
+    def show_overview_window():
+        from views.Overview import OverView
 
         if WindowController.active_window:
             WindowController.active_window.close()
 
-        home_window = HomeView()
-        home_window.show()
+        overview_window = OverView()
+        overview_window.show()
 
-        WindowController.active_window = home_window
+        WindowController.active_window = overview_window
