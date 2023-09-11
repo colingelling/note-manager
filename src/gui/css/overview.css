@@ -2,7 +2,48 @@
     background: #fff;
 }
 
-#WindowTitleLabel {
+#TitleLabel {
     font-size: 24px;
+    color: #000;
+}
+
+#ManageMyNotesTitleLabel {
+    color: #000;
+    font-size: 18px;
+}
+
+#NoteGroupLabel {
+    color: #000;
+}
+
+#EditNoteGroupButton {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 18px;
+    opacity: 0.5;
+}
+
+#EditNoteGroupButton:hover {
+    opacity: 1;
+}
+
+#DeleteNoteGroupButton {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 18px;
+    opacity: 0.5;
+}
+
+#DeleteNoteGroupButton:hover {
+    opacity: 1;
+}
+
+#DeleteNoteGroupButton:hover {
+    opacity: 1;
+}
+
+#IndividualNoteLabel {
     color: #000;
 }

@@ -27,3 +27,15 @@ class WindowController:
         overview_window.show()
 
         WindowController.active_window = overview_window
+
+    @staticmethod
+    def show_create_dialog():
+        from views.components.OptionsDialogCreate import OptionsDialogCreate
+
+        if WindowController.active_window:
+            WindowController.active_window.close()
+
+        dialog_window = OptionsDialogCreate()
+        dialog_window.show()
+
+        WindowController.active_window = OptionsDialogCreate
