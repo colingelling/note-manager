@@ -12,9 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_OptionsDialogCreate(object):
     def setupUi(self, OptionsDialogCreate):
         OptionsDialogCreate.setObjectName("OptionsDialogCreate")
-        OptionsDialogCreate.resize(400, 300)
+        OptionsDialogCreate.resize(400, 320)
         self.DialogWidget = QtWidgets.QWidget(parent=OptionsDialogCreate)
-        self.DialogWidget.setGeometry(QtCore.QRect(0, 0, 401, 301))
+        self.DialogWidget.setGeometry(QtCore.QRect(0, 0, 401, 311))
         self.DialogWidget.setObjectName("DialogWidget")
         self.TitleWidget = QtWidgets.QWidget(parent=self.DialogWidget)
         self.TitleWidget.setGeometry(QtCore.QRect(10, 10, 381, 41))
@@ -23,13 +23,13 @@ class Ui_OptionsDialogCreate(object):
         self.HeadlineLabel.setGeometry(QtCore.QRect(10, 10, 67, 17))
         self.HeadlineLabel.setObjectName("HeadlineLabel")
         self.widget = QtWidgets.QWidget(parent=self.DialogWidget)
-        self.widget.setGeometry(QtCore.QRect(10, 110, 381, 181))
+        self.widget.setGeometry(QtCore.QRect(10, 110, 381, 201))
         self.widget.setObjectName("widget")
         self.CreateNoteGroupButton = QtWidgets.QPushButton(parent=self.widget)
         self.CreateNoteGroupButton.setGeometry(QtCore.QRect(0, 0, 381, 91))
         self.CreateNoteGroupButton.setObjectName("CreateNoteGroupButton")
         self.CreateNoteButton = QtWidgets.QPushButton(parent=self.widget)
-        self.CreateNoteButton.setGeometry(QtCore.QRect(0, 90, 381, 91))
+        self.CreateNoteButton.setGeometry(QtCore.QRect(0, 110, 381, 91))
         self.CreateNoteButton.setObjectName("CreateNoteButton")
 
         self.retranslateUi(OptionsDialogCreate)

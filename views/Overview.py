@@ -11,9 +11,9 @@ from PyQt6.QtWidgets import QMainWindow
 from core.Controllers.WindowController import WindowController
 
 
-class OverView(QMainWindow, WindowController):
+class Overview(QMainWindow, WindowController):
 
-    create_dialog_title = "What do you want to create?"
+    options_dialog_title = "What do you want to add?"
 
     def __init__(self):
         super().__init__()
@@ -58,9 +58,11 @@ class OverView(QMainWindow, WindowController):
         ui.ManageMyNotesTitleLabel.setText("Manage my notes")
         ui.ManageMyNotesTitleLabel.adjustSize()
 
-        ui.OptionsDialogCreateButton.setText("Create")
-        ui.OptionsDialogCreateButton.clicked.connect(self.show_create_dialog)
+        plus_icon_unicode = " \uf067"
+        ui.OptionsDialogCreateButton.setText(plus_icon_unicode)
 
+        ui.OptionsDialogCreateButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        ui.OptionsDialogCreateButton.clicked.connect(self.show_create_options_dialog)
 
         # Default group
         ui.NoteGroupLabel.setText("My first notebook")
@@ -86,8 +88,33 @@ class OverView(QMainWindow, WindowController):
 
         ui.DeleteNoteGroupButton.adjustSize()
 
-    def show_create_dialog(self):
+    def show_create_options_dialog(self):
         from views.components.OptionsDialogCreate import OptionsDialogCreate
         dialog = OptionsDialogCreate()
-        dialog.setWindowTitle(self.create_dialog_title)
+        dialog.setWindowTitle(self.options_dialog_title)
         dialog.exec()
+
+    def add_note_group(self, notebook_name):
+        ui = self.ui
+
+        # Create a layout for the NotebookWidget
+        from PyQt6 import QtWidgets
+        notebook_layout = QtWidgets.QVBoxLayout()
+
+        # Set the layout for the NotebookWidget
+        ui.NotebookWidget.setLayout(notebook_layout)
+
+        # Store the layout for future reference (optional)
+        ui.NotebookWidgetLayout = notebook_layout
+
+        # Set the text of NoteGroupLabel
+        ui.NoteGroupLabel.setText(notebook_name)
+
+        # If you want to adjust the size of the label (optional)
+        ui.NoteGroupLabel.adjustSize()
+
+        # Get the layout of the NotebookWidget
+        notebook_layout = ui.NotebookWidgetLayout  # Use the stored layout
+
+        # Add the NoteGroupLabel to the NotebookWidget layout
+        notebook_layout.addWidget(ui.NoteGroupLabel)
