@@ -4,6 +4,8 @@
     Using Pycharm Professional
 
 """
+
+from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QDialog
@@ -14,6 +16,7 @@ from core.Controllers.WindowController import WindowController
 class OptionsDialogCreate(QDialog, WindowController):
 
     add_notebook_dialog_title = "Add a notebook"
+    add_notebook_signal = QtCore.pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -59,8 +62,15 @@ class OptionsDialogCreate(QDialog, WindowController):
         dialog = DialogCreateNotebook()
         dialog.setWindowTitle(self.add_notebook_dialog_title)
 
+        # Connect the notebook signal to add_notebook slot
+        dialog.requested_notebook.connect(self.add_notebook)
+
         # Close this
         self.accept()
 
         # Show dialog
         dialog.exec()
+
+    def add_notebook(self, notebook_name):
+        # Emit the notebook signal with the notebook_name
+        self.add_notebook_signal.emit(notebook_name)

@@ -4,9 +4,10 @@
     Using Pycharm Professional
 
 """
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFontDatabase, QCursor
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QPushButton
 
 from core.Controllers.WindowController import WindowController
 
@@ -14,6 +15,11 @@ from core.Controllers.WindowController import WindowController
 class Overview(QMainWindow, WindowController):
 
     options_dialog_title = "What do you want to add?"
+
+    # class-level variable to store the DialogCreateNotebook instance
+    create_notebook_dialog = None
+
+    new_notebook_button = None
 
     def __init__(self):
         super().__init__()
@@ -25,6 +31,11 @@ class Overview(QMainWindow, WindowController):
 
         # set stylesheet
         self.initUi()
+
+        # flag to check if layout has been created
+        self.layout_created = False
+
+        self.notebook_layout = None
 
         self.show_content()
 
@@ -90,31 +101,53 @@ class Overview(QMainWindow, WindowController):
 
     def show_create_options_dialog(self):
         from views.components.OptionsDialogCreate import OptionsDialogCreate
-        dialog = OptionsDialogCreate()
-        dialog.setWindowTitle(self.options_dialog_title)
-        dialog.exec()
+        Overview.options_dialog = OptionsDialogCreate()
 
-    def add_note_group(self, notebook_name):
-        ui = self.ui
+        options_dialog = Overview.options_dialog
+        options_dialog.setWindowTitle(self.options_dialog_title)
 
-        # Create a layout for the NotebookWidget
-        from PyQt6 import QtWidgets
-        notebook_layout = QtWidgets.QVBoxLayout()
+        # Check whether a layout for the notebooks exist or not
+        options_dialog.add_notebook_signal.connect(self.create_notebook_layout)
 
-        # Set the layout for the NotebookWidget
-        ui.NotebookWidget.setLayout(notebook_layout)
+        # Connect the notebook signal to the function for creating the notebook
+        options_dialog.add_notebook_signal.connect(self.add_notebook)
 
-        # Store the layout for future reference (optional)
-        ui.NotebookWidgetLayout = notebook_layout
+        # Connect the notebook signal to the function for storing the notebook as a directory
+        options_dialog.add_notebook_signal.connect(self.save_notebook)
 
-        # Set the text of NoteGroupLabel
-        ui.NoteGroupLabel.setText(notebook_name)
+        options_dialog.exec()
 
-        # If you want to adjust the size of the label (optional)
-        ui.NoteGroupLabel.adjustSize()
+    def create_notebook_layout(self):
+        # create the layout only the first time
+        if not self.layout_created:
+            # create a layout for the NotebookWidget
+            from PyQt6 import QtWidgets
+            self.notebook_layout = QtWidgets.QVBoxLayout()
 
-        # Get the layout of the NotebookWidget
-        notebook_layout = ui.NotebookWidgetLayout  # Use the stored layout
+            # define and set the layout
+            ui = self.ui
+            ui.NotebookWidget.setLayout(self.notebook_layout)
 
-        # Add the NoteGroupLabel to the NotebookWidget layout
-        notebook_layout.addWidget(ui.NoteGroupLabel)
+            # alter the flag
+            self.layout_created = True
+
+    def add_notebook(self, notebook_name):
+
+        # Create a QPushButton with the notebook name
+        self.new_notebook_button = QPushButton(notebook_name)
+
+        # Add the button to the layout where you want to display them
+        self.notebook_layout.addWidget(self.new_notebook_button)
+
+    def save_notebook(self, notebook_name):
+
+        if self.new_notebook_button.isWidgetType():
+            print(f"The button with value '{ notebook_name }' has been found")
+
+            import os
+            notebook_directory = os.path.expanduser("~/Desktop/note-manager/notebooks/")
+            os.makedirs(notebook_directory, exist_ok=True)
+
+            # Create a directory for the notebook
+            notebook_path = os.path.join(notebook_directory, notebook_name)
+            os.makedirs(notebook_path, exist_ok=True)
