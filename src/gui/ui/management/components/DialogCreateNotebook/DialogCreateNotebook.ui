@@ -54,7 +54,7 @@
       <height>111</height>
      </rect>
     </property>
-    <widget class="QLabel" name="WhatIsYourNewNotebookNameLabel">
+    <widget class="QLabel" name="WhatIsYourNotebookNameLabel">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -67,7 +67,7 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="NewNotebookNamelineEdit">
+    <widget class="QLineEdit" name="NotebookNamelineEdit">
      <property name="geometry">
       <rect>
        <x>10</x>

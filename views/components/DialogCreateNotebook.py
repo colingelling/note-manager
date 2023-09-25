@@ -51,8 +51,8 @@ class DialogCreateNotebook(QDialog, WindowController):
         ui.HeadlineLabel.setText(window_title)
         ui.HeadlineLabel.adjustSize()
 
-        ui.WhatIsYourNewNotebookNameLabel.setText("What is the name of your new notebook?")
-        ui.WhatIsYourNewNotebookNameLabel.adjustSize()
+        ui.WhatIsYourNotebookNameLabel.setText("What is the name of your new notebook?")
+        ui.WhatIsYourNotebookNameLabel.adjustSize()
 
         ui.AddNotebookButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.AddNotebookButton.clicked.connect(self.add_notebook_button)
@@ -61,9 +61,9 @@ class DialogCreateNotebook(QDialog, WindowController):
         ui = self.ui
 
         # Store text value
-        new_notebook_text = ui.NewNotebookNamelineEdit.text()
+        notebook_text = ui.NotebookNamelineEdit.text()
 
         # Emit a signal to notify the Overview window to add the new notebook
-        self.requested_notebook.emit(new_notebook_text)
+        self.requested_notebook.emit(notebook_text)
 
         self.accept()

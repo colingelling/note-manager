@@ -89,10 +89,10 @@ class OptionsDialogCreate(QDialog, WindowController):
         # Show dialog
         dialog.exec()
 
-    def add_notebook(self, notebook_name):
+    def add_notebook(self, notebook_title):
         # Emit the notebook signal with the notebook_name
-        self.add_notebook_signal.emit(notebook_name)
+        self.add_notebook_signal.emit(notebook_title)
 
-    def add_note(self, note_name):
+    def add_note(self, note_title):
         # Emit the note signal with the notebook_name
-        self.add_note_signal.emit(note_name)
+        self.add_note_signal.emit(note_title)

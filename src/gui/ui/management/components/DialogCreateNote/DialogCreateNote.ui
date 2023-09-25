@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>598</height>
+    <height>631</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
      <x>10</x>
      <y>160</y>
      <width>781</width>
-     <height>431</height>
+     <height>461</height>
     </rect>
    </property>
    <widget class="QLabel" name="WhatIsYourNewNoteNameLabel">
@@ -58,7 +58,7 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="NewNoteNamelineEdit">
+   <widget class="QLineEdit" name="NoteNamelineEdit">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -72,7 +72,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>380</y>
+      <y>410</y>
       <width>761</width>
       <height>41</height>
      </rect>
@@ -81,11 +81,11 @@
      <string>Add</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="NewNoteBodytextEdit">
+   <widget class="QTextEdit" name="NoteBodytextEdit">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>140</y>
+      <y>190</y>
       <width>761</width>
       <height>211</height>
      </rect>
@@ -95,13 +95,36 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>170</y>
       <width>67</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SelectParentNotebook">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="ParenNotebookSelector">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>761</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>

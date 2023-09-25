@@ -19,7 +19,8 @@ class Overview(QMainWindow, WindowController):
     # class-level variable to store the DialogCreateNotebook instance
     create_notebook_dialog = None
 
-    new_notebook_label = None
+    notebook_label = None
+    note_label = None
 
     horizontal_layout_container = None
 
@@ -42,6 +43,7 @@ class Overview(QMainWindow, WindowController):
         self.layout_created = False
 
         self.notebook_layout = None
+        self.note_layout = None
 
         self.show_content()
 
@@ -81,29 +83,29 @@ class Overview(QMainWindow, WindowController):
         ui.OptionsDialogCreateButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.OptionsDialogCreateButton.clicked.connect(self.show_create_options_dialog)
 
-        # Default group
-        ui.NoteGroupLabel.setText("My first notebook")
-        ui.NoteGroupLabel.adjustSize()
-
-        # Default individual
-        ui.IndividualNoteLabel.setText("My first note")
-        ui.IndividualNoteLabel.adjustSize()
-
+        # # Default group
+        # ui.NoteGroupLabel.setText("My first notebook")
+        # ui.NoteGroupLabel.adjustSize()
+        #
+        # # Default individual
+        # ui.IndividualNoteLabel.setText("My first note")
+        # ui.IndividualNoteLabel.adjustSize()
+        #
         ui.OverviewTable.setFixedWidth(817)
-
-        edit_icon_unicode = "\uf044"
-        ui.EditNoteGroupButton.setText(edit_icon_unicode)
-
-        ui.EditNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-
-        ui.EditNoteGroupButton.adjustSize()
-
-        delete_icon_unicode = "\uf2ed"
-        ui.DeleteNoteGroupButton.setText(delete_icon_unicode)
-
-        ui.DeleteNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-
-        ui.DeleteNoteGroupButton.adjustSize()
+        #
+        # edit_icon_unicode = "\uf044"
+        # ui.EditNoteGroupButton.setText(edit_icon_unicode)
+        #
+        # ui.EditNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        #
+        # ui.EditNoteGroupButton.adjustSize()
+        #
+        # delete_icon_unicode = "\uf2ed"
+        # ui.DeleteNoteGroupButton.setText(delete_icon_unicode)
+        #
+        # ui.DeleteNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        #
+        # ui.DeleteNoteGroupButton.adjustSize()
 
     def show_create_options_dialog(self):
         from views.components.OptionsDialogCreate import OptionsDialogCreate
@@ -113,7 +115,7 @@ class Overview(QMainWindow, WindowController):
         options_dialog.setWindowTitle(self.options_dialog_title)
 
         # Check whether a layout for the notebooks exist or not
-        options_dialog.add_notebook_signal.connect(self.create_layout)
+        options_dialog.add_notebook_signal.connect(self.create_notebook_layout)
 
         # Connect the notebook signal to the function for creating the notebook
         options_dialog.add_notebook_signal.connect(self.add_notebook)
@@ -121,9 +123,15 @@ class Overview(QMainWindow, WindowController):
         # Connect the notebook signal to the function for storing the notebook as a directory
         options_dialog.add_notebook_signal.connect(self.save_notebook)
 
+        # Check whether a layout for the notes exist or not
+        options_dialog.add_note_signal.connect(self.create_note_layout)
+
+        # Connect the notebook signal to the function for creating the notebook
+        options_dialog.add_note_signal.connect(self.add_note)
+
         options_dialog.exec()
 
-    def create_layout(self):
+    def create_notebook_layout(self):
         # create the layout only the first time
         if not self.layout_created:
             # create a layout inside the NotebookWidget
@@ -152,12 +160,41 @@ class Overview(QMainWindow, WindowController):
             # alter the flag
             self.layout_created = True
 
-    def add_notebook(self, notebook_name):
+    def create_note_layout(self):
+        # create the layout only the first time
+        if not self.layout_created:
+            # create a layout inside the NotebookWidget
+            from PyQt6 import QtWidgets
+            self.note_layout = QtWidgets.QVBoxLayout()
+
+            # Set alignment to top
+            self.note_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+            # Create a container widget for the horizontal layout
+            self.horizontal_layout_container = QtWidgets.QWidget()
+
+            # Create the horizontal layout
+            self.horizontal_layout = QtWidgets.QHBoxLayout()
+
+            # Set the horizontal layout for the container widget
+            self.horizontal_layout_container.setLayout(self.horizontal_layout)
+
+            # Add the container widget (with the horizontal layout) to the vertical layout
+            self.note_layout.addWidget(self.horizontal_layout_container)
+
+            # define and set the layout
+            ui = self.ui
+            ui.NotebookWidget.setLayout(self.note_layout)
+
+            # alter the flag
+            self.layout_created = True
+
+    def add_notebook(self, notebook_title):
         # Create a label with the notebook name, including HTML-style formatting
-        label_text = f'<span style="font-size: 14px;">{notebook_name}</span>'
+        label_text = f'<span style="font-size: 14px;">{notebook_title}</span>'
 
         # Create a QLabel with the formatted text
-        self.new_notebook_label = QLabel(label_text)
+        self.notebook_label = QLabel(label_text)
 
         # Set the icon
         notebook_arrow_unicode = "\uf0da"
@@ -179,7 +216,7 @@ class Overview(QMainWindow, WindowController):
         layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
 
         # Add the label with notebook name to the layout and align it to the left
-        layout.addWidget(self.new_notebook_label)
+        layout.addWidget(self.notebook_label)
 
         # Create a QWidget to hold the layout
         container = QtWidgets.QWidget()
@@ -194,17 +231,45 @@ class Overview(QMainWindow, WindowController):
         # Handle mouse events for the icon_label
         self.icon_label.mousePressEvent = self.toggle_notebook_icon
 
-    def save_notebook(self, notebook_name):
+    def add_note(self, note_title):
+        # Create a label with the note name, including HTML-style formatting
+        label_text = f'<span style="font-size: 14px;">{note_title}</span>'
 
-        if self.new_notebook_label.isWidgetType():
-            print(f"The label with value '{ notebook_name }' has been found")
+        # Create a QLabel with the formatted text
+        self.note_label = QLabel(label_text)
+
+        # Create a horizontal layout for the icon and text
+        layout = QtWidgets.QHBoxLayout()
+
+        # Align the layout to the left
+        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
+
+        # Add the label with notebook name to the layout and align it to the left
+        layout.addWidget(self.note_label)
+
+        # Create a QWidget to hold the layout
+        container = QtWidgets.QWidget()
+        container.setLayout(layout)
+
+        # Set font style
+        container.setStyleSheet("color: #000;")
+
+        # Add the container to the layout where you want to display it
+        self.note_layout.addWidget(container)
+
+    def save_notebook(self, notebook_title):
+
+        if self.notebook_label.isWidgetType():
+            print(f"The label with value '{ notebook_title }' has been found")
 
             import os
             notebook_directory = os.path.expanduser("~/Desktop/note-manager/notebooks/")
             os.makedirs(notebook_directory, exist_ok=True)
 
             # Create a directory for the notebook
-            notebook_path = os.path.join(notebook_directory, notebook_name)
+            notebook_path = os.path.join(notebook_directory, notebook_title)
             os.makedirs(notebook_path, exist_ok=True)
 
     def toggle_notebook_icon(self, event):

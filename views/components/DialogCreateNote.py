@@ -57,10 +57,24 @@ class DialogCreateNote(QDialog, WindowController):
         ui.WhatIsYourNewNoteNameLabel.setText("What should the title of your note be?")
         ui.WhatIsYourNewNoteNameLabel.adjustSize()
 
+        ui.SelectParentNotebook.setText("Select a notebook for this note")
+        ui.SelectParentNotebook.adjustSize()
+
         ui.WhatIsYourNewNoteDescription.setText("What should the body description of your note be?")
         ui.WhatIsYourNewNoteDescription.adjustSize()
 
-
+        ui.AddNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        ui.AddNoteButton.clicked.connect(self.add_note_button)
 
     def add_note_button(self):
         ui = self.ui
+
+        # Store text value
+        note_title = ui.NoteNamelineEdit.text()
+        # selected_notebook = ui.ParenNotebookSelector.findChild()
+        # note_body = ui.NoteBodytextEdit.text()
+
+        # Emit a signal to notify the Overview window to add the new note
+        self.requested_note.emit(note_title)
+
+        self.accept()
