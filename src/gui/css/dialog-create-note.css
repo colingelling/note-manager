@@ -1,0 +1,21 @@
+#DialogCreateNote {
+    background: #fff;
+}
+
+#HeadlineLabel {
+    font-size: 18px;
+    color: #000;
+}
+
+#DialogDescriptionText {
+    color: #000;
+}
+
+#WhatIsYourNewNoteNameLabel {
+    font-size: 14px;
+    color: #000;
+}
+
+#WhatIsYourNewNoteDescription {
+    color: #000;
+}

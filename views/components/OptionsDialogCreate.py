@@ -18,6 +18,9 @@ class OptionsDialogCreate(QDialog, WindowController):
     add_notebook_dialog_title = "Add a notebook"
     add_notebook_signal = QtCore.pyqtSignal(str)
 
+    add_note_dialog_title = "Add a note"
+    add_note_signal = QtCore.pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
 
@@ -52,12 +55,13 @@ class OptionsDialogCreate(QDialog, WindowController):
 
         ui.CreateNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.CreateNoteGroupButton.setText("A notebook")
-        ui.CreateNoteGroupButton.clicked.connect(self.show_create_dialog)
+        ui.CreateNoteGroupButton.clicked.connect(self.show_create_notebook_dialog)
 
         ui.CreateNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.CreateNoteButton.setText("A note")
+        ui.CreateNoteButton.clicked.connect(self.show_create_note_dialog)
 
-    def show_create_dialog(self):
+    def show_create_notebook_dialog(self):
         from views.components.DialogCreateNotebook import DialogCreateNotebook
         dialog = DialogCreateNotebook()
         dialog.setWindowTitle(self.add_notebook_dialog_title)
@@ -71,6 +75,24 @@ class OptionsDialogCreate(QDialog, WindowController):
         # Show dialog
         dialog.exec()
 
+    def show_create_note_dialog(self):
+        from views.components.DialogCreateNote import DialogCreateNote
+        dialog = DialogCreateNote()
+        dialog.setWindowTitle(self.add_note_dialog_title)
+
+        # Connect the notebook signal to add_notebook slot
+        dialog.requested_note.connect(self.add_note)
+
+        # Close this
+        self.accept()
+
+        # Show dialog
+        dialog.exec()
+
     def add_notebook(self, notebook_name):
         # Emit the notebook signal with the notebook_name
         self.add_notebook_signal.emit(notebook_name)
+
+    def add_note(self, note_name):
+        # Emit the note signal with the notebook_name
+        self.add_note_signal.emit(note_name)
