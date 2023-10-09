@@ -7,45 +7,57 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>602</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="WindowWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <widget class="QWidget" name="ContentWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>9</y>
+      <x>0</x>
+      <y>0</y>
       <width>781</width>
-      <height>331</height>
+      <height>601</height>
      </rect>
     </property>
     <property name="sizePolicy">
-     <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+     <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
-    <widget class="QTableView" name="OverviewTable">
+    <widget class="QTableView" name="LastAddedNotesTable">
      <property name="geometry">
       <rect>
        <x>250</x>
-       <y>100</y>
+       <y>140</y>
        <width>531</width>
        <height>231</height>
       </rect>
      </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
     </widget>
-    <widget class="QWidget" name="NoteManagementWidget_2" native="true">
+    <widget class="QWidget" name="NoteManagementWidget" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -66,7 +78,7 @@
        <height>0</height>
       </size>
      </property>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="ManageNotesWidget" native="true">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -94,7 +106,7 @@
         <string>TextLabel</string>
        </property>
       </widget>
-      <widget class="QWidget" name="widget_4" native="true">
+      <widget class="QWidget" name="AddIconWidget" native="true">
        <property name="geometry">
         <rect>
          <x>180</x>
@@ -127,11 +139,17 @@
         <height>201</height>
        </rect>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QWidget" name="NotebookWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -155,6 +173,94 @@
        <rect>
         <x>10</x>
         <y>20</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="LastAddedNotesLabel">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>110</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>390</y>
+       <width>261</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <widget class="QLabel" name="TODO">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>90</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="TemporaryUnknownWidgetLabel">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>390</y>
+       <width>261</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <widget class="QTextEdit" name="NotepadtextEdit">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>261</width>
+        <height>181</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+     <widget class="QLabel" name="NotepadLabel">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
         <width>67</width>
         <height>17</height>
        </rect>

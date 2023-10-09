@@ -4,6 +4,8 @@
     Using Pycharm Professional
 
 """
+import os
+
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFontDatabase, QCursor
@@ -42,8 +44,14 @@ class Overview(QMainWindow, WindowController):
         # flag to check if layout has been created
         self.layout_created = False
 
-        self.notebook_layout = None
-        self.note_layout = None
+        self.manager_layout = None
+
+        # Check whether a layout for the notebooks exist or not
+        self.create_layout()
+
+        # Try to find notebooks by storage directories which were possibly created earlier
+        collected_notebooks = self.collect_notebook_directories()
+        self.display_notebooks(collected_notebooks)
 
         self.show_content()
 
@@ -65,13 +73,13 @@ class Overview(QMainWindow, WindowController):
 
         QFontDatabase.addApplicationFont("src/gui/fonts/FontAwesome6-Free-Regular-400.otf")
 
-        self.setGeometry(467, 100, 1148, 834)  # Initial position and size of the window
+        # self.setGeometry(467, 100, 1148, 834)  # Initial position and size of the window
         self.setFixedSize(1047, 834)  # Fixed size, don't allow the user to resize the window
 
         ui.TitleLabel.setText(self.windowTitle())
         ui.TitleLabel.adjustSize()
 
-        ui.ContentWidget.setFixedWidth(1027)
+        ui.ContentWidget.setFixedSize(1015, 834)
         ui.ContentWidget.adjustSize()
 
         ui.ManageMyNotesTitleLabel.setText("Manage my notes")
@@ -83,16 +91,32 @@ class Overview(QMainWindow, WindowController):
         ui.OptionsDialogCreateButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.OptionsDialogCreateButton.clicked.connect(self.show_create_options_dialog)
 
-        # # Default group
-        # ui.NoteGroupLabel.setText("My first notebook")
-        # ui.NoteGroupLabel.adjustSize()
-        #
-        # # Default individual
-        # ui.IndividualNoteLabel.setText("My first note")
-        # ui.IndividualNoteLabel.adjustSize()
-        #
-        ui.OverviewTable.setFixedWidth(817)
-        #
+        ui.LastAddedNotesTable.setFixedWidth(817)
+
+        ui.NotepadLabel.setText("Notepad")
+        ui.NotepadLabel.adjustSize()
+
+        ui.LastAddedNotesLabel.setText("Recent activity")
+        ui.LastAddedNotesLabel.adjustSize()
+
+        ui.widget.setStyleSheet("padding: 0.5em;")
+        ui.widget.setFixedSize(400, 247)
+        ui.widget.setGeometry(250, 390, 0, 100)
+        ui.widget.adjustSize()
+
+        ui.widget_2.setFixedSize(380, 247)
+        ui.widget_2.adjustSize()
+
+        ui.widget_2.setStyleSheet("padding: 0.5em;")
+        ui.widget_2.setGeometry(660, 390, 0, 100)
+
+        ui.NotepadLabel.setStyleSheet("padding: 0; margin-top: 1.2em;")
+        ui.NotepadLabel.adjustSize()
+
+        ui.NotepadtextEdit.adjustSize()
+        ui.NotepadtextEdit.setStyleSheet("background: #fff; margin-top: 24px; color: #000;")
+        ui.NotepadtextEdit.setFixedSize(355, 210)
+
         # edit_icon_unicode = "\uf044"
         # ui.EditNoteGroupButton.setText(edit_icon_unicode)
         #
@@ -114,32 +138,26 @@ class Overview(QMainWindow, WindowController):
         options_dialog = Overview.options_dialog
         options_dialog.setWindowTitle(self.options_dialog_title)
 
-        # Check whether a layout for the notebooks exist or not
-        options_dialog.add_notebook_signal.connect(self.create_notebook_layout)
-
         # Connect the notebook signal to the function for creating the notebook
         options_dialog.add_notebook_signal.connect(self.add_notebook)
 
         # Connect the notebook signal to the function for storing the notebook as a directory
         options_dialog.add_notebook_signal.connect(self.save_notebook)
 
-        # Check whether a layout for the notes exist or not
-        options_dialog.add_note_signal.connect(self.create_note_layout)
-
         # Connect the notebook signal to the function for creating the notebook
         options_dialog.add_note_signal.connect(self.add_note)
 
         options_dialog.exec()
 
-    def create_notebook_layout(self):
+    def create_layout(self):
         # create the layout only the first time
         if not self.layout_created:
             # create a layout inside the NotebookWidget
             from PyQt6 import QtWidgets
-            self.notebook_layout = QtWidgets.QVBoxLayout()
+            self.manager_layout = QtWidgets.QVBoxLayout()  # Create a common layout
 
             # Set alignment to top
-            self.notebook_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+            self.manager_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
             # Create a container widget for the horizontal layout
             self.horizontal_layout_container = QtWidgets.QWidget()
@@ -151,43 +169,83 @@ class Overview(QMainWindow, WindowController):
             self.horizontal_layout_container.setLayout(self.horizontal_layout)
 
             # Add the container widget (with the horizontal layout) to the vertical layout
-            self.notebook_layout.addWidget(self.horizontal_layout_container)
+            self.manager_layout.addWidget(self.horizontal_layout_container)
 
             # define and set the layout
             ui = self.ui
-            ui.NotebookWidget.setLayout(self.notebook_layout)
+            ui.NotebookWidget.setLayout(self.manager_layout)
 
             # alter the flag
             self.layout_created = True
 
-    def create_note_layout(self):
-        # create the layout only the first time
-        if not self.layout_created:
-            # create a layout inside the NotebookWidget
-            from PyQt6 import QtWidgets
-            self.note_layout = QtWidgets.QVBoxLayout()
+    @staticmethod
+    def collect_notebook_directories():
 
-            # Set alignment to top
-            self.note_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        from core.app_information import AppInformation
+        app_information = AppInformation()
 
-            # Create a container widget for the horizontal layout
-            self.horizontal_layout_container = QtWidgets.QWidget()
+        storage_root = app_information.root_path()
 
-            # Create the horizontal layout
-            self.horizontal_layout = QtWidgets.QHBoxLayout()
+        # Expand the tilde (~) to the user's home directory
+        storage_folder = os.path.expanduser(storage_root)
 
-            # Set the horizontal layout for the container widget
-            self.horizontal_layout_container.setLayout(self.horizontal_layout)
+        notebook_directory = "notebooks"
 
-            # Add the container widget (with the horizontal layout) to the vertical layout
-            self.note_layout.addWidget(self.horizontal_layout_container)
+        path_result = f"{storage_folder}/{notebook_directory}"
 
-            # define and set the layout
-            ui = self.ui
-            ui.NotebookWidget.setLayout(self.note_layout)
+        if os.path.exists(path_result) and os.path.isdir(path_result):
+            # List one-level directories in the specific path
+            directories = [d for d in os.listdir(path_result) if os.path.isdir(os.path.join(path_result, d))]
 
-            # alter the flag
-            self.layout_created = True
+            notebooks = directories
+            return notebooks
+
+    def display_notebooks(self, notebook_directories):
+
+        if notebook_directories:
+
+            for notebook in notebook_directories:
+
+                # Create a label with the notebook name, including HTML-style formatting
+                label_text = f'<span style="font-size: 14px;">{notebook}</span>'
+
+                # Create a QLabel with the formatted text
+                self.notebook_label = QLabel(label_text)
+
+                # Set the icon
+                notebook_arrow_unicode = "\uf0da"
+
+                # Create a QLabel for the icon
+                self.icon_label = QLabel(notebook_arrow_unicode)
+                self.icon_label.setStyleSheet("font-size: 8px;")
+
+                # Create a horizontal layout for the icon and text
+                layout = QtWidgets.QHBoxLayout()
+
+                # Add the icon label to the layout and align it to the left
+                layout.addWidget(self.icon_label)
+                layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+                # Add some spacing between the icon and text
+                layout.addSpacing(1)
+
+                layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
+
+                # Add the label with notebook name to the layout and align it to the left
+                layout.addWidget(self.notebook_label)
+
+                # Create a QWidget to hold the layout
+                container = QtWidgets.QWidget()
+                container.setLayout(layout)
+
+                # Set font style
+                container.setStyleSheet("color: #000;")
+
+                # Add the container to the layout where you want to display it
+                self.manager_layout.addWidget(container)
+
+                # Handle mouse events for the icon_label
+                self.icon_label.mousePressEvent = self.toggle_notebook_icon
 
     def add_notebook(self, notebook_title):
         # Create a label with the notebook name, including HTML-style formatting
@@ -226,7 +284,7 @@ class Overview(QMainWindow, WindowController):
         container.setStyleSheet("color: #000;")
 
         # Add the container to the layout where you want to display it
-        self.notebook_layout.addWidget(container)
+        self.manager_layout.addWidget(container)
 
         # Handle mouse events for the icon_label
         self.icon_label.mousePressEvent = self.toggle_notebook_icon
@@ -237,6 +295,8 @@ class Overview(QMainWindow, WindowController):
 
         # Create a QLabel with the formatted text
         self.note_label = QLabel(label_text)
+
+        self.note_label.setStyleSheet("margin-left: 0.5em;")
 
         # Create a horizontal layout for the icon and text
         layout = QtWidgets.QHBoxLayout()
@@ -257,20 +317,46 @@ class Overview(QMainWindow, WindowController):
         container.setStyleSheet("color: #000;")
 
         # Add the container to the layout where you want to display it
-        self.note_layout.addWidget(container)
+        self.manager_layout.addWidget(container)
 
     def save_notebook(self, notebook_title):
 
         if self.notebook_label.isWidgetType():
-            print(f"The label with value '{ notebook_title }' has been found")
+
+            from core.app_information import AppInformation
+            app_information = AppInformation()
+            root_folder = app_information.root_path()
+
+            notebook_directory = "notebooks"
 
             import os
-            notebook_directory = os.path.expanduser("~/Desktop/note-manager/notebooks/")
-            os.makedirs(notebook_directory, exist_ok=True)
+            notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
+            os.makedirs(notebook_destination, exist_ok=True)
 
             # Create a directory for the notebook
-            notebook_path = os.path.join(notebook_directory, notebook_title)
+            notebook_path = os.path.join(notebook_destination, notebook_title)
             os.makedirs(notebook_path, exist_ok=True)
+
+    # def save_note(self, note_title):
+
+    # TODO: Need to know the Notebook directory (based upon selection via the creation of a Note?)
+
+    #
+    #     if self.notebook_label.isWidgetType():
+    #
+    #         from core.app_information import AppInformation
+    #         app_information = AppInformation()
+    #         root_folder = app_information.root_path()
+    #
+    #         notebook_directory = "notebooks"
+    #
+    #         import os
+    #         notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
+    #         os.makedirs(notebook_destination, exist_ok=True)
+    #
+    #         # Create a directory for the notebook
+    #         notebook_path = os.path.join(notebook_destination, notebook_title)
+    #         os.makedirs(notebook_path, exist_ok=True)
 
     def toggle_notebook_icon(self, event):
         # Toggle the icon's orientation when the icon_label is clicked

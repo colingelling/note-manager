@@ -17,7 +17,7 @@ def main():
     Bootstrapper()
 
     # Connect the cleanup function to the aboutToQuit signal (Temporarily)
-    app.aboutToQuit.connect(Bootstrapper.cleanup)
+    # app.aboutToQuit.connect(Bootstrapper.cleanup)
 
     # Startup
     sys.exit(app.exec())

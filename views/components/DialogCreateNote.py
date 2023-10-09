@@ -10,6 +10,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QDialog
 
+import os
+
 from core.Controllers.WindowController import WindowController
 
 
@@ -60,18 +62,54 @@ class DialogCreateNote(QDialog, WindowController):
         ui.SelectParentNotebook.setText("Select a notebook for this note")
         ui.SelectParentNotebook.adjustSize()
 
+        self.notebook_selector(ui.ParentNotebookSelector)
+        ui.ParentNotebookSelector.setEnabled(True)
+
         ui.WhatIsYourNewNoteDescription.setText("What should the body description of your note be?")
         ui.WhatIsYourNewNoteDescription.adjustSize()
 
         ui.AddNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.AddNoteButton.clicked.connect(self.add_note_button)
 
+    @staticmethod
+    def notebook_selector(selector):
+
+        from core.app_information import AppInformation
+        app_information = AppInformation()
+
+        # Set base path according to the storage folder
+        storage_root = app_information.root_path()
+
+        # Expand the tilde (~) to the user's home directory
+        storage_folder = os.path.expanduser(storage_root)
+
+        # Manually name the directory about where to look in
+        notebook_directory = "notebooks"
+
+        # Combine them as path value
+        path_result = f"{storage_folder}/{notebook_directory}"
+
+        # Show an empty ComoBox upon launch of this dialog
+        selector.addItem("")
+
+        # Verify that the combined path value is existing and has been created already
+        if os.path.exists(path_result) and os.path.isdir(path_result):
+            # List one-level directories in the specific path
+            directories = [d for d in os.listdir(path_result) if os.path.isdir(os.path.join(path_result, d))]
+
+            # Add directories as values to the ComboBox
+            selector.addItems(directories)
+
     def add_note_button(self):
         ui = self.ui
 
-        # Store text value
+        # Store the title
         note_title = ui.NoteNamelineEdit.text()
-        # selected_notebook = ui.ParenNotebookSelector.findChild()
+
+        # Store the notebook value
+        # notebook_selector = ui.ParentNotebookSelector.textActivated()
+
+        # Store the note text
         # note_body = ui.NoteBodytextEdit.text()
 
         # Emit a signal to notify the Overview window to add the new note

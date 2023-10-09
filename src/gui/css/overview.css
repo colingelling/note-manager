@@ -57,3 +57,14 @@
 #IndividualNoteLabel {
     color: #000;
 }
+
+#LastAddedNotesLabel {
+    color: #000;
+    font-size: 16px;
+}
+
+#NotepadLabel {
+    color: #000;
+    font-size: 16px;
+    padding: 0 6px 14px 0;
+}
