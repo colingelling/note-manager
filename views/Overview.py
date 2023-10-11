@@ -4,6 +4,7 @@
     Using Pycharm Professional
 
 """
+
 import os
 
 from PyQt6 import QtWidgets
@@ -184,7 +185,7 @@ class Overview(QMainWindow, WindowController):
         from core.app_information import AppInformation
         app_information = AppInformation()
 
-        storage_root = app_information.root_path()
+        storage_root = app_information.application_storage()
 
         # Expand the tilde (~) to the user's home directory
         storage_folder = os.path.expanduser(storage_root)
@@ -325,7 +326,7 @@ class Overview(QMainWindow, WindowController):
 
             from core.app_information import AppInformation
             app_information = AppInformation()
-            root_folder = app_information.root_path()
+            root_folder = app_information.application_storage()
 
             notebook_directory = "notebooks"
 

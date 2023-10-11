@@ -78,7 +78,7 @@ class DialogCreateNote(QDialog, WindowController):
         app_information = AppInformation()
 
         # Set base path according to the storage folder
-        storage_root = app_information.root_path()
+        storage_root = app_information.application_storage()
 
         # Expand the tilde (~) to the user's home directory
         storage_folder = os.path.expanduser(storage_root)

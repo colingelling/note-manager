@@ -18,6 +18,7 @@ class Bootstrapper:
         super().__init__()
 
         self.setup_controller()
+        self.read_template()
 
     """
     
@@ -48,3 +49,9 @@ class Bootstrapper:
     #             shutil.rmtree(notemanager_directory)
     #     except Exception as e:
     #         print(f"Error while cleaning up: {e}")
+
+    def read_template(self):  # TODO: Temporarily stored here: Read the default template
+        from core.Templates.ReadNotes import ReadNotes
+        module = ReadNotes()
+        template = module.find_template()
+        return module.read_template(template)
