@@ -47,7 +47,7 @@ class Overview(QMainWindow, WindowController):
 
         self.manager_layout = None
 
-        # Check whether a layout for the notebooks exist or not
+        # Check whether a layout for the notebooks and notes exist or not
         self.create_layout()
 
         # Try to find notebooks by storage directories which were possibly created earlier
@@ -133,10 +133,14 @@ class Overview(QMainWindow, WindowController):
         # ui.DeleteNoteGroupButton.adjustSize()
 
     def show_create_options_dialog(self):
+        # Create access to the next Dialog class (view)
         from views.components.OptionsDialogCreate import OptionsDialogCreate
         Overview.options_dialog = OptionsDialogCreate()
 
+        # Shorter variable
         options_dialog = Overview.options_dialog
+
+        # Set the title for the Window bound to the Dialog class
         options_dialog.setWindowTitle(self.options_dialog_title)
 
         # Connect the notebook signal to the function for creating the notebook
@@ -145,9 +149,10 @@ class Overview(QMainWindow, WindowController):
         # Connect the notebook signal to the function for storing the notebook as a directory
         options_dialog.add_notebook_signal.connect(self.save_notebook)
 
-        # Connect the notebook signal to the function for creating the notebook
-        options_dialog.add_note_signal.connect(self.add_note)
+        # # Connect the 'add_note_signal' to the 'add_note' function for creating the note in the Overview window
+        # options_dialog.add_note_signal.connect(self.add_note)
 
+        # Execute the next window Dialog
         options_dialog.exec()
 
     def create_layout(self):

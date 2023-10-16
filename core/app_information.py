@@ -6,7 +6,6 @@
 """
 
 import os
-import glob
 
 
 class AppInformation:
@@ -34,12 +33,3 @@ class AppInformation:
     @staticmethod
     def application_storage():
         return "~/Desktop/note-manager/"
-
-    @staticmethod
-    def application_templates():
-        project_root = AppInformation.project_root()
-        templates_folder = "templates"
-        templates_path = f"{project_root}/{templates_folder}"
-        target = glob.glob(f"{templates_path}/*.txt")
-
-        return target

@@ -46,34 +46,52 @@ class DialogCreateNote(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
+        # Receive the title that was set earlier from within the Dialog mentioned below
         from views.components.OptionsDialogCreate import OptionsDialogCreate
         view = OptionsDialogCreate()
         window_title = view.add_note_dialog_title
 
+        # Also set the title as a label
         ui.HeadlineLabel.setText(window_title)
         ui.HeadlineLabel.adjustSize()
 
+        # Adding a description for user friendliness
         ui.DialogDescriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button if you're done!")
         ui.DialogDescriptionText.adjustSize()
 
+        # Declare first input label content (Name and note title)
         ui.WhatIsYourNewNoteNameLabel.setText("What should the title of your note be?")
         ui.WhatIsYourNewNoteNameLabel.adjustSize()
 
+        # Declare label content for the ComboBox into selecting a notebook for binding purposes
         ui.SelectParentNotebook.setText("Select a notebook for this note")
         ui.SelectParentNotebook.adjustSize()
 
-        self.notebook_selector(ui.ParentNotebookSelector)
+        # Enable the ComboBox and pass it to the 'notebook_selector' function in order to find the notebooks
         ui.ParentNotebookSelector.setEnabled(True)
+        self.notebook_selector(ui.ParentNotebookSelector)
 
+        # Declare label content for adding a note description
         ui.WhatIsYourNewNoteDescription.setText("What should the body description of your note be?")
         ui.WhatIsYourNewNoteDescription.adjustSize()
 
+        # Set a different pointer status for the save button
         ui.AddNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+
+        # Bind the add_note_button functionality to the button
         ui.AddNoteButton.clicked.connect(self.add_note_button)
 
     @staticmethod
     def notebook_selector(selector):
 
+        """
+        Use the content of selector and the application's storage folder to find categorized subdirectories, add these
+        as items to the ComboBox
+        :param selector: ui.ParentNotebookSelector
+        :return:
+        """
+
+        # Declare and get access to the following class
         from core.app_information import AppInformation
         app_information = AppInformation()
 
@@ -101,18 +119,32 @@ class DialogCreateNote(QDialog, WindowController):
             selector.addItems(directories)
 
     def add_note_button(self):
+        # Initialize the layout
         ui = self.ui
 
-        # Store the title
+        # Store the note title
         note_title = ui.NoteNamelineEdit.text()
 
-        # Store the notebook value
-        # notebook_selector = ui.ParentNotebookSelector.textActivated()
+        # Store the notebook value from 'notebook_selector' functionality
+        selected_notebook = ui.ParentNotebookSelector.currentText()
 
-        # Store the note text
-        # note_body = ui.NoteBodytextEdit.text()
+        # Store the note description content
+        note_description = ui.NoteBodytextEdit.toPlainText()
 
-        # Emit a signal to notify the Overview window to add the new note
-        self.requested_note.emit(note_title)
+        # Put all information into a Dictionary
+        note_template = {
+            "Title": note_title,
+            "Notebook": selected_notebook,
+            "Description": note_description
+        }
 
+        import json
+        # Prepare the Dictionary as a JSON formatted string because of what the 'requested_note' signal expects
+        note_template_str = json.dumps(note_template)
+
+        # Emit a signal (requested_note) to notify the Overview window to add the new note
+        # (Putting the Dictionary into the signal)
+        self.requested_note.emit(note_template_str)
+
+        # Close this Dialog window (class)
         self.accept()

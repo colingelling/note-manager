@@ -76,17 +76,20 @@ class OptionsDialogCreate(QDialog, WindowController):
         dialog.exec()
 
     def show_create_note_dialog(self):
+        # Create access to the next Dialog class (view)
         from views.components.DialogCreateNote import DialogCreateNote
         dialog = DialogCreateNote()
+
+        # Set the title for the Window bound to the Dialog class
         dialog.setWindowTitle(self.add_note_dialog_title)
 
-        # Connect the notebook signal to add_notebook slot
-        dialog.requested_note.connect(self.add_note)
+        # # Connect the requested_note signal to the function 'add_note'
+        # dialog.requested_note.connect(self.add_note)
 
-        # Close this
+        # Close this window
         self.accept()
 
-        # Show dialog
+        # Show the next dialog class
         dialog.exec()
 
     def add_notebook(self, notebook_title):
@@ -94,5 +97,6 @@ class OptionsDialogCreate(QDialog, WindowController):
         self.add_notebook_signal.emit(notebook_title)
 
     def add_note(self, note_title):
-        # Emit the note signal with the notebook_name
+        print(note_title)
+        # Emit the note signal with the note_name
         self.add_note_signal.emit(note_title)
