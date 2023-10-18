@@ -149,8 +149,11 @@ class Overview(QMainWindow, WindowController):
         # Connect the notebook signal to the function for storing the notebook as a directory
         options_dialog.add_notebook_signal.connect(self.save_notebook)
 
-        # # Connect the 'add_note_signal' to the 'add_note' function for creating the note in the Overview window
-        # options_dialog.add_note_signal.connect(self.add_note)
+        # Connect the 'add_note_signal' to the 'add_note' function for creating the note in the Overview window
+        options_dialog.add_note_signal.connect(self.add_note)
+
+        # Connect the note signal to the function for storing the notebook as a directory
+        options_dialog.add_note_signal.connect(self.save_note)
 
         # Execute the next window Dialog
         options_dialog.exec()
@@ -254,6 +257,7 @@ class Overview(QMainWindow, WindowController):
                 self.icon_label.mousePressEvent = self.toggle_notebook_icon
 
     def add_notebook(self, notebook_title):
+
         # Create a label with the notebook name, including HTML-style formatting
         label_text = f'<span style="font-size: 14px;">{notebook_title}</span>'
 
@@ -295,9 +299,16 @@ class Overview(QMainWindow, WindowController):
         # Handle mouse events for the icon_label
         self.icon_label.mousePressEvent = self.toggle_notebook_icon
 
-    def add_note(self, note_title):
+    def add_note(self, new_note):
+
+        import json
+        note_dict = json.loads(new_note)
+
+        # Get the title of the note that was created before
+        note_name = note_dict["Title"]
+
         # Create a label with the note name, including HTML-style formatting
-        label_text = f'<span style="font-size: 14px;">{note_title}</span>'
+        label_text = f'<span style="font-size: 14px;">{note_name}</span>'
 
         # Create a QLabel with the formatted text
         self.note_label = QLabel(label_text)
@@ -343,26 +354,70 @@ class Overview(QMainWindow, WindowController):
             notebook_path = os.path.join(notebook_destination, notebook_title)
             os.makedirs(notebook_path, exist_ok=True)
 
-    # def save_note(self, note_title):
+    def save_note(self, new_note):
 
-    # TODO: Need to know the Notebook directory (based upon selection via the creation of a Note?)
+        """
+        Set the fundamental ground with the help of specific information for storing the note, extract note data from
+        the signal slot following by creating the note file according to a template.
+        :param new_note:
+        :return:
+        """
 
-    #
-    #     if self.notebook_label.isWidgetType():
-    #
-    #         from core.app_information import AppInformation
-    #         app_information = AppInformation()
-    #         root_folder = app_information.root_path()
-    #
-    #         notebook_directory = "notebooks"
-    #
-    #         import os
-    #         notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
-    #         os.makedirs(notebook_destination, exist_ok=True)
-    #
-    #         # Create a directory for the notebook
-    #         notebook_path = os.path.join(notebook_destination, notebook_title)
-    #         os.makedirs(notebook_path, exist_ok=True)
+        # Get access to the application information -class
+        from core.app_information import AppInformation
+        app_information = AppInformation()
+
+        # Retrieve the application storage path
+        app_storage = app_information.application_storage()
+
+        # print(app_storage) # TODO: shows the correct location
+
+        # TODO:
+        #  1) Retrieve selected notebook value
+        #  2) Compare this with subdirectories which are in the app_storage path value
+        #  3) Pick the matched folder, store a txt file and fill it with the dictionary template;
+        #  Title, Notebook, Description - also name the file after the Title value
+
+        # Verify existence
+        if not app_storage:
+            return print("An issue has appeared which caused that the application storage folder could not be created!")
+
+        # Set base path value
+        import os
+        notebook_destination = os.path.expanduser(f"{app_storage}/notebooks")
+        os.makedirs(notebook_destination, exist_ok=True)
+
+        # Convert string from signal back into usable Dictionary format
+        import json
+        note_dict = json.loads(new_note)
+
+        # Retrieve the selected notebook value
+        notebook = note_dict["Notebook"]
+
+        # Set the directory value according to the selected notebook value
+        notebook_directory = notebook
+
+        # Final destination of the note that was created should be in 'notebook_destination/notebook/'
+        note_path = f"{notebook_destination}/{notebook_directory}"  # TODO: The '/' is a duplicate
+
+        # Retrieve other data from the signal
+        title = note_dict["Title"]
+        description = note_dict["Description"]
+
+        # Declare a filename based on the note title
+        filename = f"{title}.txt"
+
+        # Set full path to the note file
+        note_file_path = os.path.join(note_path, filename)
+
+        # Content for the note, including the title, notebook, and description
+        note_template = f"Title: {title}\nNotebook: {notebook}\nDescription: {description}\n"
+
+        # Create the note file and fill it with the template
+        with open(note_file_path, "w") as note_file:
+            note_file.write(note_template)
+
+        print(f"Note saved to: '{note_file_path}'")
 
     def toggle_notebook_icon(self, event):
         # Toggle the icon's orientation when the icon_label is clicked
