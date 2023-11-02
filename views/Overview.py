@@ -50,10 +50,6 @@ class Overview(QMainWindow, WindowController):
         # Check whether a layout for the notebooks and notes exist or not
         self.create_layout()
 
-        # Try to find notebooks by storage directories which were possibly created earlier
-        collected_notebooks = self.collect_notebook_directories()
-        self.display_notebooks(collected_notebooks)
-
         self.show_content()
 
     def load_ui(self):
@@ -118,20 +114,6 @@ class Overview(QMainWindow, WindowController):
         ui.NotepadtextEdit.setStyleSheet("background: #fff; margin-top: 24px; color: #000;")
         ui.NotepadtextEdit.setFixedSize(355, 210)
 
-        # edit_icon_unicode = "\uf044"
-        # ui.EditNoteGroupButton.setText(edit_icon_unicode)
-        #
-        # ui.EditNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        #
-        # ui.EditNoteGroupButton.adjustSize()
-        #
-        # delete_icon_unicode = "\uf2ed"
-        # ui.DeleteNoteGroupButton.setText(delete_icon_unicode)
-        #
-        # ui.DeleteNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        #
-        # ui.DeleteNoteGroupButton.adjustSize()
-
     def show_create_options_dialog(self):
         # Create access to the next Dialog class (view)
         from views.components.OptionsDialogCreate import OptionsDialogCreate
@@ -143,14 +125,8 @@ class Overview(QMainWindow, WindowController):
         # Set the title for the Window bound to the Dialog class
         options_dialog.setWindowTitle(self.options_dialog_title)
 
-        # Connect the notebook signal to the function for creating the notebook
-        options_dialog.add_notebook_signal.connect(self.add_notebook)
-
         # Connect the notebook signal to the function for storing the notebook as a directory
         options_dialog.add_notebook_signal.connect(self.save_notebook)
-
-        # Connect the 'add_note_signal' to the 'add_note' function for creating the note in the Overview window
-        options_dialog.add_note_signal.connect(self.add_note)
 
         # Connect the note signal to the function for storing the notebook as a directory
         options_dialog.add_note_signal.connect(self.save_note)
@@ -208,133 +184,6 @@ class Overview(QMainWindow, WindowController):
 
             notebooks = directories
             return notebooks
-
-    def display_notebooks(self, notebook_directories):
-
-        if notebook_directories:
-
-            for notebook in notebook_directories:
-
-                # Create a label with the notebook name, including HTML-style formatting
-                label_text = f'<span style="font-size: 14px;">{notebook}</span>'
-
-                # Create a QLabel with the formatted text
-                self.notebook_label = QLabel(label_text)
-
-                # Set the icon
-                notebook_arrow_unicode = "\uf0da"
-
-                # Create a QLabel for the icon
-                self.icon_label = QLabel(notebook_arrow_unicode)
-                self.icon_label.setStyleSheet("font-size: 8px;")
-
-                # Create a horizontal layout for the icon and text
-                layout = QtWidgets.QHBoxLayout()
-
-                # Add the icon label to the layout and align it to the left
-                layout.addWidget(self.icon_label)
-                layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-                # Add some spacing between the icon and text
-                layout.addSpacing(1)
-
-                layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
-
-                # Add the label with notebook name to the layout and align it to the left
-                layout.addWidget(self.notebook_label)
-
-                # Create a QWidget to hold the layout
-                container = QtWidgets.QWidget()
-                container.setLayout(layout)
-
-                # Set font style
-                container.setStyleSheet("color: #000;")
-
-                # Add the container to the layout where you want to display it
-                self.manager_layout.addWidget(container)
-
-                # Handle mouse events for the icon_label
-                self.icon_label.mousePressEvent = self.toggle_notebook_icon
-
-    def add_notebook(self, notebook_title):
-
-        # Create a label with the notebook name, including HTML-style formatting
-        label_text = f'<span style="font-size: 14px;">{notebook_title}</span>'
-
-        # Create a QLabel with the formatted text
-        self.notebook_label = QLabel(label_text)
-
-        # Set the icon
-        notebook_arrow_unicode = "\uf0da"
-
-        # Create a QLabel for the icon
-        self.icon_label = QLabel(notebook_arrow_unicode)
-        self.icon_label.setStyleSheet("font-size: 8px;")
-
-        # Create a horizontal layout for the icon and text
-        layout = QtWidgets.QHBoxLayout()
-
-        # Add the icon label to the layout and align it to the left
-        layout.addWidget(self.icon_label)
-        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        # Add some spacing between the icon and text
-        layout.addSpacing(1)
-
-        layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
-
-        # Add the label with notebook name to the layout and align it to the left
-        layout.addWidget(self.notebook_label)
-
-        # Create a QWidget to hold the layout
-        container = QtWidgets.QWidget()
-        container.setLayout(layout)
-
-        # Set font style
-        container.setStyleSheet("color: #000;")
-
-        # Add the container to the layout where you want to display it
-        self.manager_layout.addWidget(container)
-
-        # Handle mouse events for the icon_label
-        self.icon_label.mousePressEvent = self.toggle_notebook_icon
-
-    def add_note(self, new_note):
-
-        import json
-        note_dict = json.loads(new_note)
-
-        # Get the title of the note that was created before
-        note_name = note_dict["Title"]
-
-        # Create a label with the note name, including HTML-style formatting
-        label_text = f'<span style="font-size: 14px;">{note_name}</span>'
-
-        # Create a QLabel with the formatted text
-        self.note_label = QLabel(label_text)
-
-        self.note_label.setStyleSheet("margin-left: 0.5em;")
-
-        # Create a horizontal layout for the icon and text
-        layout = QtWidgets.QHBoxLayout()
-
-        # Align the layout to the left
-        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
-
-        # Add the label with notebook name to the layout and align it to the left
-        layout.addWidget(self.note_label)
-
-        # Create a QWidget to hold the layout
-        container = QtWidgets.QWidget()
-        container.setLayout(layout)
-
-        # Set font style
-        container.setStyleSheet("color: #000;")
-
-        # Add the container to the layout where you want to display it
-        self.manager_layout.addWidget(container)
 
     def save_notebook(self, notebook_title):
 
