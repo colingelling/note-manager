@@ -32,4 +32,4 @@ class AppInformation:
 
     @staticmethod
     def application_storage():
-        return "~/Desktop/note-manager/"
+        return "/home/colin/Desktop/note-manager/"

@@ -32,19 +32,3 @@ class Bootstrapper:
         class_instance = WindowController()
         class_method = class_instance.show_overview_window()
         return class_method
-
-    # @staticmethod
-    # def cleanup():
-    #
-    #     # TODO: Temporary function, remove any leftover things that were created by the app
-    #
-    #     try:
-    #         # The directory to clean
-    #         notemanager_directory = os.path.expanduser("~/Desktop/note-manager")
-    #
-    #         # Delete the entire directory and its contents
-    #         if os.path.exists(notemanager_directory):
-    #             import shutil
-    #             shutil.rmtree(notemanager_directory)
-    #     except Exception as e:
-    #         print(f"Error while cleaning up: {e}")

@@ -22,14 +22,14 @@ class Overview(QMainWindow, WindowController):
     # class-level variable to store the DialogCreateNotebook instance
     create_notebook_dialog = None
 
+    # label properties
+    icon_label = None
     notebook_label = None
     note_label = None
 
-    horizontal_layout_container = None
-
-    horizontal_layout = None
-
-    icon_label = None
+    # # layout properties
+    # horizontal_layout_container = None
+    # horizontal_layout = None
 
     def __init__(self):
         super().__init__()
@@ -42,13 +42,37 @@ class Overview(QMainWindow, WindowController):
         # set stylesheet
         self.initUi()
 
-        # flag to check if layout has been created
-        self.layout_created = False
+        # # flag to check if layout has been created
+        # self.layout_created = False
 
-        self.manager_layout = None
+        # self.manager_layout = None
 
         # Check whether a layout for the notebooks and notes exist or not
-        self.create_layout()
+        from core.Modules.Layout.ShowNoteManager import ShowNoteManager
+        ui = self.ui
+        note_manager = ShowNoteManager()
+        note_manager.create_layout(ui)
+
+        from core.Manage.Collections.ManageDirectoryCollections import ManageDirectoryCollections
+        collection = ManageDirectoryCollections()
+
+        # TODO: List all notebooks and files
+        collection.directory_finder('notebooks', '*')
+
+        # print(collection.notebook_collection)
+        # TODO: This is outside the loop from the function above
+        # print(collection.notebook_collection)  # TODO: Only shows one result
+
+        # TODO: Specifying source and target file (handy for edit purposes)
+        # source_path = collection.directory_finder('notebooks', 'A notebook')
+        #
+        # collection.file_finder(source_path, 'txt')
+        #
+        # if collection.content:
+        #     for pair in collection.content.items():
+        #         print(pair)
+        #         for value in pair:
+        #             print(value)
 
         self.show_content()
 
@@ -134,74 +158,25 @@ class Overview(QMainWindow, WindowController):
         # Execute the next window Dialog
         options_dialog.exec()
 
-    def create_layout(self):
-        # create the layout only the first time
-        if not self.layout_created:
-            # create a layout inside the NotebookWidget
-            from PyQt6 import QtWidgets
-            self.manager_layout = QtWidgets.QVBoxLayout()  # Create a common layout
 
-            # Set alignment to top
-            self.manager_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-            # Create a container widget for the horizontal layout
-            self.horizontal_layout_container = QtWidgets.QWidget()
-
-            # Create the horizontal layout
-            self.horizontal_layout = QtWidgets.QHBoxLayout()
-
-            # Set the horizontal layout for the container widget
-            self.horizontal_layout_container.setLayout(self.horizontal_layout)
-
-            # Add the container widget (with the horizontal layout) to the vertical layout
-            self.manager_layout.addWidget(self.horizontal_layout_container)
-
-            # define and set the layout
-            ui = self.ui
-            ui.NotebookWidget.setLayout(self.manager_layout)
-
-            # alter the flag
-            self.layout_created = True
-
-    @staticmethod
-    def collect_notebook_directories():
-
-        from core.app_information import AppInformation
-        app_information = AppInformation()
-
-        storage_root = app_information.application_storage()
-
-        # Expand the tilde (~) to the user's home directory
-        storage_folder = os.path.expanduser(storage_root)
-
-        notebook_directory = "notebooks"
-
-        path_result = f"{storage_folder}/{notebook_directory}"
-
-        if os.path.exists(path_result) and os.path.isdir(path_result):
-            # List one-level directories in the specific path
-            directories = [d for d in os.listdir(path_result) if os.path.isdir(os.path.join(path_result, d))]
-
-            notebooks = directories
-            return notebooks
 
     def save_notebook(self, notebook_title):
 
-        if self.notebook_label.isWidgetType():
+        from core.app_information import AppInformation
+        app_information = AppInformation()
+        root_folder = app_information.application_storage()
 
-            from core.app_information import AppInformation
-            app_information = AppInformation()
-            root_folder = app_information.application_storage()
+        notebook_directory = "notebooks"
 
-            notebook_directory = "notebooks"
+        import os
+        notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
+        os.makedirs(notebook_destination, exist_ok=True)
 
-            import os
-            notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
-            os.makedirs(notebook_destination, exist_ok=True)
+        # Create a directory for the notebook
+        notebook_path = os.path.join(notebook_destination, notebook_title)
+        os.makedirs(notebook_path, exist_ok=True)
 
-            # Create a directory for the notebook
-            notebook_path = os.path.join(notebook_destination, notebook_title)
-            os.makedirs(notebook_path, exist_ok=True)
+        print(f"Notebook saved to: '{notebook_path}'")
 
     def save_note(self, new_note):
 
@@ -218,14 +193,6 @@ class Overview(QMainWindow, WindowController):
 
         # Retrieve the application storage path
         app_storage = app_information.application_storage()
-
-        # print(app_storage) # TODO: shows the correct location
-
-        # TODO:
-        #  1) Retrieve selected notebook value
-        #  2) Compare this with subdirectories which are in the app_storage path value
-        #  3) Pick the matched folder, store a txt file and fill it with the dictionary template;
-        #  Title, Notebook, Description - also name the file after the Title value
 
         # Verify existence
         if not app_storage:
@@ -267,11 +234,3 @@ class Overview(QMainWindow, WindowController):
             note_file.write(note_template)
 
         print(f"Note saved to: '{note_file_path}'")
-
-    def toggle_notebook_icon(self, event):
-        # Toggle the icon's orientation when the icon_label is clicked
-        current_icon = self.icon_label.text()
-        if current_icon == "\uf0da":
-            self.icon_label.setText("\uf0d7")  # Change to a different icon (pointing down)
-        else:
-            self.icon_label.setText("\uf0da")  # Change back to the original icon (pointing right)
