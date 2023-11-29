@@ -56,23 +56,11 @@ class Overview(QMainWindow, WindowController):
         from core.Manage.Collections.ManageDirectoryCollections import ManageDirectoryCollections
         collection = ManageDirectoryCollections()
 
-        # TODO: List all notebooks and files
-        collection.directory_finder('notebooks', '*')
+        # Set a source directory within storage, followed by selecting a notebook
+        notebook_information = collection.get_notebooks('notebooks', '*')
 
-        # print(collection.notebook_collection)
-        # TODO: This is outside the loop from the function above
-        # print(collection.notebook_collection)  # TODO: Only shows one result
-
-        # TODO: Specifying source and target file (handy for edit purposes)
-        # source_path = collection.directory_finder('notebooks', 'A notebook')
-        #
-        # collection.file_finder(source_path, 'txt')
-        #
-        # if collection.content:
-        #     for pair in collection.content.items():
-        #         print(pair)
-        #         for value in pair:
-        #             print(value)
+        # Print information
+        print(notebook_information)
 
         self.show_content()
 

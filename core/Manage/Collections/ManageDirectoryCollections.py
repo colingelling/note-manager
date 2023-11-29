@@ -6,134 +6,112 @@
 """
 
 import os
-import pathlib
 
 from core.app_information import AppInformation
 
 
 class ManageDirectoryCollections:
 
-    target_directory = None
-    target_file = None
+    target = None
 
     content = {}
 
     def __init__(self):
         super().__init__()
 
+    @staticmethod
+    def storage_path():
         obj = AppInformation()
-        self.storage_base = os.path.abspath(obj.application_storage())
+        storage = os.path.abspath(obj.application_storage())
+        return storage
 
-        self.base_path = None
-        self.notebook_collection = {}
+    def get_notebooks(self, source, selector):
 
-    def first_layer_directories(self):
+        """
+          Set resource path, put the notebooks dictionary together with the resource path, a single notebook and the
+          selector value into the next function
+        :param source:
+        :param selector:
+        :return:
+        """
 
-        directories = [d for d in os.listdir(self.storage_base) if os.path.isdir(os.path.join(self.storage_base, d))]
-        if directories:
-            return directories
+        notebooks = {}
 
-    def second_layer_directories(self, directories):
+        resource = self._set_storage_category(source)
 
-        if directories:
-            for directory in directories:
-                full = f"{self.storage_base}/{directory}"
-                subdirectories = [d for d in os.listdir(full) if os.path.isdir(os.path.join(full, d))]
-                if subdirectories:
-                    return subdirectories
+        # Iterate over the source directories
+        for path in resource:
+            if "notebooks" in path:
+                for root, dirs, files in os.walk(path):
+                    for directory in dirs:
+                        if selector == directory:
+                            self._add_notebook_to_collection(path, notebooks, directory, selector)
 
-    def directory_finder(self, source_directory, target_directory):
+                        if selector == '*':
+                            self._add_notebook_to_collection(path, notebooks, directory, selector)
 
-        # Set base path value (root/first_layer) ----------------------------------
+                    break
 
-        first_layer = self.first_layer_directories()
+        return notebooks
 
-        if not first_layer:
-            return print('First layer directories could not be found!')
+    def _set_storage_category(self, source):
 
-        for layer in self.first_layer_directories():
-            if layer == source_directory:
+        # Include storage path
+        storage_path = self.storage_path()
 
-                root_storage = self.storage_base
-                self.base_path = f"{root_storage}/{layer}"
+        # Collect resource directories and attempt to find the chosen source value
+        resource = self._collect_resources(storage_path, source)
 
-        # List all notebooks ----------------------------------
+        return resource
 
-        notebooks = []
+    @staticmethod
+    def _collect_resources(storage, source):
+        """
+          Request a storage location (path value) for where to start from, use the source value to select a specific
+          value or use '*' to select on all values, return directories that were found as path values
 
-        for root, dirs, files in os.walk(self.base_path):
+          Function output: collection contains first layer path values (showing categories)
+        :param storage:
+        :param source:
+        :return:
+        """
+
+        collection = []
+
+        for root, dirs, files in os.walk(storage):
             for directory in dirs:
 
-                # Add to list
-                notebooks.append(directory)
+                selector = source
+                path = os.path.join(storage, directory)
 
-        for notebook in notebooks:
+                if selector == '*':
+                    collection.append(path)
 
-            if notebook == target_directory:
-                self.target_directory = notebook
-                self.set_collection(notebook)
+                if selector == directory:
+                    collection.append(path)
 
-            if target_directory == '*':
-                self.set_collection(notebook)
+            break
 
-    def set_collection(self, notebook):
-        notebook_path = f"{self.base_path}/{notebook}"
+        return collection
 
-        self.notebook_collection.update({
+    def _add_notebook_to_collection(self, path, notebooks, directory, selector):
+        # Set notebooks based on showing all information or only specifics
+        if selector == directory:
+            self._set_notebook_collection(notebooks, path, directory)
+        else:
+            self._set_notebook_collection(notebooks, path, directory)
+
+    def _set_notebook_collection(self, collection, notebook_path, notebook):
+        # Use the values and put them into the original notebooks dictionary
+        notebook_path = os.path.join(notebook_path, notebook)
+        notebook_collection = self._create_collection(notebook_path, notebook)
+        collection[notebook] = notebook_collection
+
+    @staticmethod
+    def _create_collection(notebook_path, notebook_name):
+        # Create a dictionary for a notebook and notes
+        return {
             'notebook_path': notebook_path,
-            'notebook': notebook
-        })
-
-    def file_finder(self, source, file_extension):
-
-        for root, dirs, files in os.walk(source):
-            for file in files:
-                if file.endswith(file_extension):
-                    self.target_file = file
-
-                    self.content.update({
-                        "child_file": file
-                    })
-
-                    return f"{file}"
-            # for file in files:
-            #     print(file)
-                # if file.endswith(file_extension):
-                #     file_path = os.path.join(file)
-                #     print(f"File found: {file_path}")
-
-        # for root, dirs, files in os.walk(source):
-        #     print(f"root: {root}")
-        #     print(f"dirs {dirs}")
-        #     print(f"files {files}")
-        #     for file in files:
-        #         if file.endswith(file_extension):
-        #             print(f"File found: {os.path.join(root, file)}")
-
-        # first_layer = self.first_layer_directories()
-        #
-        # if first_layer:
-        #     for layer in self.first_layer_directories():
-        #         print(layer)  # TODO: notebooks
-        #
-        #         if layer == source:
-        #             print('Pass!')  # TODO: Great success
-        #
-        #             # Put a dot in front of the extension
-        #             dotted_extension = ".{0}".format(file_extension)
-        #
-        #             # find file by the help of extension value
-        #             root_storage = self.storage_base
-        #             self.base_path = f"{root_storage}/{layer}"
-        #
-        #             for root, dirs, files in os.walk(self.base_path):
-        #                 for directory in dirs:
-        #                     print(directory)
-
-                            # if file.endswith(dotted_extension):
-                            #     print(f"File: {os.path.join(base_path, file)}")
-
-                    # for file in os.listdir(base_path):
-                    #     print(file)
-                    #     if file.endswith(dotted_extension):
-                    #         print(f"File {os.path.join(base_path, file)}")
+            'notebook': notebook_name,
+            'notes': {}  # Initialize an empty dictionary for notes
+        }
