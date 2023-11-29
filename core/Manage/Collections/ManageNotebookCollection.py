@@ -10,7 +10,7 @@ import os
 from core.app_information import AppInformation
 
 
-class ManageDirectoryCollections:
+class ManageNotebookCollection:
 
     target = None
 
@@ -21,6 +21,7 @@ class ManageDirectoryCollections:
 
     @staticmethod
     def storage_path():
+        # Retrieve storage path value and return it - TODO: get information from .env?
         obj = AppInformation()
         storage = os.path.abspath(obj.application_storage())
         return storage
@@ -41,8 +42,11 @@ class ManageDirectoryCollections:
 
         # Iterate over the source directories
         for path in resource:
+            # Check source value
             if "notebooks" in path:
+                # TODO: Obsolete, read TODO in the Overview. This could be made a little smaller
                 for root, dirs, files in os.walk(path):
+                    # Iterate through the dictionary of directories that were found
                     for directory in dirs:
                         if selector == directory:
                             self._add_notebook_to_collection(path, notebooks, directory, selector)
@@ -78,9 +82,14 @@ class ManageDirectoryCollections:
 
         collection = []
 
+        # TODO: Slightly change this block of functionality according to an obsolete result against notebooks especially
+
+        # Find first layer directories -> categories
         for root, dirs, files in os.walk(storage):
+            # Categories are directories, start iterating
             for directory in dirs:
 
+                # The source value is in this case a selector too
                 selector = source
                 path = os.path.join(storage, directory)
 
@@ -109,7 +118,7 @@ class ManageDirectoryCollections:
 
     @staticmethod
     def _create_collection(notebook_path, notebook_name):
-        # Create a dictionary for a notebook and notes
+        # Create a dictionary for a notebook and notes, using the parameters
         return {
             'notebook_path': notebook_path,
             'notebook': notebook_name,

@@ -53,11 +53,16 @@ class Overview(QMainWindow, WindowController):
         note_manager = ShowNoteManager()
         note_manager.create_layout(ui)
 
-        from core.Manage.Collections.ManageDirectoryCollections import ManageDirectoryCollections
-        collection = ManageDirectoryCollections()
+        from core.Manage.Collections.ManageNotebookCollection import ManageNotebookCollection
+        collection = ManageNotebookCollection()
 
         # Set a source directory within storage, followed by selecting a notebook
-        notebook_information = collection.get_notebooks('notebooks', '*')
+        notebook_information = collection.get_notebooks('notebooks', 'A notebook')
+
+        # TODO!!: Change get_notebooks to get_notebook_information because of the next implementation of notes
+
+        # TODO: collection.get_notebooks requests 'notebooks' to be set, so this would be obsolete, only use the
+        #  selector value and predefine the source
 
         # Print information
         print(notebook_information)
