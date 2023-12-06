@@ -46,8 +46,8 @@ class OptionsDialogCreate(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        from views.Overview import Overview
-        view = Overview()
+        from core.Manage.Dialogs.CreatingOptions import CreatingOptions
+        view = CreatingOptions()
         window_title = view.options_dialog_title
 
         ui.HeadlineLabel.setText(window_title)
