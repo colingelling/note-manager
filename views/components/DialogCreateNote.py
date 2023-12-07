@@ -118,6 +118,15 @@ class DialogCreateNote(QDialog, WindowController):
             # Add directories as values to the ComboBox
             selector.addItems(directories)
 
+    def get_notebooks(self):
+        from core.Manage.Collections.NotebookCollection import NotebookCollection
+        collection_obj = NotebookCollection()
+
+        # Set a source directory within storage, followed by selecting a notebook
+        notebook_information = collection_obj.get_collection('*', '*')
+
+        return notebook_information
+
     def add_note_button(self):
         # Initialize the layout
         ui = self.ui
@@ -145,6 +154,10 @@ class DialogCreateNote(QDialog, WindowController):
         # Emit a signal (requested_note) to notify the Overview window to add the new note
         # (Putting the Dictionary into the signal)
         self.requested_note.emit(note_template_str)
+
+        # TODO: Seeing updated collection, consider next whether the entire collection should be updated in the Ui or
+        #  only the specific one (note_title)
+        print(self.get_notebooks())
 
         # Close this Dialog window (class)
         self.accept()

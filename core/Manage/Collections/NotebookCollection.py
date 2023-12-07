@@ -8,7 +8,7 @@
 import os
 
 
-class ManageNotebookCollection:
+class NotebookCollection:
 
     def __init__(self):
         super().__init__()

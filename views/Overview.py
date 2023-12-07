@@ -49,8 +49,8 @@ class Overview(QMainWindow, WindowController):
             return self.setStyleSheet(stylesheet)
 
     def get_notebooks(self):
-        from core.Manage.Collections.NotebookCollection import ManageNotebookCollection
-        collection_obj = ManageNotebookCollection()
+        from core.Manage.Collections.NotebookCollection import NotebookCollection
+        collection_obj = NotebookCollection()
 
         # Set a source directory within storage, followed by selecting a notebook
         notebook_information = collection_obj.get_collection('*', '*')
@@ -63,7 +63,6 @@ class Overview(QMainWindow, WindowController):
 
         QFontDatabase.addApplicationFont("src/gui/fonts/FontAwesome6-Free-Regular-400.otf")
 
-        # self.setGeometry(467, 100, 1148, 834)  # Initial position and size of the window
         self.setFixedSize(1047, 834)  # Fixed size, don't allow the user to resize the window
 
         ui.TitleLabel.setText(self.windowTitle())
