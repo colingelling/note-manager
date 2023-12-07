@@ -61,7 +61,7 @@ class NoteManager:
             # TODO:
             #  2) Every notebook should be in a separated widget (including actions like edit and delete)
 
-            parent_widget = QWidget()
+            widget = QWidget()
 
             # Set the icon
             notebook_arrow_unicode = "\uf0da"
@@ -88,20 +88,55 @@ class NoteManager:
             # Add the label with notebook name to the layout and align it to the left
             layout.addWidget(notebook_label)
 
-            parent_widget.setLayout(layout)
+            widget.setLayout(layout)
 
-            manager_layout.addWidget(parent_widget)
+            manager_layout.addWidget(widget)
 
             # Handle mouse events for the icon_label
             icon_label.mousePressEvent = lambda event, label=icon_label: self.toggle_notebook_icon(label)
+
+            self.add_notes(manager_layout, notebook, collection)
+
+    @staticmethod
+    def add_notes(manager_layout, notebook, collection):
+        # print(notebook, collection)
+
+        for notebook_key, notebook_value in collection.items():
+            # print(notebook_key)
+            if 'notes' in notebook_key:
+                note_collection = notebook_value
+                for item in note_collection:
+                    note = item['note']
+
+                    widget = QWidget()
+
+                    notebook_label = QLabel(note)
+                    notebook_label.setStyleSheet("color: #000")
+                    notebook_label.setContentsMargins(13, 0, 0, 0)
+
+                    # Create a horizontal layout for the icon and text
+                    layout = QtWidgets.QHBoxLayout()
+
+                    layout.setContentsMargins(4, 0, 4, 0)  # Adjust the left and right margins as needed
+
+                    # Add the label with notebook name to the layout and align it to the left
+                    layout.addWidget(notebook_label)
+
+                    widget.setLayout(layout)
+
+                    manager_layout.addWidget(widget)
+
+                    note_label = QLabel(note)
+                    note_label.setStyleSheet("color: #000")
 
     @staticmethod
     def toggle_notebook_icon(icon_label):
         # Toggle the icon's orientation when the icon_label is clicked
         current_icon = icon_label.text()
+        icon_style = "font-size: 8px; color: #000; /* additional styles for down icon */"
         if current_icon == "\uf0da":
             icon_label.setText("\uf0d7")  # Change to a different icon (pointing down)
-            icon_label.setStyleSheet("font-size: 8px; color: #000; /* additional styles for down icon */")
+            icon_label.setStyleSheet(icon_style)
         else:
             icon_label.setText("\uf0da")  # Change back to the original icon (pointing right)
-            icon_label.setStyleSheet("font-size: 8px; color: #000; /* additional styles for down icon */")
+            icon_label.setStyleSheet(icon_style)
