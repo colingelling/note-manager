@@ -28,7 +28,7 @@ class Overview(QMainWindow, WindowController):
         self.initUi()
 
         # Check whether a layout for the notebooks and notes exist or not
-        from core.Modules.Layout.NoteManager.ManageLayout import ManageLayout
+        from core.Manage.Modules.Layout.NoteManager.ManageLayout import ManageLayout
         obj = ManageLayout()
         self.layout = obj.create_layout(self.ui)
 
@@ -82,7 +82,7 @@ class Overview(QMainWindow, WindowController):
         ui.OptionsDialogCreateButton.clicked.connect(ShowOptionsDialog.show_create_options_dialog)
 
         # Build the Note Manager  TODO: Temporary referring to object
-        from core.Modules.Layout.NoteManager.ManageNotebooks import ManageNotebooks
+        from core.Manage.Modules.Layout.NoteManager.ManageNotebooks import ManageNotebooks
         obj = ManageNotebooks()
         obj.add_notebooks(self.layout, self.notebook_collection)
 

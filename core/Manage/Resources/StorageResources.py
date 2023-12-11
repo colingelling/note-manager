@@ -1,6 +1,6 @@
 import os
 
-from core.app_information import AppInformation
+from config.resources.set_storage import ApplicationStorage
 
 
 class ManageStorageResources:
@@ -9,7 +9,7 @@ class ManageStorageResources:
 
     def _set_source(self):
         # Retrieve storage path value and return it
-        obj = AppInformation()
+        obj = ApplicationStorage()
         storage_path = os.path.abspath(obj.application_storage())
         self.source_path = storage_path
 

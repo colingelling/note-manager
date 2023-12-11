@@ -28,12 +28,12 @@ class ShowOptionsDialog(QMainWindow):
         component.setWindowTitle(ShowOptionsDialog.options_dialog_title)
 
         # Connect the notebook signal to the function for storing the notebook as a directory
-        from core.Modules.Storage.Create.CreateNotebook import FolderCreation
+        from core.Manage.Modules.Storage.Create.CreateNotebook import FolderCreation
         obj = FolderCreation()
         component.add_notebook_signal.connect(obj.save_notebook)
 
         # Connect the note signal to the function for storing the notebook as a directory
-        from core.Modules.Storage.Create.CreateNote import FileCreation
+        from core.Manage.Modules.Storage.Create.CreateNote import FileCreation
         obj = FileCreation()
         component.add_note_signal.connect(obj.save_note)
 

@@ -54,7 +54,7 @@ class ManageNotebooks:
             # Handle mouse events for the icon_label
             icon_label.mousePressEvent = lambda event, label=icon_label: self.toggle_notebook_icon(label)
 
-            from core.Modules.Layout.NoteManager.ManageNotes import ManageNotes
+            from core.Manage.Modules.Layout.NoteManager.ManageNotes import ManageNotes
             obj = ManageNotes()
             obj.add_notes(manager_layout, notebook, collection)
 

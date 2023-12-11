@@ -92,8 +92,8 @@ class DialogCreateNote(QDialog, WindowController):
         """
 
         # Declare and get access to the following class
-        from core.app_information import AppInformation
-        app_information = AppInformation()
+        from config.resources.set_storage import ApplicationStorage
+        app_information = ApplicationStorage()
 
         # Set base path according to the storage folder
         storage_root = app_information.application_storage()

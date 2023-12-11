@@ -8,7 +8,7 @@
 import os
 
 
-class AppInformation:
+class ApplicationStorage:
     def __init__(self):
         super().__init__()
 

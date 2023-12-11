@@ -21,8 +21,8 @@ class FileCreation:
         """
 
         # Get access to the application information -class
-        from core.app_information import AppInformation
-        app_information = AppInformation()
+        from config.resources.set_storage import ApplicationStorage
+        app_information = ApplicationStorage()
 
         # Retrieve the application storage path
         app_storage = app_information.application_storage()
