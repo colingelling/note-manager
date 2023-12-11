@@ -44,8 +44,8 @@ class DialogCreateNotebook(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        from views.components.OptionsDialogCreate import OptionsDialogCreate
-        view = OptionsDialogCreate()
+        from views.components.OptionsDialog import OptionsDialog
+        view = OptionsDialog()
         window_title = view.add_notebook_dialog_title
 
         ui.HeadlineLabel.setText(window_title)

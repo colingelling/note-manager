@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class OptionsDialogCreate(QDialog, WindowController):
+class OptionsDialog(QDialog, WindowController):
 
     add_notebook_dialog_title = "Add a notebook"
     add_notebook_signal = QtCore.pyqtSignal(str)
@@ -46,8 +46,8 @@ class OptionsDialogCreate(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        from core.Manage.Dialogs.CreatingOptions import CreatingOptions
-        view = CreatingOptions()
+        from core.Manage.Dialogs.ShowOptionsDialog import ShowOptionsDialog
+        view = ShowOptionsDialog()
         window_title = view.options_dialog_title
 
         ui.HeadlineLabel.setText(window_title)
@@ -62,7 +62,7 @@ class OptionsDialogCreate(QDialog, WindowController):
         ui.CreateNoteButton.clicked.connect(self.show_create_note_dialog)
 
     def show_create_notebook_dialog(self):
-        from views.components.DialogCreateNotebook import DialogCreateNotebook
+        from views.components.CreateNotebookDialog import DialogCreateNotebook
         dialog = DialogCreateNotebook()
         dialog.setWindowTitle(self.add_notebook_dialog_title)
 
@@ -77,7 +77,7 @@ class OptionsDialogCreate(QDialog, WindowController):
 
     def show_create_note_dialog(self):
         # Create access to the next Dialog class (view)
-        from views.components.DialogCreateNote import DialogCreateNote
+        from views.components.CreateNoteDialog import DialogCreateNote
         dialog = DialogCreateNote()
 
         # Set the title for the Window bound to the Dialog class

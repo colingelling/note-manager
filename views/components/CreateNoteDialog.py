@@ -47,8 +47,8 @@ class DialogCreateNote(QDialog, WindowController):
         ui = self.ui
 
         # Receive the title that was set earlier from within the Dialog mentioned below
-        from views.components.OptionsDialogCreate import OptionsDialogCreate
-        view = OptionsDialogCreate()
+        from views.components.OptionsDialog import OptionsDialog
+        view = OptionsDialog()
         window_title = view.add_note_dialog_title
 
         # Also set the title as a label

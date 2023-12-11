@@ -30,7 +30,7 @@ class WindowController:
 
     @staticmethod
     def show_create_options_dialog():
-        from views.components.OptionsDialogCreate import OptionsDialogCreate
+        from views.components.OptionsDialog import OptionsDialogCreate
 
         if WindowController.active_window:
             WindowController.active_window.close()
@@ -42,7 +42,7 @@ class WindowController:
 
     @staticmethod
     def show_create_notebook_dialog():
-        from views.components.OptionsDialogCreate import OptionsDialogCreate
+        from views.components.OptionsDialog import OptionsDialogCreate
 
         if WindowController.active_window:
             WindowController.active_window.close()

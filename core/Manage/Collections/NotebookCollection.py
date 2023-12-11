@@ -28,7 +28,7 @@ class NotebookCollection:
 
     @staticmethod
     def _get_resource_path():
-        from core.Manage.Resources.NotebookResources import ManageNotebookResources
+        from core.Manage.Resources.NotebookResource import ManageNotebookResources
         obj = ManageNotebookResources()
         return obj.get_storage()
 

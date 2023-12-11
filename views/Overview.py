@@ -28,8 +28,8 @@ class Overview(QMainWindow, WindowController):
         self.initUi()
 
         # Check whether a layout for the notebooks and notes exist or not
-        from core.Modules.Layout.NoteManager import NoteManager
-        obj = NoteManager()
+        from core.Modules.Layout.NoteManager.ManageLayout import ManageLayout
+        obj = ManageLayout()
         self.layout = obj.create_layout(self.ui)
 
         self.get_notebooks()
@@ -78,12 +78,12 @@ class Overview(QMainWindow, WindowController):
         ui.OptionsDialogCreateButton.setText(plus_icon_unicode)
 
         ui.OptionsDialogCreateButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        from core.Manage.Dialogs.CreatingOptions import CreatingOptions
-        ui.OptionsDialogCreateButton.clicked.connect(CreatingOptions.show_create_options_dialog)
+        from core.Manage.Dialogs.ShowOptionsDialog import ShowOptionsDialog
+        ui.OptionsDialogCreateButton.clicked.connect(ShowOptionsDialog.show_create_options_dialog)
 
-        # Build the Note Manager
-        from core.Modules.Layout.NoteManager import NoteManager
-        obj = NoteManager()
+        # Build the Note Manager  TODO: Temporary referring to object
+        from core.Modules.Layout.NoteManager.ManageNotebooks import ManageNotebooks
+        obj = ManageNotebooks()
         obj.add_notebooks(self.layout, self.notebook_collection)
 
         ui.LastAddedNotesTable.setFixedWidth(817)
