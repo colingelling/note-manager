@@ -14,8 +14,6 @@ from core.Controllers.WindowController import WindowController
 
 class Overview(QMainWindow, WindowController):
 
-    notebook_collection = {}
-
     def __init__(self):
         super().__init__()
 
@@ -28,11 +26,9 @@ class Overview(QMainWindow, WindowController):
         self.initUi()
 
         # Check whether a layout for the notebooks and notes exist or not
-        from core.Manage.Modules.Layout.NoteManager.ManageLayout import ManageLayout
+        from core.Manage.Modules.Layout.NotebookDisplay.ManageLayout import ManageLayout
         obj = ManageLayout()
         self.layout = obj.create_layout(self.ui)
-
-        self.get_notebooks()
 
         self.show_content()
 
@@ -47,15 +43,6 @@ class Overview(QMainWindow, WindowController):
         with open("src/gui/css/overview.css", "r") as stylesheet_file:
             stylesheet = stylesheet_file.read()
             return self.setStyleSheet(stylesheet)
-
-    def get_notebooks(self):
-        from core.Manage.Collections.NotebookCollection import NotebookCollection
-        collection_obj = NotebookCollection()
-
-        # Set a source directory within storage, followed by selecting a notebook
-        notebook_information = collection_obj.get_collection('*', '*')
-
-        self.notebook_collection = notebook_information
 
     def show_content(self):
 
@@ -81,10 +68,15 @@ class Overview(QMainWindow, WindowController):
         from core.Manage.Dialogs.ShowOptionsDialog import ShowOptionsDialog
         ui.OptionsDialogCreateButton.clicked.connect(ShowOptionsDialog.show_create_options_dialog)
 
+        # Retrieve the notebook collection
+        from core.Manage.Modules.Layout.NotebookDisplay.ManageDisplay import ManageDisplay
+        obj = ManageDisplay()
+        collection = obj.get_notebooks()
+
         # Build the Note Manager  TODO: Temporary referring to object
-        from core.Manage.Modules.Layout.NoteManager.ManageNotebooks import ManageNotebooks
+        from core.Manage.Modules.Layout.NotebookDisplay.ManageNotebooks import ManageNotebooks
         obj = ManageNotebooks()
-        obj.add_notebooks(self.layout, self.notebook_collection)
+        obj.add_notebooks(self.layout, collection)
 
         ui.LastAddedNotesTable.setFixedWidth(817)
 
