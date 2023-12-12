@@ -59,6 +59,15 @@ class ManageNotebooks:
             obj.add_notes(manager_layout, notebook, collection)
 
     @staticmethod
+    def update_notebooks(notebook_information):
+        # TODO - Output example:
+        #  {'notebook': 'Notebook', 'notebook_path': '/home/colin/Desktop/note-manager/notebooks/Notebook'}
+        print(notebook_information)
+
+        # TODO (As of 12 december 2023, connect with the objects 'FindElements', and 'CreateElements' to add notebook
+        #  into the graphical interface)
+
+    @staticmethod
     def toggle_notebook_icon(icon_label):
         # Toggle the icon's orientation when the icon_label is clicked
         current_icon = icon_label.text()

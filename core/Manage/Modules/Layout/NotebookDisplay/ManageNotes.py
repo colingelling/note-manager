@@ -43,3 +43,10 @@ class ManageNotes:
 
                     note_label = QLabel(note)
                     note_label.setStyleSheet("color: #000")
+
+    def update_note(self):
+        from views.Overview import Overview
+        view_obj = Overview()
+        layout_obj = view_obj.layout
+
+        print(layout_obj)

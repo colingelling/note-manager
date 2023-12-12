@@ -6,7 +6,8 @@
 """
 
 
-class FileCreation:
+class CreateNote:
+
     def __init__(self):
         super().__init__()
 
@@ -67,3 +68,7 @@ class FileCreation:
             note_file.write(note_template)
 
         print(f"Note saved to: '{note_file_path}'")
+
+        from core.Manage.Modules.Layout.NotebookDisplay.ManageNotes import ManageNotes
+        obj = ManageNotes()
+        return obj.update_note()

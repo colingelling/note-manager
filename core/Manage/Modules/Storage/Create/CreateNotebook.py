@@ -6,7 +6,8 @@
 """
 
 
-class FolderCreation:
+class CreateNotebook:
+
     def __init__(self):
         super().__init__()
 
@@ -17,10 +18,10 @@ class FolderCreation:
         app_information = ApplicationStorage()
         root_folder = app_information.application_storage()
 
-        notebook_directory = "notebooks"
+        notebook_directory = "notebooks"  # TODO: Start using Core.Manage.Resources.NotebookResource
 
         import os
-        notebook_destination = os.path.expanduser(f"{root_folder}/{notebook_directory}")
+        notebook_destination = os.path.join(root_folder, notebook_directory)
         os.makedirs(notebook_destination, exist_ok=True)
 
         # Create a directory for the notebook
@@ -28,3 +29,12 @@ class FolderCreation:
         os.makedirs(notebook_path, exist_ok=True)
 
         print(f"Notebook saved to: '{notebook_path}'")
+
+        from core.Manage.Collections.NotebookCollection import NotebookCollection
+        from core.Manage.Modules.Layout.NotebookDisplay.ManageNotebooks import ManageNotebooks
+
+        collection_obj = NotebookCollection()
+
+        manage_notebooks_obj = ManageNotebooks()
+        notebook_information = collection_obj.set_notebook(notebook_title)
+        return manage_notebooks_obj.update_notebooks(notebook_information)

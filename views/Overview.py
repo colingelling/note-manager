@@ -14,6 +14,8 @@ from core.Controllers.WindowController import WindowController
 
 class Overview(QMainWindow, WindowController):
 
+    notebook_collection = None
+
     def __init__(self):
         super().__init__()
 
@@ -66,12 +68,13 @@ class Overview(QMainWindow, WindowController):
 
         ui.OptionsDialogCreateButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         from core.Manage.Dialogs.ShowOptionsDialog import ShowOptionsDialog
-        ui.OptionsDialogCreateButton.clicked.connect(ShowOptionsDialog.show_create_options_dialog)
+        ui.OptionsDialogCreateButton.clicked.connect(ShowOptionsDialog.prepare_options_dialog)
 
         # Retrieve the notebook collection
         from core.Manage.Modules.Layout.NotebookDisplay.ManageDisplay import ManageDisplay
         obj = ManageDisplay()
         collection = obj.get_notebooks()
+        self.notebook_collection = collection
 
         # Build the Note Manager  TODO: Temporary referring to object
         from core.Manage.Modules.Layout.NotebookDisplay.ManageNotebooks import ManageNotebooks
