@@ -37,4 +37,4 @@ class CreateNotebook:
 
         manage_notebooks_obj = ManageNotebooks()
         notebook_information = collection_obj.set_notebook(notebook_title)
-        return manage_notebooks_obj.update_notebooks(notebook_information)
+        return manage_notebooks_obj.add_notebook(notebook_information)

@@ -59,6 +59,18 @@ class ManageNotebooks:
             obj.add_notes(manager_layout, notebook, collection)
 
     @staticmethod
+    def add_notebook(notebook_information):
+        # TODO - Output example:
+        #  {'notebook': 'Notebook', 'notebook_path': '/home/colin/Desktop/note-manager/notebooks/Notebook'}
+        print(notebook_information)
+        # TODO (As of 12 december 2023, connect with the objects 'CreateElements' to add notebook
+        #  into the graphical interface)
+
+        from core.Manage.Elements.UI.CreateElements import CreateElements
+        obj = CreateElements()
+        obj.create_notebooks(notebook_information)
+
+    @staticmethod
     def update_notebooks(notebook_information):
         # TODO - Output example:
         #  {'notebook': 'Notebook', 'notebook_path': '/home/colin/Desktop/note-manager/notebooks/Notebook'}
