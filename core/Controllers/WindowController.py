@@ -8,46 +8,53 @@
 
 class WindowController:
 
+    first_view_instance = None
+    third_view_instance = None
+    fourth_view_instance = None
+
     active_window = None
 
     """
-    
+
         Methods support loading multiple windows between switches triggered by the user
-        
+
     """
 
     @staticmethod
     def show_overview_window():
-        from views.Overview import Overview
+        if WindowController.first_view_instance is None:
+            from views.Overview.view import Overview
+            WindowController.first_view_instance = Overview()
 
         if WindowController.active_window:
-            WindowController.active_window.close()
+            WindowController.active_window.hide()
 
-        overview_window = Overview()
-        overview_window.show()
-
-        WindowController.active_window = overview_window
+        WindowController.first_view_instance.show()
+        WindowController.active_window = WindowController.first_view_instance
 
     @staticmethod
     def show_create_options_dialog():
-        from views.components.OptionsDialog import OptionsDialogCreate
+        from views.Dialogs.display_options import DisplayOptionsDialog
 
-        if WindowController.active_window:
-            WindowController.active_window.close()
+        dialog = DisplayOptionsDialog()
+        dialog.show()
 
-        dialog_window = OptionsDialogCreate()
-        dialog_window.show()
-
-        WindowController.active_window = OptionsDialogCreate
+        WindowController.active_window = dialog
 
     @staticmethod
     def show_create_notebook_dialog():
-        from views.components.OptionsDialog import OptionsDialogCreate
+        if WindowController.third_view_instance is None:
+            from views.Dialogs.create_notebook import CreateNotebookDialog
+            WindowController.third_view_instance = CreateNotebookDialog()
 
-        if WindowController.active_window:
-            WindowController.active_window.close()
+        WindowController.third_view_instance.show()
+        WindowController.active_window = WindowController.third_view_instance
 
-        dialog_window = OptionsDialogCreate()
-        dialog_window.show()
+    @staticmethod
+    def show_create_note_dialog():
+        if WindowController.fourth_view_instance is None:
+            from views.Dialogs.create_note import CreateNoteDialog
+            WindowController.fourth_view_instance = CreateNoteDialog()
 
-        WindowController.active_window = OptionsDialogCreate
+        WindowController.fourth_view_instance.show()
+        WindowController.active_window = WindowController.fourth_view_instance

@@ -12,29 +12,19 @@ class CreateNotebook:
         super().__init__()
 
     @staticmethod
-    def save_notebook(notebook_title):
-
+    def store_notebook(notebook_name):
         from config.resources.set_storage import ApplicationStorage
         app_information = ApplicationStorage()
         root_folder = app_information.application_storage()
 
-        notebook_directory = "notebooks"  # TODO: Start using Core.Manage.Resources.NotebookResource
+        notebook_directory = "notebooks"  # TODO: Use Core.Manage.Resources.NotebookResource
 
         import os
         notebook_destination = os.path.join(root_folder, notebook_directory)
         os.makedirs(notebook_destination, exist_ok=True)
 
         # Create a directory for the notebook
-        notebook_path = os.path.join(notebook_destination, notebook_title)
+        notebook_path = os.path.join(notebook_destination, notebook_name)
         os.makedirs(notebook_path, exist_ok=True)
 
         print(f"Notebook saved to: '{notebook_path}'")
-
-        from core.Manage.Collections.NotebookCollection import NotebookCollection
-        from core.Manage.Modules.Layout.NotebookDisplay.ManageNotebooks import ManageNotebooks
-
-        collection_obj = NotebookCollection()
-
-        manage_notebooks_obj = ManageNotebooks()
-        notebook_information = collection_obj.set_notebook(notebook_title)
-        return manage_notebooks_obj.add_notebook(notebook_information)

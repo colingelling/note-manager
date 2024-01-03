@@ -15,7 +15,7 @@ import os
 from core.Controllers.WindowController import WindowController
 
 
-class DialogCreateNote(QDialog, WindowController):
+class CreateNoteDialog(QDialog, WindowController):
 
     requested_note = QtCore.pyqtSignal(str)
 
@@ -25,7 +25,7 @@ class DialogCreateNote(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.initUi()
+        self.load_style()
 
         self.create_note = None
 
@@ -38,7 +38,7 @@ class DialogCreateNote(QDialog, WindowController):
 
         return ui
 
-    def initUi(self):
+    def load_style(self):
         with open("src/gui/css/dialog-create-note.css", "r") as stylesheet_file:
             stylesheet = stylesheet_file.read()
             return self.setStyleSheet(stylesheet)
@@ -47,8 +47,8 @@ class DialogCreateNote(QDialog, WindowController):
         ui = self.ui
 
         # Receive the title that was set earlier from within the Dialog mentioned below
-        from views.components.OptionsDialog import OptionsDialog
-        view = OptionsDialog()
+        from views.Dialogs.display_options import DisplayOptionsDialog
+        view = DisplayOptionsDialog()
         window_title = view.add_note_dialog_title
 
         # Also set the title as a label
@@ -118,16 +118,6 @@ class DialogCreateNote(QDialog, WindowController):
             # Add directories as values to the ComboBox
             selector.addItems(directories)
 
-    @staticmethod
-    def get_notebooks():
-        from core.Manage.Collections.NotebookCollection import NotebookCollection
-        collection_obj = NotebookCollection()
-
-        # Set a source directory within storage, followed by selecting a notebook
-        notebook_information = collection_obj.get_collection('*', '*')
-
-        return notebook_information
-
     def add_note_button(self):
         # Initialize the layout
         ui = self.ui
@@ -149,16 +139,13 @@ class DialogCreateNote(QDialog, WindowController):
         }
 
         import json
+
         # Prepare the Dictionary as a JSON formatted string because of what the 'requested_note' signal expects
         note_template_str = json.dumps(note_template)
 
         # Emit a signal (requested_note) to notify the Overview window to add the new note
         # (Putting the Dictionary into the signal)
         self.requested_note.emit(note_template_str)
-
-        # # TODO: Seeing updated collection, consider next whether the entire collection should be updated in the Ui or
-        # #  only the specific one (note_title)
-        # print(self.get_notebooks())
 
         # Close this Dialog window (class)
         self.accept()

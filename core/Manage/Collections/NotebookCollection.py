@@ -80,36 +80,6 @@ class NotebookCollection:
         return note_collection
 
     @staticmethod
-    def _collect_notebook(notebook):
-        """
-        1) Filter notebooks
-        2) Select notebook from notebook_collection
-        3) Iterate through inner dictionary
-        4) Select specific key
-        5) Add the new notebook information to a dictionary
-        6) Return added notebook information
-        :param notebook:
-        :return:
-        """
-
-        from views.Overview import Overview
-        view_obj = Overview()
-
-        for notebook_key, collection in view_obj.notebook_collection.items():
-            if notebook == notebook_key:
-                for key, value in collection.items():
-                    if "notebook_path" in key:
-                        new_notebook = {
-                            "notebook": notebook,
-                            "notebook_path": value
-                        }
-
-                        return new_notebook
-
-    def set_notebook(self, notebook):
-        return self._collect_notebook(notebook)
-
-    @staticmethod
     def _notes_dictionary(note_collection, note_path, note):
         note_collection.append({
             'note_path': note_path,

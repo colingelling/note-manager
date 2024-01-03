@@ -4,7 +4,6 @@ Created by Colin Gelling on 03/05/2023
 Using Pycharm Professional
 
 """
-# import os.path
 
 
 class Bootstrapper:

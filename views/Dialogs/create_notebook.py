@@ -13,19 +13,14 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class DialogCreateNotebook(QDialog, WindowController):
-
-    requested_notebook = QtCore.pyqtSignal(str)
+class CreateNotebookDialog(QDialog, WindowController):
 
     def __init__(self):
         super().__init__()
 
-        # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.initUi()
-
-        self.create_notebook = None
+        self.load_style()
 
         self.show_content()
 
@@ -36,7 +31,7 @@ class DialogCreateNotebook(QDialog, WindowController):
 
         return ui
 
-    def initUi(self):
+    def load_style(self):
         with open("src/gui/css/dialog-create-notebook.css", "r") as stylesheet_file:
             stylesheet = stylesheet_file.read()
             return self.setStyleSheet(stylesheet)
@@ -44,8 +39,8 @@ class DialogCreateNotebook(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        from views.components.OptionsDialog import OptionsDialog
-        view = OptionsDialog()
+        from views.Dialogs.display_options import DisplayOptionsDialog
+        view = DisplayOptionsDialog()
         window_title = view.add_notebook_dialog_title
 
         ui.HeadlineLabel.setText(window_title)
@@ -60,10 +55,14 @@ class DialogCreateNotebook(QDialog, WindowController):
     def add_notebook_button(self):
         ui = self.ui
 
-        # Store text value
-        notebook_text = ui.NotebookNamelineEdit.text()
+        notebook_name = ui.NotebookNamelineEdit.text()
 
-        # Emit a signal to notify the Overview window to add the new notebook
-        self.requested_notebook.emit(notebook_text)
+        print(f"notebook_name: {notebook_name}")
+
+        from core.Manage.Modules.Storage.Create.CreateNotebook import CreateNotebook
+        obj = CreateNotebook()
+
+        # store
+        obj.store_notebook(notebook_name)
 
         self.accept()

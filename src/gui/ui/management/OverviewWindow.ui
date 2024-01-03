@@ -195,7 +195,7 @@
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="PlaceholderWidget" native="true">
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -231,7 +231,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="widget_2" native="true">
+    <widget class="QWidget" name="NotepadWidget" native="true">
      <property name="geometry">
       <rect>
        <x>520</x>
