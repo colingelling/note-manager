@@ -5,7 +5,6 @@
 
 """
 
-from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QDialog
@@ -39,10 +38,7 @@ class CreateNotebookDialog(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        from views.Dialogs.display_options import DisplayOptionsDialog
-        view = DisplayOptionsDialog()
-        window_title = view.add_notebook_dialog_title
-
+        window_title = "Create a notebook"
         ui.HeadlineLabel.setText(window_title)
         ui.HeadlineLabel.adjustSize()
 
@@ -59,7 +55,7 @@ class CreateNotebookDialog(QDialog, WindowController):
 
         print(f"notebook_name: {notebook_name}")
 
-        from core.Manage.Modules.Storage.Create.CreateNotebook import CreateNotebook
+        from core.Models.CreateNotebook import CreateNotebook
         obj = CreateNotebook()
 
         # store

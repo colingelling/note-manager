@@ -8,9 +8,9 @@
 
 class WindowController:
 
-    first_view_instance = None
-    third_view_instance = None
-    fourth_view_instance = None
+    overview_instance = None
+    create_notebook_instance = None
+    create_note_instance = None
 
     active_window = None
 
@@ -22,15 +22,15 @@ class WindowController:
 
     @staticmethod
     def show_overview_window():
-        if WindowController.first_view_instance is None:
+        if WindowController.overview_instance is None:
             from views.Overview.view import Overview
-            WindowController.first_view_instance = Overview()
+            WindowController.overview_instance = Overview()
 
         if WindowController.active_window:
             WindowController.active_window.hide()
 
-        WindowController.first_view_instance.show()
-        WindowController.active_window = WindowController.first_view_instance
+        WindowController.overview_instance.show()
+        WindowController.active_window = WindowController.overview_instance
 
     @staticmethod
     def show_create_options_dialog():
@@ -43,18 +43,18 @@ class WindowController:
 
     @staticmethod
     def show_create_notebook_dialog():
-        if WindowController.third_view_instance is None:
+        if WindowController.create_notebook_instance is None:
             from views.Dialogs.create_notebook import CreateNotebookDialog
-            WindowController.third_view_instance = CreateNotebookDialog()
+            WindowController.create_notebook_instance = CreateNotebookDialog()
 
-        WindowController.third_view_instance.show()
-        WindowController.active_window = WindowController.third_view_instance
+        WindowController.create_notebook_instance.show()
+        WindowController.active_window = WindowController.create_notebook_instance
 
     @staticmethod
     def show_create_note_dialog():
-        if WindowController.fourth_view_instance is None:
+        if WindowController.create_note_instance is None:
             from views.Dialogs.create_note import CreateNoteDialog
-            WindowController.fourth_view_instance = CreateNoteDialog()
+            WindowController.create_note_instance = CreateNoteDialog()
 
-        WindowController.fourth_view_instance.show()
-        WindowController.active_window = WindowController.fourth_view_instance
+        WindowController.create_note_instance.show()
+        WindowController.active_window = WindowController.create_note_instance

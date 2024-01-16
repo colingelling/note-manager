@@ -21,20 +21,6 @@ class ViewComponents:
         :return:
         """
 
-        from core.Models.NotebookViewer import NotebookViewer
-        viewer_obj = NotebookViewer()
-
-        from core.Manage.Collections.NotebookCollection import NotebookCollection
-        collection_obj = NotebookCollection()
-
-        notebooks = collection_obj.get_collection('*', '*')
-        layout = viewer_obj.set_layout(ui)
-
-        self.notebooks = notebooks
-        self.layout = layout
-
-        viewer_obj.build(layout, notebooks)
-
     @staticmethod
     def recent_activity(ui):
         """

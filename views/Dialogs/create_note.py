@@ -14,6 +14,8 @@ import os
 
 from core.Controllers.WindowController import WindowController
 
+from core.Resources.Storage import StorageResources
+
 
 class CreateNoteDialog(QDialog, WindowController):
 
@@ -28,6 +30,11 @@ class CreateNoteDialog(QDialog, WindowController):
         self.load_style()
 
         self.create_note = None
+
+        # set application storage
+        storage_obj = StorageResources()
+        storage_root = storage_obj.get_resource_path('notebooks')
+        self.storage = storage_root
 
         self.show_content()
 
@@ -46,12 +53,7 @@ class CreateNoteDialog(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        # Receive the title that was set earlier from within the Dialog mentioned below
-        from views.Dialogs.display_options import DisplayOptionsDialog
-        view = DisplayOptionsDialog()
-        window_title = view.add_note_dialog_title
-
-        # Also set the title as a label
+        window_title = "Create a note"
         ui.HeadlineLabel.setText(window_title)
         ui.HeadlineLabel.adjustSize()
 
@@ -81,8 +83,7 @@ class CreateNoteDialog(QDialog, WindowController):
         # Bind the add_note_button functionality to the button
         ui.AddNoteButton.clicked.connect(self.add_note_button)
 
-    @staticmethod
-    def notebook_selector(selector):
+    def notebook_selector(self, selector):
 
         """
         Use the content of selector and the application's storage folder to find categorized subdirectories, add these
@@ -91,29 +92,13 @@ class CreateNoteDialog(QDialog, WindowController):
         :return:
         """
 
-        # Declare and get access to the following class
-        from config.resources.set_storage import ApplicationStorage
-        app_information = ApplicationStorage()
-
-        # Set base path according to the storage folder
-        storage_root = app_information.application_storage()
-
-        # Expand the tilde (~) to the user's home directory
-        storage_folder = os.path.expanduser(storage_root)
-
-        # Manually name the directory about where to look in
-        notebook_directory = "notebooks"
-
-        # Combine them as path value
-        path_result = f"{storage_folder}/{notebook_directory}"
-
         # Show an empty ComoBox upon launch of this dialog
         selector.addItem("")
 
         # Verify that the combined path value is existing and has been created already
-        if os.path.exists(path_result) and os.path.isdir(path_result):
+        if os.path.exists(self.storage):
             # List one-level directories in the specific path
-            directories = [d for d in os.listdir(path_result) if os.path.isdir(os.path.join(path_result, d))]
+            directories = [d for d in os.listdir(self.storage) if os.path.isdir(os.path.join(self.storage, d))]
 
             # Add directories as values to the ComboBox
             selector.addItems(directories)
@@ -138,14 +123,11 @@ class CreateNoteDialog(QDialog, WindowController):
             "Description": note_description
         }
 
-        import json
+        notebook_path = os.path.join(self.storage, selected_notebook)
 
-        # Prepare the Dictionary as a JSON formatted string because of what the 'requested_note' signal expects
-        note_template_str = json.dumps(note_template)
+        # Store the note
+        from core.Models.CreateNote import CreateNote
+        obj = CreateNote()
+        obj.store_note(notebook_path, note_template)
 
-        # Emit a signal (requested_note) to notify the Overview window to add the new note
-        # (Putting the Dictionary into the signal)
-        self.requested_note.emit(note_template_str)
-
-        # Close this Dialog window (class)
         self.accept()
