@@ -130,4 +130,16 @@ class CreateNoteDialog(QDialog, WindowController):
         obj = CreateNote()
         obj.store_note(notebook_path, note_template)
 
+        if not WindowController:
+            print(f"WindowController is not available")
+
+        # Get access to important window data
+        data_obj = WindowController.accessible_data
+        tree_view = data_obj.tree_view
+
+        # Update the notebook-manager  # TODO: Temporarily full rebuild
+        from core.Models.RebuildTree import RebuildTree
+        rebuild_obj = RebuildTree()
+        rebuild_obj.rebuild(tree_view)
+
         self.accept()
