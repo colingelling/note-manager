@@ -4,9 +4,12 @@
     Using Pycharm Professional
 
 """
+from core.Delegates.AccessibleData import AccessibleData
 
 
 class WindowController:
+
+    accessible_data = AccessibleData()
 
     overview_instance = None
     create_notebook_instance = None

@@ -29,6 +29,9 @@ class Overview(QMainWindow, WindowController):
         self.setFixedSize(1047, 834)
 
         self.load_style()
+
+        self.view_components = ViewComponents()
+
         self.show_content()
 
     def load_ui(self):
@@ -75,8 +78,8 @@ class Overview(QMainWindow, WindowController):
 
         options_btn.clicked.connect(obj.show_create_options_dialog)
 
-        obj = ViewComponents()
-        obj.notebook_manager(ui)
-        obj.recent_activity(ui)
-        obj.notepad(ui)
-        obj.placeholder(ui)
+        components_obj = ViewComponents()
+        components_obj.notebook_manager(obj, ui)
+        components_obj.recent_activity(ui)
+        components_obj.notepad(ui)
+        components_obj.placeholder(ui)

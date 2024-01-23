@@ -51,14 +51,25 @@ class CreateNotebookDialog(QDialog, WindowController):
     def add_notebook_button(self):
         ui = self.ui
 
+        # Set text value
         notebook_name = ui.NotebookNamelineEdit.text()
-
         print(f"notebook_name: {notebook_name}")
 
+        # Store the notebook as a directory
         from core.Models.CreateNotebook import CreateNotebook
         obj = CreateNotebook()
-
-        # store
         obj.store_notebook(notebook_name)
+
+        if not WindowController:
+            print(f"WindowController is not available")
+
+        # Get access to important window data
+        data_obj = WindowController.accessible_data
+        tree_view = data_obj.tree_view
+
+        # Update the notebook-manager  # TODO: Temporarily full rebuild
+        from core.Models.RebuildTree import RebuildTree
+        rebuild_obj = RebuildTree()
+        rebuild_obj.rebuild(tree_view)
 
         self.accept()

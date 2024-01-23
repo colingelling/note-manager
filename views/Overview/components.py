@@ -5,21 +5,53 @@
 
 """
 
+from core.Delegates.NotebookManager import NotebookManager
+
 
 class ViewComponents:
+
+    tree_view = None
+
     def __init__(self):
         super().__init__()
 
         self.layout = None
         self.notebooks = None
 
-    def notebook_manager(self, ui):
-        """
-        Prepare some visual properties such as the title, add a 'creator' button for the ability to add a notebook and/or
-        note followed by building and updating the view -component.
-        :param ui:
-        :return:
-        """
+    def notebook_manager(self, controller, ui):
+
+        parent_widget = ui.NotebookWidget
+
+        from PyQt6.QtWidgets import QVBoxLayout
+        layout = QVBoxLayout()
+
+        from core.Models.BuildTree import BuildTree
+        model = BuildTree()
+
+        root_index = model.index(model.root_path)
+        tree_view = model.build(root_index)
+
+        tree_view.setModel(model)
+
+        # Create and attach the NotebookManager delegate
+        delegate = NotebookManager()
+        delegate.set_widget(tree_view)
+        tree_view.setItemDelegate(delegate)
+
+        tree_view.setStyleSheet(
+            'background-color: #fff; '
+            'color: #000; '
+            'border: 0; '
+            'selection-color: #000; '
+            'selection-background-color: rgba(0, 0, 0, 0);'
+            )
+
+        # Set the tree_view object
+        data_obj = controller.accessible_data
+        data_obj.tree_view = tree_view
+
+        layout.addWidget(tree_view)
+        parent_widget.setLayout(layout)
 
     @staticmethod
     def recent_activity(ui):

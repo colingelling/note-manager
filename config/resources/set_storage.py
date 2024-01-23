@@ -13,7 +13,7 @@ class ApplicationStorage:
         super().__init__()
 
     @staticmethod
-    def project_root():
+    def project_root():  # TODO: Move functionality elsewhere
         current_file = __file__
 
         # Get the absolute path of the current file
@@ -31,5 +31,5 @@ class ApplicationStorage:
         return project_root
 
     @staticmethod
-    def application_storage():
+    def application_storage():  # TODO: Only keep this
         return "/home/colin/Desktop/note-manager/"
