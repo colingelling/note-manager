@@ -20,6 +20,10 @@ class ViewComponents:
 
     def notebook_manager(self, controller, ui):
 
+        """
+        This method builds a TreeView on top of a predefined layout using PyQt 's models and delegates
+        """
+
         parent_widget = ui.NotebookWidget
 
         from PyQt6.QtWidgets import QVBoxLayout

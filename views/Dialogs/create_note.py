@@ -135,9 +135,9 @@ class CreateNoteDialog(QDialog, WindowController):
 
         # Get access to important window data
         data_obj = WindowController.accessible_data
-        tree_view = data_obj.tree_view
+        tree_view = data_obj.tree_view  # TODO: Provide a better solution in the future for this
 
-        # Update the notebook-manager  # TODO: Temporarily full rebuild
+        # Update the notebook-manager  # TODO: Temporarily full rebuild, may be changed into particular changes
         from core.Models.RebuildTree import RebuildTree
         rebuild_obj = RebuildTree()
         rebuild_obj.rebuild(tree_view)
