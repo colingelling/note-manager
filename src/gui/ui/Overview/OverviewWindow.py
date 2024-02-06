@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/home/colin/Python/Projects/Pycharm/Development/Repositories/note-manager/src/gui/ui/management/OverviewWindow.ui'
+# Form implementation generated from reading ui file '/home/colin/Python/Projects/Pycharm/Development/Repositories/note-manager/src/gui/ui/Overview/OverviewWindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.4.2
 #

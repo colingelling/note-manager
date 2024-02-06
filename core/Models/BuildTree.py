@@ -5,19 +5,17 @@
 
 """
 
-from PyQt6.QtCore import QModelIndex, Qt, pyqtSignal
+from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtGui import QFileSystemModel
 from PyQt6.QtWidgets import QTreeView
 
 
 class BuildTree(QFileSystemModel):
 
-    data_updated = pyqtSignal()
-
-    def __init__(self, parent=None):
+    def __init__(self, root_path, parent=None):
         super(BuildTree, self).__init__(parent)
-        self.root_path = "/home/colin/Desktop/note-manager/notebooks"
-        self.setRootPath(self.root_path)
+        self.setRootPath(root_path)
+        self.tree = None
 
     def data(self, index: QModelIndex, role: int = ...) -> object:
         if role == Qt.ItemDataRole.DisplayRole:
@@ -27,10 +25,17 @@ class BuildTree(QFileSystemModel):
         return super().data(index, role)
 
     def build(self, root_index):
-        tree = QTreeView()
-        tree.setModel(self)
-        tree.setRootIndex(root_index)
 
+        self.tree = QTreeView()
+        self.tree.setModel(self)
+        self.tree.setRootIndex(root_index)
+
+        self.customize(self.tree)
+
+        return self.tree
+
+    @staticmethod
+    def customize(tree):
         # Hide column names
         header = tree.header()
         header.setSectionHidden(0, False)
@@ -39,6 +44,15 @@ class BuildTree(QFileSystemModel):
         header.setSectionHidden(3, True)
 
         # Hide column-headers
-        header.hide()
+        return header.hide()
 
-        return tree
+    @staticmethod
+    def open_note(index):
+
+        index_model = index.model()
+        path_value = index_model.filePath(index)
+
+        if 'txt' in path_value:
+            from views.Dialogs.opened_note import OpenedNote
+            dialog = OpenedNote(path_value)
+            dialog.exec()

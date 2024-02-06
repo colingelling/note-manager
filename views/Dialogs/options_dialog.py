@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class DisplayOptionsDialog(QDialog, WindowController):
+class OptionsDialog(QDialog, WindowController):
 
     def __init__(self):
         super().__init__()
@@ -25,7 +25,7 @@ class DisplayOptionsDialog(QDialog, WindowController):
         self.show_content()
 
     def load_ui(self):
-        from src.gui.ui.management.components.OptionsDialogCreate.OptionsDialogCreate import Ui_OptionsDialogCreate
+        from src.gui.ui.dialogs.OptionsDialogCreate.OptionsDialogCreate import Ui_OptionsDialogCreate
         ui = Ui_OptionsDialogCreate()
         ui.setupUi(self)
 
@@ -44,35 +44,10 @@ class DisplayOptionsDialog(QDialog, WindowController):
         ui.HeadlineLabel.setText(window_title)
         ui.HeadlineLabel.adjustSize()
 
-        ui.CreateNoteGroupButton.clicked.connect(WindowController.show_create_notebook_dialog)
+        ui.CreateNoteGroupButton.clicked.connect(WindowController.create_notebook_dialog)
         ui.CreateNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.CreateNoteGroupButton.setText("A notebook")
 
-        ui.CreateNoteButton.clicked.connect(WindowController.show_create_note_dialog)
+        ui.CreateNoteButton.clicked.connect(WindowController.create_note_dialog)
         ui.CreateNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         ui.CreateNoteButton.setText("A note")
-
-    # def show_create_notebook_dialog(self):
-    #     from views.Dialogs.create_notebook import CreateNotebookDialog
-    #     dialog = CreateNotebookDialog()
-    #     dialog.setWindowTitle(self.add_notebook_dialog_title)
-    #
-    #     # Close this
-    #     self.accept()
-    #
-    #     # Show dialog
-    #     dialog.exec()
-    #
-    # def show_create_note_dialog(self):
-    #     # Create access to the next Dialog class (view)
-    #     from views.Dialogs.create_note import CreateNoteDialog
-    #     dialog = CreateNoteDialog()
-    #
-    #     # Set the title for the Window bound to the Dialog class
-    #     dialog.setWindowTitle(self.add_note_dialog_title)
-    #
-    #     # Close this window
-    #     self.accept()
-    #
-    #     # Show the next dialog class
-    #     dialog.exec()

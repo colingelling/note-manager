@@ -14,8 +14,6 @@ import os
 
 from core.Controllers.WindowController import WindowController
 
-from core.Resources.Storage import StorageResources
-
 
 class CreateNoteDialog(QDialog, WindowController):
 
@@ -31,15 +29,10 @@ class CreateNoteDialog(QDialog, WindowController):
 
         self.create_note = None
 
-        # set application storage
-        storage_obj = StorageResources()
-        storage_root = storage_obj.get_resource_path('notebooks')
-        self.storage = storage_root
-
         self.show_content()
 
     def load_ui(self):
-        from src.gui.ui.management.components.DialogCreateNote.DialogCreateNote import Ui_DialogCreateNote
+        from src.gui.ui.dialogs.DialogCreateNote.DialogCreateNote import Ui_DialogCreateNote
         ui = Ui_DialogCreateNote()
         ui.setupUi(self)
 
@@ -74,7 +67,7 @@ class CreateNoteDialog(QDialog, WindowController):
         self.notebook_selector(ui.ParentNotebookSelector)
 
         # Declare label content for adding a note description
-        ui.WhatIsYourNewNoteDescription.setText("What should the body description of your note be?")
+        ui.WhatIsYourNewNoteDescription.setText("What should the description of your note be?")
         ui.WhatIsYourNewNoteDescription.adjustSize()
 
         # Set a different pointer status for the save button
@@ -95,10 +88,12 @@ class CreateNoteDialog(QDialog, WindowController):
         # Show an empty ComoBox upon launch of this dialog
         selector.addItem("")
 
+        root_path = "/home/colin/Desktop/note-manager/notebooks"  # TODO: Replace
+
         # Verify that the combined path value is existing and has been created already
-        if os.path.exists(self.storage):
+        if os.path.exists(root_path):
             # List one-level directories in the specific path
-            directories = [d for d in os.listdir(self.storage) if os.path.isdir(os.path.join(self.storage, d))]
+            directories = [d for d in os.listdir(root_path) if os.path.isdir(os.path.join(root_path, d))]
 
             # Add directories as values to the ComboBox
             selector.addItems(directories)
@@ -123,23 +118,12 @@ class CreateNoteDialog(QDialog, WindowController):
             "Description": note_description
         }
 
-        notebook_path = os.path.join(self.storage, selected_notebook)
+        root_path = "/home/colin/Desktop/note-manager/notebooks"  # TODO: Replace
+        notebook_path = os.path.join(root_path, selected_notebook)
 
         # Store the note
-        from core.Models.CreateNote import CreateNote
-        obj = CreateNote()
+        from core.Models.StoreNote import StoreNote
+        obj = StoreNote()
         obj.store_note(notebook_path, note_template)
-
-        if not WindowController:
-            print(f"WindowController is not available")
-
-        # Get access to important window data
-        data_obj = WindowController.accessible_data
-        tree_view = data_obj.tree_view  # TODO: Provide a better solution in the future for this
-
-        # Update the notebook-manager  # TODO: Temporarily full rebuild, may be changed into particular changes
-        from core.Models.RebuildTree import RebuildTree
-        rebuild_obj = RebuildTree()
-        rebuild_obj.rebuild(tree_view)
 
         self.accept()

@@ -5,7 +5,7 @@
 
 """
 
-from core.Delegates.NotebookManager import NotebookManager
+from PyQt6.QtWidgets import QVBoxLayout
 
 
 class ViewComponents:
@@ -18,24 +18,25 @@ class ViewComponents:
         self.layout = None
         self.notebooks = None
 
-    def notebook_manager(self, controller, ui):
+    def notebook_manager(self, ui):
 
         """
         This method builds a TreeView on top of a predefined layout using PyQt 's models and delegates
         """
 
-        parent_widget = ui.NotebookWidget
-
-        from PyQt6.QtWidgets import QVBoxLayout
-        layout = QVBoxLayout()
-
+        from core.Delegates.NotebookManager import NotebookManager
         from core.Models.BuildTree import BuildTree
-        model = BuildTree()
 
-        root_index = model.index(model.root_path)
-        tree_view = model.build(root_index)
+        root_path = "/home/colin/Desktop/note-manager/notebooks"
+        tree_model = BuildTree(root_path)
 
-        tree_view.setModel(model)
+        root_index = tree_model.index(tree_model.rootPath())
+        tree_view = tree_model.build(root_index)
+
+        tree_view.setModel(tree_model)
+        tree_view.setRootIndex(root_index)
+
+        tree_view.setModel(tree_model)
 
         # Create and attach the NotebookManager delegate
         delegate = NotebookManager()
@@ -48,12 +49,14 @@ class ViewComponents:
             'border: 0; '
             'selection-color: #000; '
             'selection-background-color: rgba(0, 0, 0, 0);'
-            )
+        )
 
-        # Set the tree_view object
-        data_obj = controller.accessible_data
-        data_obj.tree_view = tree_view
+        # Bind the items from tree_view to open window functionality
+        tree_view.clicked.connect(tree_model.open_note)
 
+        # Set up the layout and parent widget
+        layout = QVBoxLayout()
+        parent_widget = ui.NotebookWidget
         layout.addWidget(tree_view)
         parent_widget.setLayout(layout)
 

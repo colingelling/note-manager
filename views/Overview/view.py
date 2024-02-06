@@ -4,13 +4,10 @@
     Using Pycharm Professional
 
 """
-
 from PyQt6.QtGui import QFontDatabase
 from PyQt6.QtWidgets import QMainWindow
 
 from core.Controllers.WindowController import WindowController
-
-from views.Overview.components import ViewComponents
 
 
 class Overview(QMainWindow, WindowController):
@@ -30,12 +27,10 @@ class Overview(QMainWindow, WindowController):
 
         self.load_style()
 
-        self.view_components = ViewComponents()
-
         self.show_content()
 
     def load_ui(self):
-        from src.gui.ui.management.OverviewWindow import Ui_OverviewWindow
+        from src.gui.ui.Overview.OverviewWindow import Ui_OverviewWindow
         ui = Ui_OverviewWindow()
         ui.setupUi(self)
 
@@ -73,13 +68,12 @@ class Overview(QMainWindow, WindowController):
         from PyQt6.QtCore import Qt
 
         options_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        options_btn.clicked.connect(WindowController.options_dialog)
 
-        obj = WindowController()
-
-        options_btn.clicked.connect(obj.show_create_options_dialog)
-
+        from views.Overview.components import ViewComponents
         components_obj = ViewComponents()
-        components_obj.notebook_manager(obj, ui)
+
+        components_obj.notebook_manager(ui)
         components_obj.recent_activity(ui)
         components_obj.notepad(ui)
         components_obj.placeholder(ui)

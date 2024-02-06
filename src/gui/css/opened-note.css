@@ -1,0 +1,48 @@
+* {
+    background: #fff;
+}
+
+QMenuBar {
+    border-bottom: 1px solid rgba(200, 200, 200, 0.73);
+    background-color: rgba(0, 0, 0, 0.87);
+    padding: 3px;
+}
+
+QMenuBar::item {
+    background-color: #2358b0;
+    border-radius: 3px;
+    padding: 7px;
+    color: #fff;
+    margin: 0;
+}
+
+#noteTitle_label {
+    color: #000;
+}
+
+#noteTitle_lineEdit {
+    padding: 6px;
+    color: #000;
+}
+
+#selector_label {
+    color: #000;
+}
+
+#selector_comboBox {
+    padding: 6px;
+    color: #000;
+}
+
+#selector_comboBox::item {
+    background: #fff;
+}
+
+#noteDescription_label {
+    color: #000;
+}
+
+#noteDescription_textEdit {
+    padding: 6px;
+    color: #000;
+}

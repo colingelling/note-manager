@@ -9,12 +9,11 @@ from PyQt6 import QtWidgets
 
 
 def main():
-    # Create an application
     app = QtWidgets.QApplication(sys.argv)
 
-    # Define and load the Bootstrapper
-    from bootstrap.bootstrapper import Bootstrapper
-    Bootstrapper()
+    from core.Controllers.WindowController import WindowController
+    controller = WindowController()
+    controller.overview_window()
 
     # Startup
     sys.exit(app.exec())
