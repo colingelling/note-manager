@@ -10,10 +10,10 @@ QMenuBar {
 
 QMenuBar::item {
     background-color: #2358b0;
-    border-radius: 3px;
-    padding: 7px;
+    border-radius: 14px;
+    padding: 12px;
     color: #fff;
-    margin: 0;
+    margin: 4px;
 }
 
 #noteTitle_label {

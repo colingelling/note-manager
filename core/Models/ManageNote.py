@@ -4,6 +4,7 @@
     Using Pycharm Professional
 
 """
+import os
 
 from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtGui import QFileSystemModel
@@ -16,25 +17,39 @@ class ManageNote(QFileSystemModel):
     def data(self, index: QModelIndex, role: int = ...) -> object:
         if role == Qt.ItemDataRole.DisplayRole:
             file_info = self.fileInfo(index)
-            return self.read_note_values(file_info.filePath())
+            return self.read_note(file_info.filePath())
 
         return super().data(index, role)
 
     @staticmethod
-    def read_note_values(file_path):
+    def read_note(file_path):
 
-        title = None
-        notebook = None
-        description = None
+        with open(file_path, "r") as file:
+            content = file.read()
 
-        with open(file_path, 'r') as file:
-            for line in file:
-                key, value = map(str.strip, line.split(':', 1))
-                if key == "Title":
-                    title = value
-                if key == "Notebook":
-                    notebook = value
-                if key == "Description":
-                    description = value
+        file_content = content.split(os.linesep)
+        return file_content
 
-        return title, notebook, description
+    @staticmethod
+    def save_note_changes(ui, note_path):
+
+        # TODO: Currently not working properly as it should
+
+        note_title = ui.noteTitle_lineEdit.text()
+        selected_notebook = ui.selector_comboBox.currentText()
+        note_description = ui.noteDescription_textEdit.toPlainText()
+
+        new_content = {  # TODO: Separate keys from values using the base collection, avoid duplicated code
+            "Title": note_title,
+            "Notebook": selected_notebook,
+            "Description": note_description
+        }
+
+        try:
+            with open(note_path, 'w') as file:
+                for key, value in new_content.items():
+                    print(f"Processing changes to the existing note containing the following: \n\n {key}: {value}")
+                    new_template = f"{key}: {value}\n\n"
+                    file.write(new_template)
+        except IOError:
+            print("Unable to save changes to the file.")

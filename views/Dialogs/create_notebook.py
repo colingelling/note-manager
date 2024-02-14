@@ -19,6 +19,11 @@ class CreateNotebookDialog(QDialog, WindowController):
 
         self.ui = self.load_ui()
 
+        self.window_title = "Create a notebook"
+        self.setWindowTitle(self.window_title)
+
+        self.setFixedSize(800, 164)
+
         self.load_style()
 
         self.show_content()
@@ -38,11 +43,10 @@ class CreateNotebookDialog(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        window_title = "Create a notebook"
-        ui.HeadlineLabel.setText(window_title)
+        ui.HeadlineLabel.setText(self.window_title)
         ui.HeadlineLabel.adjustSize()
 
-        ui.WhatIsYourNotebookNameLabel.setText("What is the name of your new notebook?")
+        ui.WhatIsYourNotebookNameLabel.setText("What will the name of your new notebook be?")
         ui.WhatIsYourNotebookNameLabel.adjustSize()
 
         ui.AddNotebookButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -52,7 +56,7 @@ class CreateNotebookDialog(QDialog, WindowController):
         ui = self.ui
 
         # Set text value
-        notebook_name = ui.NotebookNamelineEdit.text()
+        notebook_name = ui.NotebookName_lineEdit.text()
         print(f"notebook_name: {notebook_name}")
 
         # Store the notebook as a directory

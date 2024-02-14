@@ -26,17 +26,17 @@ class StoreNote:
 
         for key, value in template.items():
             if 'Title' in key:
-                title = f"{key}: {value}"
+                title = f"{key} | {value}"
             if 'Notebook' in key:
-                notebook = f"{key}: {value}"
+                notebook = f"{key} | {value}"
             if 'Description' in key:
-                description = f"{key}: {value}"
+                description = f"{key} | {value}"
 
-        note_template = f"{title}\n{notebook}\n{description}"
+        note_template = f"{title}\n\n{notebook}\n\n{description}"
 
         import os
         note_path = os.path.join(path, filename)
         with open(note_path, "w") as note_file:
             note_file.write(note_template)
 
-        print(f"Note saved to: '{note_path}'")
+        print(f"A new note was saved to: '{note_path}', containing: \n {note_template}")

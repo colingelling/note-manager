@@ -20,6 +20,11 @@ class OptionsDialog(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
+        self.setFixedSize(468, 344)
+
+        self.window_title = "What do you want to add?"
+        self.setWindowTitle(self.window_title)
+
         self.load_style()
 
         self.show_content()
@@ -39,14 +44,12 @@ class OptionsDialog(QDialog, WindowController):
     def show_content(self):
         ui = self.ui
 
-        window_title = "What do you want to add?"
-
-        ui.HeadlineLabel.setText(window_title)
+        ui.HeadlineLabel.setText(self.window_title)
         ui.HeadlineLabel.adjustSize()
 
-        ui.CreateNoteGroupButton.clicked.connect(WindowController.create_notebook_dialog)
-        ui.CreateNoteGroupButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        ui.CreateNoteGroupButton.setText("A notebook")
+        ui.CreateNotebookButton.clicked.connect(WindowController.create_notebook_dialog)
+        ui.CreateNotebookButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        ui.CreateNotebookButton.setText("A notebook")
 
         ui.CreateNoteButton.clicked.connect(WindowController.create_note_dialog)
         ui.CreateNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))

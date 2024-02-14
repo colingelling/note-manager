@@ -4,13 +4,18 @@
     Using Pycharm Professional
 
 """
-from PyQt6.QtGui import QFontDatabase
+
 from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtGui import QFontDatabase, QCursor
+from PyQt6.QtCore import Qt
 
 from core.Controllers.WindowController import WindowController
 
 
 class Overview(QMainWindow, WindowController):
+
+    view_name = "Overview"
+    view_subject = "Manage my notebooks"
 
     def __init__(self):
         super().__init__()
@@ -22,8 +27,8 @@ class Overview(QMainWindow, WindowController):
         self.ui = self.load_ui()
 
         QFontDatabase.addApplicationFont("src/gui/fonts/FontAwesome6-Free-Regular-400.otf")
-        self.setWindowTitle(f"Overview: Recent notes")
-        self.setFixedSize(1047, 834)
+        self.setWindowTitle(f"{Overview.view_name}: {Overview.view_subject}")
+        self.setMinimumSize(1147, 844)
 
         self.load_style()
 
@@ -50,30 +55,19 @@ class Overview(QMainWindow, WindowController):
 
         ui = self.ui
 
-        ui.ContentWidget.setFixedSize(1015, 834)
-        ui.ContentWidget.adjustSize()
-
-        ui.TitleLabel.setText(self.windowTitle())
-        ui.TitleLabel.adjustSize()
-
-        ui.ManageMyNotesTitleLabel.setText("Manage my notes")
-        ui.ManageMyNotesTitleLabel.adjustSize()
+        ui.notebookManagerTitleLabel.setText("Manage my notes")
+        ui.notebookManagerTitleLabel.adjustSize()
 
         plus_icon_unicode = " \uf067"
 
-        options_btn = ui.OptionsDialogCreateButton
+        options_btn = ui.createButton
         options_btn.setText(plus_icon_unicode)
-
-        from PyQt6.QtGui import QCursor
-        from PyQt6.QtCore import Qt
+        options_btn.setToolTip("Create options")
 
         options_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         options_btn.clicked.connect(WindowController.options_dialog)
 
         from views.Overview.components import ViewComponents
         components_obj = ViewComponents()
-
         components_obj.notebook_manager(ui)
-        components_obj.recent_activity(ui)
-        components_obj.notepad(ui)
-        components_obj.placeholder(ui)
+        components_obj.statistics_table(ui)

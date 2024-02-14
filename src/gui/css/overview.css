@@ -2,69 +2,26 @@
     background: #fff;
 }
 
-#TitleLabel {
-    font-size: 24px;
+#notebookManagerTitleLabel {
+    font-size: 22px;
     color: #000;
 }
 
-#ManageMyNotesTitleLabel {
-    color: #000;
-    font-size: 18px;
-}
-
-#OptionsDialogCreateButton {
+#createButton {
     background: none;
-    border: none;
-    color: #000;
-    width: 16px;
-    height: 16px;
-    margin-top: 12px;
-    margin-right: 10px;
-}
-
-#NoteGroupLabel {
-    color: #000;
-}
-
-#EditNoteGroupButton {
-    background: none;
-    border: none;
-    color: #000;
     font-size: 18px;
-    opacity: 0.5;
-}
-
-#EditNoteGroupButton:hover {
-    opacity: 1;
-}
-
-#DeleteNoteGroupButton {
-    background: none;
     border: none;
+    height: 32px;
     color: #000;
-    font-size: 18px;
-    opacity: 0.5;
+    width: 32px;
 }
 
-#DeleteNoteGroupButton:hover {
-    opacity: 1;
-}
-
-#DeleteNoteGroupButton:hover {
-    opacity: 1;
-}
-
-#IndividualNoteLabel {
+#statisticsTableLabel {
     color: #000;
 }
 
-#LastAddedNotesLabel {
-    color: #000;
-    font-size: 16px;
-}
-
-#NotepadLabel {
-    color: #000;
-    font-size: 16px;
-    padding: 0 6px 14px 0;
+#tableWidget {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.79);
 }

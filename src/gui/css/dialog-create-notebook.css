@@ -11,3 +11,18 @@
     font-size: 14px;
     color: #000;
 }
+
+#NotebookName_lineEdit {
+    border: 1px solid rgba(0, 0, 0, 0.79);
+    border-radius: 4px;
+    background: #fff;
+    padding: 4px;
+    color: #000;
+}
+
+#AddNotebookButton {
+    background-color: #0fa214;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+}

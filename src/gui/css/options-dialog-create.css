@@ -7,16 +7,18 @@
     color: #000;
 }
 
-#CreateNoteGroupButton {
-    background: #098285;
-    font-size: 16px;
+#CreateNotebookButton {
+    border-radius: 8px;
+    background: #de6927;
+    font-size: 18px;
     border: none;
     color: #fff;
 }
 
 #CreateNoteButton {
-    background: #3a8929;
-    font-size: 16px;
+    border-radius: 8px;
+    background: #2358b0;
+    font-size: 18px;
     border: none;
     color: #fff;
 }

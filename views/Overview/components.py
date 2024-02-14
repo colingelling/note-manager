@@ -5,7 +5,7 @@
 
 """
 
-from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout, QSizePolicy, QTableWidgetItem
 
 
 class ViewComponents:
@@ -18,7 +18,8 @@ class ViewComponents:
         self.layout = None
         self.notebooks = None
 
-    def notebook_manager(self, ui):
+    @staticmethod
+    def notebook_manager(ui):
 
         """
         This method builds a TreeView on top of a predefined layout using PyQt 's models and delegates
@@ -44,9 +45,10 @@ class ViewComponents:
         tree_view.setItemDelegate(delegate)
 
         tree_view.setStyleSheet(
-            'background-color: #fff; '
-            'color: #000; '
-            'border: 0; '
+            'background-color: #fff;'
+            'color: #000;'
+            'border: 0;'
+            'margin: 0;'
             'selection-color: #000; '
             'selection-background-color: rgba(0, 0, 0, 0);'
         )
@@ -56,22 +58,29 @@ class ViewComponents:
 
         # Set up the layout and parent widget
         layout = QVBoxLayout()
-        parent_widget = ui.NotebookWidget
+        parent_widget = ui.treeWidget
         layout.addWidget(tree_view)
         parent_widget.setLayout(layout)
 
     @staticmethod
-    def recent_activity(ui):
+    def statistics_table(ui):
         """
         Preparation and corrected properties # TODO
         :param ui:
         :return:
         """
 
-        ui.LastAddedNotesLabel.setText("Recent activity")
-        ui.LastAddedNotesLabel.adjustSize()
+        # ui.statisticsTableWidget.setMinimumSize(850, 210)
 
-        ui.LastAddedNotesTable.setFixedWidth(817)
+        ui.statisticsTableLabel.setGeometry(9, 18, 0, 0)
+        ui.statisticsTableLabel.setText("Recent activity")
+        ui.statisticsTableLabel.adjustSize()
+
+        # Set size policy for the table view
+        ui.tableWidget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+
+        ui.tableWidget.setMinimumSize(850, 180)
+        ui.tableWidget.setGeometry(8, 47, 0, 0)
 
     @staticmethod
     def placeholder(ui):
@@ -81,10 +90,7 @@ class ViewComponents:
         :return:
         """
 
-        ui.PlaceholderWidget.setStyleSheet("padding: 0.5em;")
-        ui.PlaceholderWidget.setFixedSize(400, 247)
-        ui.PlaceholderWidget.setGeometry(250, 390, 0, 100)
-        ui.PlaceholderWidget.adjustSize()
+        pass
 
     @staticmethod
     def notepad(ui):
@@ -94,18 +100,4 @@ class ViewComponents:
         :return:
         """
 
-        ui.NotepadLabel.setText("Notepad")
-        ui.NotepadLabel.adjustSize()
-
-        ui.NotepadWidget.setFixedSize(380, 247)
-        ui.NotepadWidget.adjustSize()
-
-        ui.NotepadWidget.setStyleSheet("padding: 0.5em;")
-        ui.NotepadWidget.setGeometry(660, 390, 0, 100)
-
-        ui.NotepadLabel.setStyleSheet("padding: 0; margin-top: 1.2em;")
-        ui.NotepadLabel.adjustSize()
-
-        ui.NotepadtextEdit.adjustSize()
-        ui.NotepadtextEdit.setStyleSheet("background: #fff; margin-top: 24px; color: #000;")
-        ui.NotepadtextEdit.setFixedSize(355, 210)
+        pass
