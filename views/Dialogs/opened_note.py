@@ -7,12 +7,18 @@
 
 from PyQt6.QtWidgets import QDialog, QMenuBar, QMenu
 
+from core.Managers.ManageNote import ManageNote
+from core.Models.ReadNote import ReadNote
+
 
 class OpenedNote(QDialog):
 
     def __init__(self, file):
         super().__init__()
         self.file_path = file
+
+        # Read file
+        self.note_information = ReadNote().read(self.file_path)
 
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
@@ -36,12 +42,16 @@ class OpenedNote(QDialog):
             return self.setStyleSheet(stylesheet)
 
     def show_content(self):
+
+        window_subj = 'Viewing note'
+        self.setWindowTitle(window_subj)
+
+        # Set window title
+        for key, value in self.note_information.items():
+            if "Name" in key:
+                self.setWindowTitle(window_subj + ": " + value)
+
         ui = self.ui
-
-        from core.Models.ManageNote import ManageNote
-        read_model = ManageNote()
-
-        file_content = read_model.read_note(self.file_path)
 
         menubar = QMenuBar(self)
 
@@ -70,54 +80,46 @@ class OpenedNote(QDialog):
         ui.noteDescription_label.setText("Description")
         ui.noteDescription_label.adjustSize()
 
-        title_content = []
-        notebook_content = []
+        # TODO: Separate this block
+
+        note_information = self.note_information
+
         description_content = []
+        parent_notebook = None
+        note_title = None
 
-        empty_state = ''
+        for key, value in note_information.items():
 
-        for element in file_content:
+            if "Name" in key:
+                note_title = ''.join(value)
 
-            splitter = '|'
-            value = element.split(splitter)
+            if "Notebook" in key:
+                parent_notebook = ''.join(value)
 
-            """
-                 Separate 'keys' from values, values 'Title' and 'Notebook' together are one block
-            """
+            if "Description" in key:
+                description_content.append(value)
 
-            if "Title" in element:
-                # print(f"Title: {value[1]}")
-                title_content.append(value[1])
-            elif "Notebook" in element:
-                # print(f"Notebook: {value[1]}")
-                notebook_content.append(value[1])
+        description_string = ''.join(description_content)
 
-            """
-              'Description' also is one block since the full content including special characters, spaces and additional
-              values would be added
-            """
+        # End TODO
 
-            if "Description" in element:
-                stripped = value[1].strip()
-                description_content.append(stripped)
-            elif element.strip() == empty_state:
-                description_content.append('\n\n')
-            else:
-                description_content.append(element)
+        ui.noteTitle_lineEdit.setText(note_title)
 
-        # Remove first 4 elements from list
-        title_list = ''.join(title_content)
-        notebook_list = ''.join(notebook_content)
-        description_list = ''.join(description_content[4:])
+        from core.Models.ManageNotebook import ManageNotebooks
+        model = ManageNotebooks()
+        notebooks = model.get_notebooks()
 
-        self.setWindowTitle(f"Viewing note: {title_list}")
+        for notebook in notebooks:
+            ui.selector_comboBox.addItem(notebook)
+            if notebook == parent_notebook:
+                ui.selector_comboBox.setCurrentText(notebook)
 
-        ui.noteTitle_lineEdit.setText(title_list)
-        ui.selector_comboBox.addItem(notebook_list)
-        ui.noteDescription_textEdit.setPlainText(description_list)
+        ui.noteDescription_textEdit.setPlainText(description_string)
 
         # TODO: Retrieve the list of notebooks using the collection from the 'create note' window
         ui.selector_comboBox.setMinimumWidth(974)
 
-        note_path = self.file_path
-        save_note.triggered.connect(lambda: ManageNote.save_note_changes(ui, note_path))
+        manager = ManageNote()
+
+        from functools import partial
+        save_note.triggered.connect(partial(manager.handle_changes, note_information, ui))

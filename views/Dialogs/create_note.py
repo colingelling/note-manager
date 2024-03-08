@@ -79,8 +79,7 @@ class CreateNoteDialog(QDialog, WindowController):
     def notebook_selector(self, selector):
 
         """
-        Use the content of selector and the application's storage folder to find categorized subdirectories, add these
-        as items to the ComboBox
+        Add a list of notebooks into the selector comboBox
         :param selector: ui.ParentNotebookSelector
         :return:
         """
@@ -88,15 +87,12 @@ class CreateNoteDialog(QDialog, WindowController):
         # Show an empty ComoBox upon launch of this dialog
         selector.addItem("")
 
-        root_path = "/home/colin/Desktop/note-manager/notebooks"  # TODO: Replace
+        from core.Models.ManageNotebook import ManageNotebooks
+        model = ManageNotebooks()
 
-        # Verify that the combined path value is existing and has been created already
-        if os.path.exists(root_path):
-            # List one-level directories in the specific path
-            directories = [d for d in os.listdir(root_path) if os.path.isdir(os.path.join(root_path, d))]
-
-            # Add directories as values to the ComboBox
-            selector.addItems(directories)
+        if model.get_notebooks():
+            notebooks = model.get_notebooks()
+            selector.addItems(notebooks)
 
     def add_note_button(self):
         # Initialize the layout
@@ -118,8 +114,10 @@ class CreateNoteDialog(QDialog, WindowController):
             "Description": note_description
         }
 
-        root_path = "/home/colin/Desktop/note-manager/notebooks"  # TODO: Replace
+        # TODO: Replace with source logic
+        root_path = "/home/colin/Desktop/note-manager/notebooks"
         notebook_path = os.path.join(root_path, selected_notebook)
+        # End TODO
 
         # Store the note
         from core.Models.StoreNote import StoreNote
