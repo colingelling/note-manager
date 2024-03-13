@@ -20,10 +20,10 @@ class OptionsDialog(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.setFixedSize(468, 344)
+        self.setFixedSize(468, 340)
 
-        self.window_title = "What do you want to add?"
-        self.setWindowTitle(self.window_title)
+        self.window_title = "What do you want to create?"
+        self.setWindowTitle("Options window")
 
         self.load_style()
 

@@ -2,24 +2,62 @@
     background: #fff;
 }
 
-#HeadlineLabel {
+#headlineLabel {
     font-size: 18px;
     color: #000;
 }
 
-#DialogDescriptionText {
+#descriptionText {
     color: #000;
 }
 
-#WhatIsYourNewNoteNameLabel {
+#noteNameLabel {
     font-size: 14px;
     color: #000;
 }
 
-#SelectParentNotebook {
+#noteName_lineEdit {
+    border: 1px solid rgba(0, 0, 0, 0.79);
+    border-radius: 6px;
+    background: #fff;
+    padding: 12px;
     color: #000;
 }
 
-#WhatIsYourNewNoteDescription {
+#notebookSelectorLabel {
     color: #000;
+}
+
+#notebookSelector_comboBox {
+    border: 1px solid rgba(0, 0, 0, 0.79);
+    border-radius: 6px;
+    background: #fff;
+    padding: 12px;
+    color: #000;
+}
+
+#noteDescriptionLabel {
+    color: #000;
+}
+
+#noteDescription_textEdit {
+    border: 1px solid rgba(0, 0, 0, 0.79);
+    border-radius: 6px;
+    background: #fff;
+    padding: 12px;
+    color: #000;
+}
+
+#addNoteButton {
+    background-color: #359E81;
+    text-transform: uppercase;
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 16px;
+    border: none;
+    color: #fff;
+}
+
+#addNoteButton:hover {
+    background-color: #39ac8c;
 }

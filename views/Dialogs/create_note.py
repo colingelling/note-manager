@@ -25,6 +25,8 @@ class CreateNoteDialog(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
+        self.setMinimumSize(800, 698)
+
         self.load_style()
 
         self.create_note = None
@@ -47,34 +49,34 @@ class CreateNoteDialog(QDialog, WindowController):
         ui = self.ui
 
         window_title = "Create a note"
-        ui.HeadlineLabel.setText(window_title)
-        ui.HeadlineLabel.adjustSize()
+        ui.headlineLabel.setText(window_title)
+        ui.headlineLabel.adjustSize()
 
         # Adding a description for user friendliness
-        ui.DialogDescriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button if you're done!")
-        ui.DialogDescriptionText.adjustSize()
+        ui.descriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button if you're done!")
+        ui.descriptionText.adjustSize()
 
         # Declare first input label content (Name and note title)
-        ui.WhatIsYourNewNoteNameLabel.setText("What should the title of your note be?")
-        ui.WhatIsYourNewNoteNameLabel.adjustSize()
+        ui.noteNameLabel.setText("What should the title of your note be?")
+        ui.noteNameLabel.adjustSize()
 
         # Declare label content for the ComboBox into selecting a notebook for binding purposes
-        ui.SelectParentNotebook.setText("Select a notebook for this note")
-        ui.SelectParentNotebook.adjustSize()
+        ui.notebookSelectorLabel.setText("Select a notebook for this note")
+        ui.notebookSelectorLabel.adjustSize()
 
         # Enable the ComboBox and pass it to the 'notebook_selector' function in order to find the notebooks
-        ui.ParentNotebookSelector.setEnabled(True)
-        self.notebook_selector(ui.ParentNotebookSelector)
+        ui.notebookSelector_comboBox.setEnabled(True)
+        self.notebook_selector(ui.notebookSelector_comboBox)
 
         # Declare label content for adding a note description
-        ui.WhatIsYourNewNoteDescription.setText("What should the description of your note be?")
-        ui.WhatIsYourNewNoteDescription.adjustSize()
+        ui.noteDescriptionLabel.setText("What should the description of your note be?")
+        ui.noteDescriptionLabel.adjustSize()
 
         # Set a different pointer status for the save button
-        ui.AddNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        ui.addNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
         # Bind the add_note_button functionality to the button
-        ui.AddNoteButton.clicked.connect(self.add_note_button)
+        ui.addNoteButton.clicked.connect(self.add_note_button)
 
     def notebook_selector(self, selector):
 
@@ -99,13 +101,13 @@ class CreateNoteDialog(QDialog, WindowController):
         ui = self.ui
 
         # Store the note title
-        note_title = ui.NoteNamelineEdit.text()
+        note_title = ui.noteName_lineEdit.text()
 
         # Store the notebook value from 'notebook_selector' functionality
-        selected_notebook = ui.ParentNotebookSelector.currentText()
+        selected_notebook = ui.notebookSelector_comboBox.currentText()
 
         # Store the note description content
-        note_description = ui.NoteBodytextEdit.toPlainText()
+        note_description = ui.noteDescription_textEdit.toPlainText()
 
         # Put all information into a Dictionary
         note_template = {

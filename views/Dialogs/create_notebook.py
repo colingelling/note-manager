@@ -22,7 +22,7 @@ class CreateNotebookDialog(QDialog, WindowController):
         self.window_title = "Create a notebook"
         self.setWindowTitle(self.window_title)
 
-        self.setFixedSize(800, 164)
+        self.setFixedSize(800, 186)
 
         self.load_style()
 
@@ -42,6 +42,9 @@ class CreateNotebookDialog(QDialog, WindowController):
 
     def show_content(self):
         ui = self.ui
+
+        ui.titleWidget.setMaximumSize(744, 144)
+        ui.creatorWidget.setMaximumSize(744, 144)
 
         ui.HeadlineLabel.setText(self.window_title)
         ui.HeadlineLabel.adjustSize()
@@ -64,4 +67,4 @@ class CreateNotebookDialog(QDialog, WindowController):
         obj = StoreNotebook()
         obj.store_notebook(notebook_name)
 
-        self.accept()
+        self.close()

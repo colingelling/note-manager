@@ -25,6 +25,22 @@ class ReadNote(QFileSystemModel):
         return super().data(index, role)
 
     @staticmethod
+    def prepared_list(note_information):
+        note_title = None
+        description = []
+
+        for key, value in note_information.items():
+
+            if "Name" in key:
+                note_title = ''.join(value)
+
+            if "Description" in key:
+                description.append(value)
+
+        description_string = ''.join(description)
+        return note_title, description_string
+
+    @staticmethod
     def read(file_path):
 
         with open(file_path, "r") as file:
@@ -36,18 +52,16 @@ class ReadNote(QFileSystemModel):
         notebooks = model.get_notebooks()
         file_name = os.path.basename(file_path).split('.')[0]
 
-        description_text = None
-
         for notebook in notebooks:
             if notebook in file_path and file_name in content:
                 separate_description = content.split(file_name + '\n\n')
                 description_text = ''.join(separate_description)
 
-            file_information = {
-                "filePath": file_path,
-                "fileName": file_name,
-                "parentNotebook": notebook,
-                "fileDescription": description_text
-            }
+                file_information = {
+                    "filePath": file_path,
+                    "fileName": file_name,
+                    "parentNotebook": notebook,
+                    "fileDescription": description_text
+                }
 
-            return file_information
+                return file_information

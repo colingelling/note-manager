@@ -2,18 +2,16 @@
     background: #fff;
 }
 
-QMenuBar {
-    border-bottom: 1px solid rgba(200, 200, 200, 0.73);
-    background-color: rgba(0, 0, 0, 0.87);
-    padding: 3px;
-}
-
 QMenuBar::item {
     background-color: #2358b0;
-    border-radius: 14px;
-    padding: 12px;
+    border-radius: 8px;
+    padding: 16px;
     color: #fff;
     margin: 4px;
+}
+
+QMenu::item {
+    width: 100px;
 }
 
 #noteTitle_label {
@@ -21,21 +19,10 @@ QMenuBar::item {
 }
 
 #noteTitle_lineEdit {
+    border: 1px solid rgba(130, 130, 130, 0.86);
+    border-radius: 4px;
     padding: 6px;
     color: #000;
-}
-
-#selector_label {
-    color: #000;
-}
-
-#selector_comboBox {
-    padding: 6px;
-    color: #000;
-}
-
-#selector_comboBox::item {
-    background: #fff;
 }
 
 #noteDescription_label {
@@ -43,6 +30,8 @@ QMenuBar::item {
 }
 
 #noteDescription_textEdit {
+    border: 1px solid rgba(130, 130, 130, 0.86);
+    border-radius: 4px;
     padding: 6px;
     color: #000;
 }

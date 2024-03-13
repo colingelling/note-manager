@@ -53,6 +53,7 @@ class BuildTree(QFileSystemModel):
         path_value = index_model.filePath(index)
 
         if 'txt' in path_value:
-            from views.Dialogs.opened_note import OpenedNote
-            dialog = OpenedNote(path_value)
-            dialog.exec()
+            from core.Controllers.WindowController import WindowController
+            # from views.Dialogs.opened_note import OpenedNote
+            dialog = WindowController.opened_note_dialog(path_value)
+            return dialog

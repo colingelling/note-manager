@@ -50,3 +50,11 @@ class WindowController:
 
         note_creation_dialog.show()
         WindowController.active_window = note_creation_dialog
+
+    @staticmethod
+    def opened_note_dialog(file):
+        from views.Dialogs.opened_note import OpenedNote
+        opened_note_dialog = OpenedNote(file)
+        opened_note_dialog.show()
+
+        WindowController.active_window = opened_note_dialog

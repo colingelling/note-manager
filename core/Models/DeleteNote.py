@@ -7,7 +7,6 @@ class DeleteNote:
 
     @staticmethod
     def delete(file):
-        print(f"Deleting temporary file: {file}")
         try:
             if os.path.isfile(file):
                 os.remove(file)

@@ -83,7 +83,7 @@ class EditNote(QFileSystemModel):
             file.truncate()
             file.write(template)
 
-    def save_changes(self, note_information, title, notebook, description):
+    def save_changes(self, note_information, title, description):
 
         # Retrieve path to note in order to edit it
         file_path = note_information['filePath']
@@ -97,9 +97,6 @@ class EditNote(QFileSystemModel):
             note_information.update({
                 'fileName': title
             })
-
-        # TODO: Add functionality for checking the parent directory, when 'selected_notebook' contains another value
-        #  than file_path, move the file to the right path
 
         EditNote.updated_note_description = self._compare_descriptions(description, file_description)
         EditNote.updated_note_title = self._compare_titles(title, file_name)

@@ -5,13 +5,16 @@
 
 """
 
-from PyQt6.QtWidgets import QDialog, QMenuBar, QMenu
+from PyQt6.QtWidgets import QDialog, QMenuBar, QMenu, QWidget, QHBoxLayout, QSizePolicy
 
+from functools import partial
+
+from core.Controllers.WindowController import WindowController
 from core.Managers.ManageNote import ManageNote
 from core.Models.ReadNote import ReadNote
 
 
-class OpenedNote(QDialog):
+class OpenedNote(QDialog, WindowController):
 
     def __init__(self, file):
         super().__init__()
@@ -23,7 +26,7 @@ class OpenedNote(QDialog):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.setFixedSize(996, 764)
+        self.setMinimumSize(996, 764)
 
         self.load_style()
 
@@ -56,70 +59,55 @@ class OpenedNote(QDialog):
         menubar = QMenuBar(self)
 
         file_menu = QMenu("Actions", self)
-        reset_note = file_menu.addAction("Reset")
-        save_note = file_menu.addAction("Save")
-        delete_note = file_menu.addAction("Delete")
+        save_note = file_menu.addAction("Save changes")
+        delete_note = file_menu.addAction("Delete the note")
 
         menubar.addMenu(file_menu)
 
-        ui.gridLayout.setMenuBar(menubar)
+        spacer_widget = QWidget()
+        spacer_widget.setMinimumSize(865, 25)
+        spacer_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+
+        # TODO: Out of proportion when window has been scaled to match the full size
+
+        layout = QHBoxLayout()
+        layout.addWidget(spacer_widget)
+        layout.addWidget(menubar)
+        layout.setContentsMargins(0, 0, 0, 0)
+
+        widget = QWidget()
+        widget.setLayout(layout)
+
+        self.ui.gridLayout.addWidget(widget, 0, 0, 1, 1)
 
         file_menu.setStyleSheet("color: #000;")
         menubar.setStyleSheet("color: #000;")
 
-        ui.noteTitle_lineEdit.setMinimumWidth(974)
-        ui.selectorWidget.setMinimumWidth(974)
-        ui.noteDescription_textEdit.resize(974, 523)
+        ui.TitleWidget.setMinimumWidth(955)
+        ui.DescriptionWidget.setMinimumWidth(955)
+
+        ui.noteTitle_lineEdit.setMinimumSize(955, 30)
+        ui.noteDescription_textEdit.setMinimumSize(955, 562)
 
         ui.noteTitle_label.setText("Title")
         ui.noteTitle_label.adjustSize()
 
-        ui.selector_label.setText("Change the notebook")
-        ui.selector_label.adjustSize()
-
         ui.noteDescription_label.setText("Description")
         ui.noteDescription_label.adjustSize()
 
-        # TODO: Separate this block
-
+        # Declaration of usable information
         note_information = self.note_information
+        items = ReadNote().prepared_list(note_information)
 
-        description_content = []
-        parent_notebook = None
-        note_title = None
-
-        for key, value in note_information.items():
-
-            if "Name" in key:
-                note_title = ''.join(value)
-
-            if "Notebook" in key:
-                parent_notebook = ''.join(value)
-
-            if "Description" in key:
-                description_content.append(value)
-
-        description_string = ''.join(description_content)
-
-        # End TODO
-
-        ui.noteTitle_lineEdit.setText(note_title)
-
-        from core.Models.ManageNotebook import ManageNotebooks
-        model = ManageNotebooks()
-        notebooks = model.get_notebooks()
-
-        for notebook in notebooks:
-            ui.selector_comboBox.addItem(notebook)
-            if notebook == parent_notebook:
-                ui.selector_comboBox.setCurrentText(notebook)
-
-        ui.noteDescription_textEdit.setPlainText(description_string)
-
-        # TODO: Retrieve the list of notebooks using the collection from the 'create note' window
-        ui.selector_comboBox.setMinimumWidth(974)
+        # Set the original informational versions of the values
+        ui.noteTitle_lineEdit.setText(items[0])
+        ui.noteDescription_textEdit.setPlainText(items[1])
 
         manager = ManageNote()
-
-        from functools import partial
         save_note.triggered.connect(partial(manager.handle_changes, note_information, ui))
+        delete_note.triggered.connect(partial(manager.handle_delete, OpenedNote, note_information['filePath']))
+
+    @staticmethod
+    def close_window():
+        active_window = WindowController.active_window
+        active_window.close()
