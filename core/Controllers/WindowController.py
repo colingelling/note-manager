@@ -16,9 +16,20 @@ class WindowController:
     def overview_window():
         if WindowController.overview_instance is None:
             from views.Overview.view import Overview
-            WindowController.overview_instance = Overview()
+            from core.Controllers.OverviewController import OverviewController
+
+            # Declare view object with empty view_data value
+            WindowController.overview_instance = Overview('')
+
+            # Set the view controller, overview_instance is the view object which doesn't contain the view data yet
+            view_controller = OverviewController(WindowController.overview_instance)
+            view_data = view_controller.processed_data()
+
+            # Reassign the view object, this time with the view data containing something
+            WindowController.overview_instance = Overview(view_data)
             WindowController.overview_instance.show()
 
+            # Set active view status
             WindowController.active_window = WindowController.overview_instance
 
     @staticmethod

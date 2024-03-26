@@ -6,8 +6,7 @@
 """
 
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtGui import QFontDatabase, QCursor
-from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFontDatabase
 
 from core.Controllers.WindowController import WindowController
 
@@ -15,20 +14,22 @@ from core.Controllers.WindowController import WindowController
 class Overview(QMainWindow, WindowController):
 
     view_name = "Overview"
-    view_subject = "Manage my notebooks"
+    view_subject = "My notebooks"
 
-    def __init__(self):
+    def __init__(self, view_data):
         super().__init__()
 
         """
         Load resources and define window properties
         """
 
+        self.view_data = dict(view_data)
+
         self.ui = self.load_ui()
 
         QFontDatabase.addApplicationFont("src/gui/fonts/FontAwesome6-Free-Regular-400.otf")
         self.setWindowTitle(f"{Overview.view_name}: {Overview.view_subject}")
-        self.setMinimumSize(1147, 844)
+        self.setMinimumSize(1400, 844)
 
         self.load_style()
 
@@ -55,19 +56,27 @@ class Overview(QMainWindow, WindowController):
 
         ui = self.ui
 
-        ui.notebookManagerTitleLabel.setText("Manage my notes")
-        ui.notebookManagerTitleLabel.adjustSize()
+        ui.windowWidget.setMinimumSize(16777215, 844)
+        ui.windowWidget.setMaximumSize(16777215, 16777215)
 
-        plus_icon_unicode = " \uf067"
+        ui.contentWidget.setMinimumSize(16777215, 826)
+        ui.contentWidget.setMaximumSize(16777215, 16777215)
 
-        options_btn = ui.createButton
-        options_btn.setText(plus_icon_unicode)
-        options_btn.setToolTip("Create options")
+        ui.topContentWidget.setMinimumSize(16777215, 325)
+        ui.topContentWidget.setMaximumSize(16777215, 325)
 
-        options_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        options_btn.clicked.connect(WindowController.options_dialog)
+        ui.midContentWidget.setMinimumSize(16777215, 315)
+        ui.midContentWidget.setMaximumSize(16777215, 315)
+
+        notebook_storage_path = None
+
+        for key, value in self.view_data.items():
+            if 'notebook_storage_path' in key:
+                notebook_storage_path = value
 
         from views.Overview.components import ViewComponents
         components_obj = ViewComponents()
-        components_obj.notebook_manager(ui)
-        components_obj.statistics_table(ui)
+        components_obj.notebook_manager(ui, notebook_storage_path)
+        components_obj.activity_table(ui)
+        components_obj.embedded_notes(ui)
+        components_obj.notepad(ui)

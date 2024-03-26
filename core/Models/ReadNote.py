@@ -46,10 +46,10 @@ class ReadNote(QFileSystemModel):
         with open(file_path, "r") as file:
             content = file.read()
 
-        from core.Models.ManageNotebook import ManageNotebooks
-        model = ManageNotebooks()
+        from core.Collections.NotebookInformation import CollectNotebooks
+        model = CollectNotebooks()
 
-        notebooks = model.get_notebooks()
+        notebooks = model.get_notebooks('*')
         file_name = os.path.basename(file_path).split('.')[0]
 
         for notebook in notebooks:

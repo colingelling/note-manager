@@ -50,6 +50,7 @@ class OpenedNote(QDialog, WindowController):
         self.setWindowTitle(window_subj)
 
         # Set window title
+        # TODO: This is not being updated actively, someone has to reload the window dynamically before seeing change
         for key, value in self.note_information.items():
             if "Name" in key:
                 self.setWindowTitle(window_subj + ": " + value)
@@ -60,6 +61,9 @@ class OpenedNote(QDialog, WindowController):
 
         file_menu = QMenu("Actions", self)
         save_note = file_menu.addAction("Save changes")
+
+        # TODO: Is the ability to delete going to stay here? Original plan is to make (hovered) buttons in the
+        #  notebook manager on the Overview
         delete_note = file_menu.addAction("Delete the note")
 
         menubar.addMenu(file_menu)

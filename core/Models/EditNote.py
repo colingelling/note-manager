@@ -112,3 +112,14 @@ class EditNote(QFileSystemModel):
                 from core.Models.DeleteNote import DeleteNote
                 model = DeleteNote()
                 model.delete(temporary_file)
+
+                # TODO: Fix the following error;
+                #  Traceback (most recent call last):
+                #   File "/home/colin/Python/Projects/Pycharm/Development/Repositories/note-manager/core/Managers/ManageNote.py", line 20, in handle_changes
+                #     return model.save_changes(note_information, note_title, note_description)
+                #   File "/home/colin/Python/Projects/Pycharm/Development/Repositories/note-manager/core/Models/EditNote.py", line 106, in save_changes
+                #     temporary_file = note_information['tempFile']
+                #  KeyError: 'tempFile'
+
+                # The error above came from a scenario where a note file was deleted and created again after, following
+                # by changes being made to it. Need to debug this further.
