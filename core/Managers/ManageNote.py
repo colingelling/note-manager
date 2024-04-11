@@ -11,13 +11,13 @@ class ManageNote:
         super().__init__()
 
     @staticmethod
-    def handle_changes(note_information, ui):
+    def handle_changes(data, ui):
         note_title = ui.noteTitle_lineEdit.text()
         note_description = ui.noteDescription_textEdit.toPlainText()
 
         from core.Models.EditNote import EditNote
         model = EditNote()
-        return model.save_changes(note_information, note_title, note_description)
+        return model.save_changes(data, note_title, note_description)
 
     @staticmethod
     def handle_delete(obj, file):

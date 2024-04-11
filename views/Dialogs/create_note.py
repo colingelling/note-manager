@@ -89,7 +89,7 @@ class CreateNoteDialog(QDialog, WindowController):
         # Show an empty ComoBox upon launch of this dialog
         selector.addItem("")
 
-        from core.Collections.NotebookInformation import ManageNotebooks
+        from core.Collections.NotebookCollection import ManageNotebooks
         model = ManageNotebooks()
 
         if model.get_notebooks():

@@ -12,7 +12,7 @@ import os
 class Reader:
 
     """
-    This class reads and returns dictionary data from configuration resources
+    This class reads and returns dictionary data from configuration config
     """
 
     def __init__(self):

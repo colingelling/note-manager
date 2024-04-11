@@ -1,6 +1,6 @@
 """
 
-    Created by Colin Gelling on 21/03/2024
+    Created by Colin Gelling on 27/03/2024
     Using Pycharm Professional
 
 """
@@ -11,10 +11,66 @@ class ItemManager:
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def item_changed(index, ui):
+    def item_changed(self, index, ui):
 
         pass
+
+        # TODO: Add right click menu
+
+        # print(self.item_path)
+
+        # if index.isValid():
+        #     from core.Models.TreeView.Build import Build
+        #     model = Build()
+        #     menu = QMenu()
+        #
+        #     # Add actions to the menu
+        #     action_edit = QAction("Edit", self)
+        #     action_edit.triggered.connect(lambda: self.edit_item(item))
+        #     menu.addAction(action_edit)
+        #
+        #     action_delete = QAction("Delete", self)
+        #     action_delete.triggered.connect(lambda: self.delete_item(item))
+        #     menu.addAction(action_delete)
+        #
+        #     # Show the menu at the cursor position
+        #     menu.exec_(self.treeView.mapToGlobal(pos))
+
+        # grid_layout = QGridLayout()
+        # ui.treeWidget.setLayout(grid_layout)
+
+        # for child_widget in ui.treeWidget.findChildren(QWidget):
+        #     print(child_widget)
+        #     if isinstance(child_widget, QVBoxLayout):
+        #         print("Found layout:", child_widget)
+        #         # Recursively list layouts within this layout
+        #         print(ui.list_layouts(child_widget))
+        #     else:
+        #         widget = child_widget.objectName()
+        #         print("Widget:", widget)
+
+        # # Create QPushButton
+        # button = QPushButton("Button")
+        #
+        # # Create QTreeWidgetItem
+        # top_level_item = QTreeWidgetItem(ui.treeWidget)
+        #
+        # print(top_level_item)
+
+        # # Add QPushButton as a child widget to the QTreeWidgetItem
+        # top_level_item.setText(0, "Top Level Item")  # Set text for the item
+        # top_level_item.addChild(QTreeWidgetItem())  # Add a child item (required for widget placement)
+        # ui.treeWidget.setItemWidget(top_level_item, 0, button)  # Set the button as the widget for the item
+
+        # layout = QHBoxLayout()
+        # layout.addWidget(edit_button)
+        #
+        # widget = QWidget()
+        # widget.setLayout(layout)
+        #
+        # layout.setStyleSheet("")
+        #
+        # ui.treeWidget.addWidget(layout)
 
         # # TODO: Find a way to revert back to the old idea about selecting notebooks and notes
         #

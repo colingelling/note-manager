@@ -5,8 +5,6 @@
 
 """
 
-import os
-
 from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtGui import QFileSystemModel
 
@@ -20,48 +18,51 @@ class ReadNote(QFileSystemModel):
     def data(self, index: QModelIndex, role: int = ...) -> object:
         if role == Qt.ItemDataRole.DisplayRole:
             file_info = self.fileInfo(index)
-            return self.read(file_info.filePath())
+            return self.read(file_info.filePath(), '')
 
         return super().data(index, role)
 
     @staticmethod
-    def prepared_list(note_information):
+    def prepare_temporary_note(file_name, file_content):
         note_title = None
         description = []
 
-        for key, value in note_information.items():
+        if file_name:
+            note_title = ''.join(file_name)
 
-            if "Name" in key:
-                note_title = ''.join(value)
-
-            if "Description" in key:
-                description.append(value)
+        if file_content:
+            description.append(file_content)
 
         description_string = ''.join(description)
-        return note_title, description_string
+        return [note_title, description_string]
 
     @staticmethod
-    def read(file_path):
+    def read(path, notebook_information):
 
-        with open(file_path, "r") as file:
+        notebook = None
+
+        file_path = None
+        file_name = None
+
+        for collection in notebook_information:
+            for key, value in collection.items():
+                if '.txt' not in value:
+                    notebook = key
+                else:
+                    file_path = value
+                    file_name = key
+
+        with open(path, "r") as file:
             content = file.read()
 
-        from core.Collections.NotebookInformation import CollectNotebooks
-        model = CollectNotebooks()
+            separate_description = content.split(file_name + '\n\n')
+            description_text = ''.join(separate_description)
 
-        notebooks = model.get_notebooks('*')
-        file_name = os.path.basename(file_path).split('.')[0]
+            file_information = {
+                "filePath": file_path,
+                "fileName": file_name,
+                "parentDirectory": notebook,
+                "fileContent": description_text
+            }
 
-        for notebook in notebooks:
-            if notebook in file_path and file_name in content:
-                separate_description = content.split(file_name + '\n\n')
-                description_text = ''.join(separate_description)
-
-                file_information = {
-                    "filePath": file_path,
-                    "fileName": file_name,
-                    "parentNotebook": notebook,
-                    "fileDescription": description_text
-                }
-
-                return file_information
+            return file_information

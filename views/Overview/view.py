@@ -69,14 +69,14 @@ class Overview(QMainWindow, WindowController):
         ui.midContentWidget.setMaximumSize(16777215, 315)
 
         notebook_storage_path = None
-
-        for key, value in self.view_data.items():
-            if 'notebook_storage_path' in key:
+        for key, value in self.view_data.items():  # TODO: Think of an improved solution about storing and using this
+            if key and "notebook_storage" in key:
                 notebook_storage_path = value
 
-        from views.Overview.components import ViewComponents
-        components_obj = ViewComponents()
-        components_obj.notebook_manager(ui, notebook_storage_path)
-        components_obj.activity_table(ui)
-        components_obj.embedded_notes(ui)
-        components_obj.notepad(ui)
+        if notebook_storage_path:
+            from views.Overview.components import ViewComponents
+            components_obj = ViewComponents()
+            components_obj.notebook_manager(ui, notebook_storage_path)
+            components_obj.activity_table(ui)
+            components_obj.embedded_notes(ui)
+            components_obj.notepad(ui)

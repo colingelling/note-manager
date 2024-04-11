@@ -7,6 +7,11 @@ class DeleteNote:
 
     @staticmethod
     def delete(file):
+
+        """
+        Use file value and attempt to delete it on system-level
+        """
+
         try:
             if os.path.isfile(file):
                 os.remove(file)

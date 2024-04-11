@@ -4,6 +4,7 @@
     Using Pycharm Professional
 
 """
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QVBoxLayout
@@ -38,7 +39,6 @@ class ViewComponents:
 
         options_btn = ui.createButton
         options_btn.setText(plus_icon_unicode)
-        options_btn.setToolTip("Create")
 
         options_btn.setGeometry(335, 5, 51, 31)
 
@@ -50,24 +50,31 @@ class ViewComponents:
 
         # TODO: Next thing to do is to rebuild notebook_information using selector functionality like last year
 
-        from core.Delegates.NotebookManager import NotebookManager
-        from core.Models.TreeView.Build import Build
+        from core.Handlers.TreeViewDataHandler import TreeViewDataHandler
+        from core.Models.TreeView.BuildTree import BuildTree
+        from core.Delegates.TreeViewDelegate import TreeViewDelegate
 
-        tree_model = Build(resource)
+        # Prepare QTreeView (data)
+        handler = TreeViewDataHandler(resource)
 
-        root_index = tree_model.index(tree_model.rootPath())
-        tree_view = tree_model.build(root_index)
+        # Set index to match resource
+        root_index = handler.index(handler.rootPath())
 
-        tree_view.setModel(tree_model)
+        # Initialize build object and pass the resource path value
+        build_obj = BuildTree(resource)
+
+        # Build the TreeView
+        tree_view = build_obj.build(root_index)
+
+        tree_view.setModel(handler)
         tree_view.setRootIndex(root_index)
 
-        tree_view.setModel(tree_model)
-
-        # Create and attach the NotebookManager delegate
-        delegate = NotebookManager()
+        # Attach a delegate for modifying QTreeView
+        delegate = TreeViewDelegate()
         delegate.set_widget(tree_view)
         tree_view.setItemDelegate(delegate)
 
+        # Declare custom stylesheet
         tree_view.setStyleSheet(
             'background-color: #fff;'
             'color: #000;'
@@ -77,14 +84,16 @@ class ViewComponents:
             'selection-background-color: rgba(0, 0, 0, 0);'
         )
 
-        # Declare event handler
-        from core.Managers.TreeView.EventManager import EventManager
-        manager = EventManager(tree_view, ui)
-        tree_view.setMouseTracking(True)
-        tree_view.mouseMoveEvent = manager.mouseMoveEvent
+        # ViewComponents.tree_view = tree_view
 
-        # Bind the items from tree_view to open window functionality
-        tree_view.clicked.connect(tree_model.open_note)
+        # Declare event handler - TODO: Temporarily disabled because of testing other elements
+        # from core.Managers.TreeView.EventManager import EventManager
+        # manager = EventManager(tree_view, ui)
+        # tree_view.setMouseTracking(True)
+        # tree_view.mouseMoveEvent = manager.mouseMoveEvent
+
+        # Bind items from tree_view object to open window functionality, which eventually will connect to the window
+        tree_view.clicked.connect(handler.open_note)
 
         # Set up the layout and parent widget
         layout = QVBoxLayout()

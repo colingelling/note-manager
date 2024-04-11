@@ -8,8 +8,9 @@
 
 class WindowController:
 
-    overview_instance = None
+    # TODO: Improve this
 
+    overview_instance = None
     active_window = None
 
     @staticmethod
@@ -23,10 +24,10 @@ class WindowController:
 
             # Set the view controller, overview_instance is the view object which doesn't contain the view data yet
             view_controller = OverviewController(WindowController.overview_instance)
-            view_data = view_controller.processed_data()
+            data = view_controller.get_view_data()
 
             # Reassign the view object, this time with the view data containing something
-            WindowController.overview_instance = Overview(view_data)
+            WindowController.overview_instance = Overview(data)
             WindowController.overview_instance.show()
 
             # Set active view status
@@ -65,7 +66,15 @@ class WindowController:
     @staticmethod
     def opened_note_dialog(file):
         from views.Dialogs.opened_note import OpenedNote
-        opened_note_dialog = OpenedNote(file)
-        opened_note_dialog.show()
+        from core.Controllers.OpenedNoteController import OpenedNoteController
 
-        WindowController.active_window = opened_note_dialog
+        # Declare view object with empty view_data value
+        WindowController.active_window = OpenedNote('')
+
+        # Set the view controller, overview_instance is the view object which doesn't contain the view data yet
+        view_controller = OpenedNoteController(file, WindowController.active_window)
+        data = view_controller.prepare_data()
+
+        # Reassign the view object, this time with the view data containing something
+        WindowController.active_window = OpenedNote(data)
+        WindowController.active_window.show()

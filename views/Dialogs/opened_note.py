@@ -16,12 +16,14 @@ from core.Models.ReadNote import ReadNote
 
 class OpenedNote(QDialog, WindowController):
 
-    def __init__(self, file):
-        super().__init__()
-        self.file_path = file
+    file_name = ''
+    file_path = ''
+    parent_directory = ''
+    file_content = ''
 
-        # Read file
-        self.note_information = ReadNote().read(self.file_path)
+    def __init__(self, view_data):
+        super().__init__()
+        self.view_data = view_data
 
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
@@ -49,16 +51,25 @@ class OpenedNote(QDialog, WindowController):
         window_subj = 'Viewing note'
         self.setWindowTitle(window_subj)
 
+        # Declaration of view_data elements
+        for key, value in dict(self.view_data).items():
+            if key == "fileName":
+                self.file_name = value
+            if key == "filePath":
+                self.file_path = value
+            if key == "parentDirectory":
+                self.parent_directory = value
+            if key == "fileContent":
+                self.file_content = value
+
         # Set window title
-        # TODO: This is not being updated actively, someone has to reload the window dynamically before seeing change
-        for key, value in self.note_information.items():
-            if "Name" in key:
-                self.setWindowTitle(window_subj + ": " + value)
+        # TODO: Does not update actively, window has to be refreshed manually before seeing change
+        if self.file_name:
+            self.setWindowTitle(window_subj + ": " + self.file_name)
 
         ui = self.ui
 
         menubar = QMenuBar(self)
-
         file_menu = QMenu("Actions", self)
         save_note = file_menu.addAction("Save changes")
 
@@ -99,17 +110,16 @@ class OpenedNote(QDialog, WindowController):
         ui.noteDescription_label.setText("Description")
         ui.noteDescription_label.adjustSize()
 
-        # Declaration of usable information
-        note_information = self.note_information
-        items = ReadNote().prepared_list(note_information)
+        # Filling input fields
+        ui.noteTitle_lineEdit.setText(self.file_name)
+        ui.noteDescription_textEdit.setPlainText(self.file_content)
 
-        # Set the original informational versions of the values
-        ui.noteTitle_lineEdit.setText(items[0])
-        ui.noteDescription_textEdit.setPlainText(items[1])
-
-        manager = ManageNote()
-        save_note.triggered.connect(partial(manager.handle_changes, note_information, ui))
-        delete_note.triggered.connect(partial(manager.handle_delete, OpenedNote, note_information['filePath']))
+        # TODO: Temporary, find out why indexes could be empty at first. Also why 'dict()' would be
+        #  a requirement to use sometimes
+        if self.view_data:
+            manager = ManageNote()
+            save_note.triggered.connect(partial(manager.handle_changes, self.view_data, ui))
+            delete_note.triggered.connect(partial(manager.handle_delete, OpenedNote, self.view_data['filePath']))
 
     @staticmethod
     def close_window():
