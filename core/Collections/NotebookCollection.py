@@ -20,26 +20,21 @@ class NotebookCollection(QFileSystemModel):
 
     def get_notebook_information(self, notebook_selector, note_selector):
 
-        # Set fixed storage location
-        from core.Reader import Reader
-        reader = Reader()
-        resources = reader.read_configuration('config.navigation')
-        source = resources['root_storage']
-
+        #  Declare notebook storage as a resource
         from core.Handlers.NotebookStorageHandler import NotebookStorage
         handler = NotebookStorage()
         resource = handler.get_notebook_storage_path()
 
-        if source and notebook_selector and note_selector:
-            # Collect notebook(s)
+        # Verify that the resource has been set, collect all subdirectories
+        if resource:
             self.directory_information = self._directory_information_collector(resource)
 
+        # Verify and use the collected directories in order to find all subfiles
         if self.directory_information:
-            # Collect notes from within all notebooks
             self.file_information = self._file_information_collector(self.directory_information)
 
+        # Verify both collections and set notebook information in general, unsorted though
         if self.directory_information and self.directory_information:
-            # Set notebook information in general, unsorted though
             self._set_notebook_information(self.directory_information, self.file_information)
 
         # Check the selector values and sort the dictionary
@@ -48,7 +43,7 @@ class NotebookCollection(QFileSystemModel):
             note_values = self._store_note_values(notebook_values, note_selector)
             self.notebook_information = notebook_values, note_values
 
-        # Return the dictionary
+        # Return the final result dictionary
         if self.notebook_information:
             return self.notebook_information
 

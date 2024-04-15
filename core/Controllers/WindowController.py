@@ -54,8 +54,14 @@ class WindowController:
 
     @staticmethod
     def create_note_dialog():
+        from core.Controllers.CreateNoteController import CreateNoteController
         from views.Dialogs.create_note import CreateNoteDialog
-        note_creation_dialog = CreateNoteDialog()
+
+        # Set the view controller, overview_instance is the view object which doesn't contain the view data yet
+        view_controller = CreateNoteController()
+        view_data = view_controller.get_view_data()
+
+        note_creation_dialog = CreateNoteDialog(view_data)
 
         if WindowController.active_window:
             WindowController.active_window.hide()
@@ -73,7 +79,7 @@ class WindowController:
 
         # Set the view controller, overview_instance is the view object which doesn't contain the view data yet
         view_controller = OpenedNoteController(file, WindowController.active_window)
-        data = view_controller.prepare_data()
+        data = view_controller.get_view_data()
 
         # Reassign the view object, this time with the view data containing something
         WindowController.active_window = OpenedNote(data)

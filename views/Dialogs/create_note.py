@@ -10,8 +10,6 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QDialog
 
-import os
-
 from core.Controllers.WindowController import WindowController
 
 
@@ -19,8 +17,19 @@ class CreateNoteDialog(QDialog, WindowController):
 
     requested_note = QtCore.pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, view_data):
         super().__init__()
+        
+        self.notebook_directories = []
+        self.notebook_path_information = []
+
+        # Declaration of view_data elements
+        for collection in view_data:
+            for key, value in collection.items():
+                if "notebook" in key:
+                    self.notebook_directories.append(key)
+                if "/" in value:
+                    self.notebook_path_information.append(value)
 
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
@@ -49,11 +58,13 @@ class CreateNoteDialog(QDialog, WindowController):
         ui = self.ui
 
         window_title = "Create a note"
+        self.setWindowTitle(window_title)
         ui.headlineLabel.setText(window_title)
         ui.headlineLabel.adjustSize()
 
         # Adding a description for user friendliness
-        ui.descriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button if you're done!")
+        ui.descriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button "
+                                   "if you're done!")
         ui.descriptionText.adjustSize()
 
         # Declare first input label content (Name and note title)
@@ -64,9 +75,14 @@ class CreateNoteDialog(QDialog, WindowController):
         ui.notebookSelectorLabel.setText("Select a notebook for this note")
         ui.notebookSelectorLabel.adjustSize()
 
-        # Enable the ComboBox and pass it to the 'notebook_selector' function in order to find the notebooks
+        # Enable the ComboBox
         ui.notebookSelector_comboBox.setEnabled(True)
-        self.notebook_selector(ui.notebookSelector_comboBox)
+        
+        # Show an empty ComoBox upon launch of this dialog
+        ui.notebookSelector_comboBox.addItem("")
+        
+        # Add the names of all notebook directories into the ComboBox
+        ui.notebookSelector_comboBox.addItems(self.notebook_directories)
 
         # Declare label content for adding a note description
         ui.noteDescriptionLabel.setText("What should the description of your note be?")
@@ -77,24 +93,6 @@ class CreateNoteDialog(QDialog, WindowController):
 
         # Bind the add_note_button functionality to the button
         ui.addNoteButton.clicked.connect(self.add_note_button)
-
-    def notebook_selector(self, selector):
-
-        """
-        Add a list of notebooks into the selector comboBox
-        :param selector: ui.ParentNotebookSelector
-        :return:
-        """
-
-        # Show an empty ComoBox upon launch of this dialog
-        selector.addItem("")
-
-        from core.Collections.NotebookCollection import ManageNotebooks
-        model = ManageNotebooks()
-
-        if model.get_notebooks():
-            notebooks = model.get_notebooks()
-            selector.addItems(notebooks)
 
     def add_note_button(self):
         # Initialize the layout
@@ -115,15 +113,12 @@ class CreateNoteDialog(QDialog, WindowController):
             "Notebook": selected_notebook,
             "Description": note_description
         }
-
-        # TODO: Replace with source logic
-        root_path = "/home/colin/Desktop/note-manager/notebooks"
-        notebook_path = os.path.join(root_path, selected_notebook)
-        # End TODO
-
-        # Store the note
-        from core.Models.StoreNote import StoreNote
-        obj = StoreNote()
-        obj.store_note(notebook_path, note_template)
+        
+        for path_value in self.notebook_path_information:
+            if f"/{selected_notebook}/" in path_value + '/':
+                # Store the note
+                from core.Models.StoreNote import StoreNote
+                obj = StoreNote()
+                obj.store_note(path_value, note_template)
 
         self.accept()

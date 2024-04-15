@@ -15,7 +15,7 @@ class OpenedNoteController:
         self.notebook_storage_path = None
         self.notebook_information = None
 
-    def prepare_data(self):
+    def get_view_data(self):
         self._set_notebook_storage()
         self._set_notebook_information()
 

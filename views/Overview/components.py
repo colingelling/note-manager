@@ -6,7 +6,7 @@
 """
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor
+from PyQt6.QtGui import QCursor, QColor
 from PyQt6.QtWidgets import QVBoxLayout
 
 
@@ -32,7 +32,7 @@ class ViewComponents:
         ui.notebookManagerHeaderWidget.setMinimumSize(395, 40)
         ui.notebookManagerHeaderWidget.setMaximumSize(395, 40)
 
-        ui.notebookManagerTitleLabel.setText("Manage my notes")
+        ui.notebookManagerTitleLabel.setText("My notebooks")
         ui.notebookManagerTitleLabel.adjustSize()
 
         plus_icon_unicode = " \uf067"
@@ -47,8 +47,6 @@ class ViewComponents:
         # TODO: Maybe let the controller handle this type of situations?
         from core.Controllers.WindowController import WindowController
         options_btn.clicked.connect(WindowController.options_dialog)
-
-        # TODO: Next thing to do is to rebuild notebook_information using selector functionality like last year
 
         from core.Handlers.TreeViewDataHandler import TreeViewDataHandler
         from core.Models.TreeView.BuildTree import BuildTree
