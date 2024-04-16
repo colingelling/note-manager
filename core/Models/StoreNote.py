@@ -27,7 +27,7 @@ class StoreNote:
 
         import os
         note_path = os.path.join(path, filename + ".txt")
-        with open(note_path, "w") as note_file:
+        with open(note_path, "w") as note_file:  # TODO: Fix issue 'NotADirectoryError: [Errno 20] Not a directory: '/home/colin/Desktop/note-manager/notebooks/First notebook/First note.txt/Test.txt''
             note_file.write(template)
 
         print(f"A new note was saved to: '{note_path}'")

@@ -4,16 +4,34 @@
     Using Pycharm Professional
 
 """
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QMenu
 
 
 class ItemManager:
 
     def __init__(self):
         super().__init__()
+        
+    def load(self, index, event, ui):
+        self._context_menu(event)
+    
+    @staticmethod
+    def _context_menu(event):
+        
+        # Creating the context menu
+        context_menu = QMenu()
 
-    def item_changed(self, index, ui):
+        # Adding actions to the context menu
+        action1 = QAction("Delete")
+        action2 = QAction("Edit")
 
-        pass
+        # Adding action triggers
+        context_menu.addAction(action1)
+        context_menu.addAction(action2)
+
+        # Executing the context menu
+        context_menu.exec(event.globalPosition().toPoint())
 
         # TODO: Add right click menu
 

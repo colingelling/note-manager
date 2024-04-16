@@ -6,8 +6,8 @@
 """
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor, QColor
-from PyQt6.QtWidgets import QVBoxLayout
+from PyQt6.QtGui import QCursor, QColor, QAction
+from PyQt6.QtWidgets import QVBoxLayout, QMenu
 
 
 class ViewComponents:
@@ -82,13 +82,13 @@ class ViewComponents:
             'selection-background-color: rgba(0, 0, 0, 0);'
         )
 
-        # ViewComponents.tree_view = tree_view
-
-        # Declare event handler - TODO: Temporarily disabled because of testing other elements
-        # from core.Managers.TreeView.EventManager import EventManager
-        # manager = EventManager(tree_view, ui)
-        # tree_view.setMouseTracking(True)
-        # tree_view.mouseMoveEvent = manager.mouseMoveEvent
+        # Declare event handler
+        from core.Managers.TreeView.EventManager import EventManager
+        manager = EventManager(tree_view, ui)
+        tree_view.setMouseTracking(True)
+        
+        # Override method for right-clicking support
+        tree_view.mousePressEvent = manager.mousePressEvent
 
         # Bind items from tree_view object to open window functionality, which eventually will connect to the window
         tree_view.clicked.connect(handler.open_note)
