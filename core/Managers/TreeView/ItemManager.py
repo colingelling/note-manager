@@ -9,7 +9,7 @@ from functools import partial
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QMenu
+from PyQt6.QtWidgets import QMenu, QMessageBox
 
 
 class ItemManager:
@@ -30,6 +30,7 @@ class ItemManager:
         
         # Iteration through both lists using one as key, the other as value in order to connect the action functions
         for action, function in zip(actions, functions):
+            # TODO: Pass
             action.triggered.connect(partial(function, index.data(Qt.ItemDataRole.DisplayRole)))
             
         # Execute the menu
@@ -55,7 +56,21 @@ class ItemManager:
     @staticmethod
     def _item_delete(item):
         print(f"Delete action triggered on item: '{item}' \n")
+        
+        ItemManager.show_warning(item)
     
     @staticmethod
     def _item_edit(item):
         print(f"Edit action triggered on item: '{item}'")
+        
+    @staticmethod
+    def show_warning(item):
+        warning_box = QMessageBox()
+        warning_box.setIcon(QMessageBox.Icon.Warning)
+        warning_box.setText("Are you sure you want to delete this item?")
+        warning_box.setInformativeText(f"You are about to delete the following item: '{item}'. \n\n"
+                                       f"Are you sure? This action cannot be undone!")
+        warning_box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        warning_box.setDefaultButton(QMessageBox.StandardButton.No)
+        
+        warning_box.exec()
