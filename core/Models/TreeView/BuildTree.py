@@ -19,11 +19,6 @@ class BuildTree:
         self.tree_view = None
         self.index_model = None
 
-    # def set_index(self):
-    #     from core.Handlers.TreeView import TreeView
-    #     accessor_model = TreeView(self.root_path)
-    #     self.index_model = accessor_model.get_index()
-
     def build(self, root_index):
         from core.Handlers.TreeViewDataHandler import TreeViewDataHandler
         data_model = TreeViewDataHandler(self.root_path)

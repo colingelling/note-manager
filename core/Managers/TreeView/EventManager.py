@@ -25,23 +25,18 @@ class EventManager:
         if event.button() == Qt.MouseButton.RightButton:
             # Get index position of the item
             index = self.tree_view.indexAt(event.pos())
-            self.on_hovered_item_changed(index, event)
+            self.item_actions(index, event)
         else:
             # Return to the normal behavior
             QTreeView.mousePressEvent(self.tree_view, event)
-            
-    def mouseMoveEvent(self, event):
-        hovered_index = self.tree_view.indexAt(event.pos())
-        if hovered_index != self.hovered_index:  # TODO: Improve later
-            self.hovered_index = hovered_index
-            self.on_hovered_item_changed(self.hovered_index, event)
-            
-        QTreeView.mouseMoveEvent(self.tree_view, event)
-
-    def on_hovered_item_changed(self, index, event):
-
+    
+    @staticmethod
+    def item_actions(index, event):
+        
+        """
+        Manage each item individually and pass the objects to the load functionality
+        """
+        
         if index.isValid():
-            print("Hovered item:", index.data(Qt.ItemDataRole.DisplayRole) + "\n")
-
             manager = ItemManager()
-            manager.load(index, event, self.ui)
+            manager.load(index, event)
