@@ -6,8 +6,8 @@
 """
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor, QColor, QAction
-from PyQt6.QtWidgets import QVBoxLayout, QMenu
+from PyQt6.QtGui import QCursor
+from PyQt6.QtWidgets import QVBoxLayout
 
 
 class ViewComponents:

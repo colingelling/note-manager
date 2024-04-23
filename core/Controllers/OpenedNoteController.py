@@ -8,9 +8,8 @@
 
 class OpenedNoteController:
 
-    def __init__(self, file, child_view):
+    def __init__(self, file):
         self.passed_note = file
-        self.view_obj = child_view
 
         self.notebook_storage_path = None
         self.notebook_information = None

@@ -14,16 +14,15 @@ class OverviewController:
 
     notebook_storage_path = None
 
-    def __init__(self, child_view):
-        super().__init__()
-        self.view_obj = child_view
-        self.notebook_storage_path = None
+    def __init__(self):
+        
         self._set_notebook_storage()
-
-    def _set_notebook_storage(self):
+    
+    @staticmethod
+    def _set_notebook_storage():
         from core.Handlers.NotebookStorageHandler import NotebookStorage
         access_model = NotebookStorage()
-        self.notebook_storage_path = access_model.get_notebook_storage_path()
+        OverviewController.notebook_storage_path = access_model.get_notebook_storage_path()
 
     def get_view_data(self):
         data = {
