@@ -21,7 +21,7 @@ class ViewComponents:
         self.notebooks = None
 
     @staticmethod
-    def notebook_manager(ui, resource):
+    def notebook_manager(ui, resource, notebook_information):
 
         """
         This method builds a TreeView on top of a predefined layout using PyQt 's models and delegates
@@ -84,7 +84,7 @@ class ViewComponents:
 
         # Declare event handler
         from core.Managers.TreeView.EventManager import EventManager
-        manager = EventManager(tree_view, ui)
+        manager = EventManager(tree_view, notebook_information, ui)
         tree_view.setMouseTracking(True)
         
         # Override method for right-clicking support

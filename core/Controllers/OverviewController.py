@@ -34,11 +34,9 @@ class OverviewController:
         self._set_notebook_information()
         self._set_notebook_storage()
         
-        prepared_data = ({
+        data = ({
             "notebook_storage_path": self.notebook_storage_path,
             "notebook_information": self.notebook_information
         })
-        
-        print(f"View data: '{prepared_data}'")
 
-        return prepared_data
+        return data

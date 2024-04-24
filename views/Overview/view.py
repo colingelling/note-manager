@@ -23,7 +23,7 @@ class Overview(QMainWindow, WindowController):
         Load resources and define window properties
         """
 
-        self.view_data = dict(view_data)
+        self.view_data = view_data
 
         self.ui = self.load_ui()
 
@@ -69,14 +69,19 @@ class Overview(QMainWindow, WindowController):
         ui.midContentWidget.setMaximumSize(16777215, 315)
 
         notebook_storage_path = None
+        notebook_information = None
+        
         for key, value in self.view_data.items():  # TODO: Think of an improved solution about storing and using this
-            if key and "notebook_storage" in key:
+            if "notebook_storage" in key:
                 notebook_storage_path = value
+            
+            if "notebook_information" in key:
+                notebook_information = value
 
-        if notebook_storage_path:
+        if notebook_storage_path and notebook_information:
             from views.Overview.components import ViewComponents
             components_obj = ViewComponents()
-            components_obj.notebook_manager(ui, notebook_storage_path)
+            components_obj.notebook_manager(ui, notebook_storage_path, notebook_information)
             components_obj.activity_table(ui)
             components_obj.embedded_notes(ui)
             components_obj.notepad(ui)
