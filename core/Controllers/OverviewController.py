@@ -13,20 +13,32 @@ class OverviewController:
     """
 
     notebook_storage_path = None
+    notebook_information = None
 
     def __init__(self):
-        
-        self._set_notebook_storage()
+        super().__init__()
     
     @staticmethod
     def _set_notebook_storage():
         from core.Handlers.NotebookStorageHandler import NotebookStorage
         access_model = NotebookStorage()
         OverviewController.notebook_storage_path = access_model.get_notebook_storage_path()
+        
+    @staticmethod
+    def _set_notebook_information():
+        from core.Collections.NotebookCollection import NotebookCollection
+        collection_model = NotebookCollection()
+        OverviewController.notebook_information = collection_model.get_notebook_information('*', '*')
 
     def get_view_data(self):
-        data = {
-            'notebook_storage_path': self.notebook_storage_path
-        }
+        self._set_notebook_information()
+        self._set_notebook_storage()
+        
+        prepared_data = ({
+            "notebook_storage_path": self.notebook_storage_path,
+            "notebook_information": self.notebook_information
+        })
+        
+        print(f"View data: '{prepared_data}'")
 
-        return data
+        return prepared_data
