@@ -115,7 +115,7 @@ class CreateNoteDialog(QDialog, WindowController):
         }
         
         for path_value in self.notebook_path_information:
-            if f"/{selected_notebook}/" in path_value + '/':
+            if f"/{selected_notebook}/" in path_value + '/' and '.txt' not in path_value:
                 # Store the note
                 from core.Models.StoreNote import StoreNote
                 obj = StoreNote()
