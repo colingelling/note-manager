@@ -4,19 +4,23 @@ main
 v0.2_building_initial_structure
 v0.3_native_models
 v0.4_qtreeview_rebuild_using_pyqt_models
+v0.6_opening_notes
 v0.6.2_saving_note_changes
 v0.6.4_architecture_revisions
 v0.6.6_creating_notes_revisited
-v0.6_opening_notes
-v0.7.2_contextmenu_additions
 v0.7_added_qtreeview_contextmenu
+v0.7.1.1_controller_preparations
+v0.7.2_contextmenu_additions
+v0.7.4_delete_notebook_button
+v0.7.4.1.create_notes_fix
+v0.x_additional -> (containing documentation)
 
-Note that there is a step between 0.4 and 0.6. Preparations to the data-model could be v0.5, but it isn't because of
-human error.
+Note that there is a step between 0.4 and 0.6. Preparations to the data-model could be v0.5, but that is because of
+little human mistakes in the learning process.
 
 The following structure has been followed for the branches above:
 
 - X = Main version
 - x.X = Major version of a subject inside the main version
 - x.x.X = Contains fixes or improvements being made behind the functionality of a subject
-- (Extra) x.x.x.X = Minor additional changes to a piece of singularly used functionality behind a subject
+- x.x.x.X = Minor additional changes to a piece of singularly used functionality behind a subject
