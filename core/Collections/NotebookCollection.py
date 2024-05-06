@@ -21,7 +21,7 @@ class NotebookCollection(QFileSystemModel):
     def get_notebook_information(self, notebook_selector, note_selector):
 
         #  Declare notebook storage as a resource
-        from core.Manage.Handling.NotebookStorageHandler import NotebookStorage
+        from core.Manage.NotebookStorage import NotebookStorage
         handler = NotebookStorage()
         resource = handler.get_notebook_storage_path()
 

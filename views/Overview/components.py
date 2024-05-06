@@ -48,12 +48,12 @@ class ViewComponents:
         from core.Controllers.WindowController import WindowController
         options_btn.clicked.connect(WindowController.options_dialog)
 
-        from core.Manage.Handling.TreeViewDataHandler import TreeViewDataHandler
+        from core.Manage.TreeView.DataHandler import DataHandler
         from core.Models.TreeView.BuildTree import BuildTree
-        from core.Manage.Models.Delegates.TreeViewDelegate import TreeViewDelegate
+        from core.Manage.TreeView.Delegate import Delegate
 
         # Prepare QTreeView (data)
-        handler = TreeViewDataHandler(resource)
+        handler = DataHandler(resource)
 
         # Set index to match resource
         root_index = handler.index(handler.rootPath())
@@ -68,7 +68,7 @@ class ViewComponents:
         tree_view.setRootIndex(root_index)
 
         # Attach a delegate for modifying QTreeView
-        delegate = TreeViewDelegate()
+        delegate = Delegate()
         delegate.set_widget(tree_view)
         tree_view.setItemDelegate(delegate)
 
@@ -83,8 +83,8 @@ class ViewComponents:
         )
 
         # Declare event handler
-        from core.Manage.TreeView.EventManager import EventManager
-        manager = EventManager(tree_view, notebook_information, ui)
+        from core.Manage.TreeView.Events import Events
+        manager = Events(tree_view, notebook_information, ui)
         tree_view.setMouseTracking(True)
         
         # Override method for right-clicking support

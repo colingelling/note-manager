@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import QDialog, QMenuBar, QMenu, QWidget, QHBoxLayout, QSiz
 from functools import partial
 
 from core.Controllers.WindowController import WindowController
-from core.Manage.ManageNote import ManageNote
+from core.Manage.NoteChanges import ManageNote
 from core.Models.ReadNote import ReadNote
 
 

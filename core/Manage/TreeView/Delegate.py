@@ -10,7 +10,7 @@ from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtWidgets import QStyledItemDelegate
 
 
-class TreeViewDelegate(QStyledItemDelegate):
+class Delegate(QStyledItemDelegate):
     def __init__(self):
         super().__init__()
 

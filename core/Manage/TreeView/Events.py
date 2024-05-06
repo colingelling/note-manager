@@ -5,13 +5,13 @@
 
 """
 
-from PyQt6.QtCore import QModelIndex, Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QTreeView
 
 from core.Manage.TreeView.ItemManager import ItemManager
 
 
-class EventManager:
+class Events:
 
     def __init__(self, tree_view, notebook_information, ui):
         

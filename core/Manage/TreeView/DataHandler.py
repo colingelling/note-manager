@@ -9,10 +9,10 @@ from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtGui import QFileSystemModel
 
 
-class TreeViewDataHandler(QFileSystemModel):
+class DataHandler(QFileSystemModel):
 
     def __init__(self, root_path, parent=None):
-        super(TreeViewDataHandler, self).__init__(parent)
+        super(DataHandler, self).__init__(parent)
         self.setRootPath(root_path)
 
         self.index_model = None

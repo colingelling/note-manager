@@ -4,6 +4,7 @@
     Using Pycharm Professional
 
 """
+import importlib
 
 
 class NotebookStorage:
@@ -12,16 +13,16 @@ class NotebookStorage:
 
     def get_notebook_storage_path(self):
         # Retrieve usable information from the application in general
-        from core.Manage.Imports.Configurations import Configurations
-        import_model = Configurations()
-        config_collection = import_model.get_navigation_config()
-        self._set_storage(config_collection)
+        
+        model_import = importlib.import_module('config.navigation')
+        resource = getattr(model_import, "resources", {})
+        
+        self._set_storage(resource)
 
         return self.storage_path
 
-    @staticmethod
-    def _set_storage(dictionary):
+    def _set_storage(self, dictionary):
         # Iterate through the dictionary and pick the path that matches root storage
         for key, value in dictionary.items():
             if 'storage' in key:
-                NotebookStorage.storage_path = value + "/notebooks"
+                self.storage_path = value + "/notebooks"

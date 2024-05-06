@@ -19,8 +19,8 @@ class BuildTree:
         self.index_model = None
 
     def build(self, root_index):
-        from core.Manage.Handling.TreeViewDataHandler import TreeViewDataHandler
-        data_model = TreeViewDataHandler(self.root_path)
+        from core.Manage.TreeView.DataHandler import DataHandler
+        data_model = DataHandler(self.root_path)
 
         # Instantiate QTreeView and set the data onto it
         self.tree_view = QTreeView()

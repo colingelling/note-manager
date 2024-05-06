@@ -76,7 +76,7 @@ class ItemManager:
             if directory_content:
                 print("Directory is not empty, delete the files first before trying again")
                 # TODO: Return tiny dialog with an 'OK' button
-                model.show_error()
+                model.show_error(notebook)
             else:
                 # TODO: has an issue with removing the last directory, also deletes the actual
                 #  'notebooks' directory. QTreeView would show project-files from this point
