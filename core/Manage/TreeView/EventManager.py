@@ -8,7 +8,7 @@
 from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtWidgets import QTreeView
 
-from core.Managers.TreeView.ItemManager import ItemManager
+from core.Manage.TreeView.ItemManager import ItemManager
 
 
 class EventManager:

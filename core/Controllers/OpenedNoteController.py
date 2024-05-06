@@ -26,7 +26,7 @@ class OpenedNoteController:
             return dict(note_information)
 
     def _set_notebook_storage(self):
-        from core.Handlers.NotebookStorageHandler import NotebookStorage
+        from core.Manage.Handling.NotebookStorageHandler import NotebookStorage
         access_model = NotebookStorage()
         self.notebook_storage_path = access_model.get_notebook_storage_path()
 

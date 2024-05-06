@@ -48,9 +48,9 @@ class ViewComponents:
         from core.Controllers.WindowController import WindowController
         options_btn.clicked.connect(WindowController.options_dialog)
 
-        from core.Handlers.TreeViewDataHandler import TreeViewDataHandler
+        from core.Manage.Handling.TreeViewDataHandler import TreeViewDataHandler
         from core.Models.TreeView.BuildTree import BuildTree
-        from core.Delegates.TreeViewDelegate import TreeViewDelegate
+        from core.Manage.Models.Delegates.TreeViewDelegate import TreeViewDelegate
 
         # Prepare QTreeView (data)
         handler = TreeViewDataHandler(resource)
@@ -83,7 +83,7 @@ class ViewComponents:
         )
 
         # Declare event handler
-        from core.Managers.TreeView.EventManager import EventManager
+        from core.Manage.TreeView.EventManager import EventManager
         manager = EventManager(tree_view, notebook_information, ui)
         tree_view.setMouseTracking(True)
         

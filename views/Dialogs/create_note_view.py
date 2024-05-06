@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class CreateNoteDialog(QDialog, WindowController):
+class CreateNoteView(QDialog, WindowController):
 
     requested_note = QtCore.pyqtSignal(str)
 

@@ -20,7 +20,7 @@ class OverviewController:
     
     @staticmethod
     def _set_notebook_storage():
-        from core.Handlers.NotebookStorageHandler import NotebookStorage
+        from core.Manage.Handling.NotebookStorageHandler import NotebookStorage
         access_model = NotebookStorage()
         OverviewController.notebook_storage_path = access_model.get_notebook_storage_path()
         

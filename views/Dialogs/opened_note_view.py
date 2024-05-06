@@ -10,11 +10,11 @@ from PyQt6.QtWidgets import QDialog, QMenuBar, QMenu, QWidget, QHBoxLayout, QSiz
 from functools import partial
 
 from core.Controllers.WindowController import WindowController
-from core.Managers.ManageNote import ManageNote
+from core.Manage.ManageNote import ManageNote
 from core.Models.ReadNote import ReadNote
 
 
-class OpenedNote(QDialog, WindowController):
+class OpenedNoteView(QDialog, WindowController):
 
     file_name = ''
     file_path = ''
@@ -119,7 +119,7 @@ class OpenedNote(QDialog, WindowController):
         if self.view_data:
             manager = ManageNote()
             save_note.triggered.connect(partial(manager.handle_changes, self.view_data, ui))
-            delete_note.triggered.connect(partial(manager.handle_delete, OpenedNote, self.view_data['filePath']))
+            delete_note.triggered.connect(partial(manager.handle_delete, OpenedNoteView, self.view_data['filePath']))
 
     @staticmethod
     def close_window():

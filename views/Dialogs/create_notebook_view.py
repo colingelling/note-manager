@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class CreateNotebookDialog(QDialog, WindowController):
+class CreateNotebookView(QDialog, WindowController):
 
     def __init__(self):
         super().__init__()

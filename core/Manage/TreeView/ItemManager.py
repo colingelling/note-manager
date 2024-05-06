@@ -4,11 +4,12 @@
     Using Pycharm Professional
 
 """
+
 import os.path
 from functools import partial
 
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QMenu, QMessageBox
+from PyQt6.QtWidgets import QMenu
 
 
 class ItemManager:
@@ -61,7 +62,10 @@ class ItemManager:
     def _item_delete(notebook, path):
         print(f"Delete action triggered on item: '{notebook}' \n")
         
-        warn = ItemManager.show_warning(notebook)
+        from core.Dialogs.NotebookRemoval import NotebookRemoval
+        model = NotebookRemoval()
+        
+        warn = model.show_warning(notebook)
         
         if not warn:
             return print("An error occurred, please try again")
@@ -72,11 +76,11 @@ class ItemManager:
             if directory_content:
                 print("Directory is not empty, delete the files first before trying again")
                 # TODO: Return tiny dialog with an 'OK' button
-                ItemManager.show_error()
+                model.show_error()
             else:
                 # TODO: has an issue with removing the last directory, also deletes the actual
                 #  'notebooks' directory. QTreeView would show project-files from this point
-                os.remove(path)
+                os.rmdir(path)
                 
         # TODO:
         #  1) Find out on how to spot differences between TreeView -items
@@ -95,39 +99,3 @@ class ItemManager:
         #  2) Do nothing if the item is a note, continue when it is a notebook
         #  3) In this case, add and open a new dialog window start throwing some logic to it in order to open the
         #  notebook for being able to change the name of it
-        
-    @staticmethod
-    def show_error():
-        box = QMessageBox()
-        box.setIcon(QMessageBox.Icon.Critical)
-        box.setText("This item cannot be removed")
-        box.setInformativeText("It seems that the notebook still has some notes, move them and try again after that!")
-        
-        ok_button = QMessageBox.StandardButton.Ok
-        
-        box.setStandardButtons(ok_button)
-        box.setDefaultButton(ok_button)
-        
-        box.exec()
-        
-        box.accept()
-        
-    @staticmethod
-    def show_warning(notebook):  # TODO: Move somewhere else
-        warning_box = QMessageBox()
-        warning_box.setIcon(QMessageBox.Icon.Warning)
-        warning_box.setText("Are you sure you want to delete this item?")
-        warning_box.setInformativeText(f"You are about to delete the following notebook: '{notebook}'. \n\n"
-                                       f"Are you sure? This action cannot be undone!")
-        
-        yes_button = QMessageBox.StandardButton.Yes
-        no_button = QMessageBox.StandardButton.No
-        
-        warning_box.setStandardButtons(yes_button | no_button)
-        warning_box.setDefaultButton(no_button)
-        
-        button_clicked = warning_box.exec()
-        if button_clicked == yes_button:
-            return yes_button
-        else:
-            warning_box.accept()

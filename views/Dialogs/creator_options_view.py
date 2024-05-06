@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import QDialog
 from core.Controllers.WindowController import WindowController
 
 
-class OptionsDialog(QDialog, WindowController):
+class CreatorOptionsView(QDialog, WindowController):
 
     def __init__(self):
         super().__init__()

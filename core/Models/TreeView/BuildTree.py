@@ -5,7 +5,6 @@
 
 """
 
-from PyQt6.QtCore import QModelIndex, Qt
 from PyQt6.QtWidgets import QTreeView
 
 
@@ -20,7 +19,7 @@ class BuildTree:
         self.index_model = None
 
     def build(self, root_index):
-        from core.Handlers.TreeViewDataHandler import TreeViewDataHandler
+        from core.Manage.Handling.TreeViewDataHandler import TreeViewDataHandler
         data_model = TreeViewDataHandler(self.root_path)
 
         # Instantiate QTreeView and set the data onto it
