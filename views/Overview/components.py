@@ -49,7 +49,7 @@ class ViewComponents:
         options_btn.clicked.connect(WindowController.options_dialog)
 
         from core.Manage.TreeView.DataHandler import DataHandler
-        from core.Models.TreeView.BuildTree import BuildTree
+        from core.Models.TreeView import TreeView
         from core.Manage.TreeView.Delegate import Delegate
 
         # Prepare QTreeView (data)
@@ -59,7 +59,7 @@ class ViewComponents:
         root_index = handler.index(handler.rootPath())
 
         # Initialize build object and pass the resource path value
-        build_obj = BuildTree(resource)
+        build_obj = TreeView(resource)
 
         # Build the TreeView
         tree_view = build_obj.build(root_index)

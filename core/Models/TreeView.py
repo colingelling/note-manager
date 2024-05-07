@@ -8,10 +8,10 @@
 from PyQt6.QtWidgets import QTreeView
 
 
-class BuildTree:
+class TreeView:
 
     def __init__(self, root_path):
-        super(BuildTree, self).__init__()
+        super(TreeView, self).__init__()
 
         self.root_path = root_path
 

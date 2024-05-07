@@ -5,7 +5,7 @@
 
 """
 
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox, QPushButton
 
 
 class NotebookRemoval:
@@ -20,8 +20,7 @@ class NotebookRemoval:
 		# Remove the standard buttons first
 		self.message_box.setStandardButtons(self.message_box.StandardButton.NoButton)
 		
-		from core.Manage.Models.Buttons import ButtonOverride
-		close_dialog = ButtonOverride("Close this dialog")
+		close_dialog = QPushButton("Close this dialog")
 		
 		# Connect the close button's clicked signal to the message box's reject method
 		close_dialog.clicked.connect(self.message_box.reject)
@@ -29,7 +28,7 @@ class NotebookRemoval:
 		# Add the close button to the dialog with the RejectRole
 		self.message_box.addButton(close_dialog, QMessageBox.ButtonRole.RejectRole)
 		
-		manage_notes = ButtonOverride("Manage my notes in this notebook")
+		manage_notes = QPushButton("Manage my notes in this notebook")
 		
 		# TODO: Implement WindowController's manage_notes_dialog method to refer to
 		# manage_notes.clicked.connect(dialog_model.note_manager_dialog)
