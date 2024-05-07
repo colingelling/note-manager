@@ -14,7 +14,6 @@ v0.7.2_contextmenu_additions
 v0.7.4_delete_notebook_button
 v0.7.4.1.create_notes_fix
 v0.7.4.2_architecture_improvements
-v0.7.4_delete_notebook_button
 v0.x_additional -> (containing documentation)
 
 Note that there is a step between 0.4 and 0.6. Preparations to the data-model could be v0.5, but that is because of
