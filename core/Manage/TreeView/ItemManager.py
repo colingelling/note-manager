@@ -8,6 +8,7 @@
 import os.path
 from functools import partial
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMenu
 
@@ -50,6 +51,15 @@ class ItemManager:
         # Declaring actions (will appear in the contextmenu)
         delete_action = QAction("Delete")
         edit_action = QAction("Edit")
+        
+        menu_style = (""
+                      "QMenu {background: #e5e5e5; color: #333; border-radius: 6px; padding: 4px 3px 6px 2px;}"
+                      "QMenu::item:selected {background: #fff;}"
+                      "")
+        
+        context_menu.setStyleSheet(menu_style)
+        
+        context_menu.setCursor(Qt.CursorShape.PointingHandCursor)
 
         # Adding actions to the contextmenu
         context_menu.addAction(delete_action)
