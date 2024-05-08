@@ -52,12 +52,12 @@ class ItemManager:
         delete_action = QAction("Delete")
         edit_action = QAction("Edit")
         
-        menu_style = (""
+        style = (""
                       "QMenu {background: #e5e5e5; color: #333; border-radius: 6px; padding: 4px 3px 6px 2px;}"
                       "QMenu::item:selected {background: #fff;}"
                       "")
         
-        context_menu.setStyleSheet(menu_style)
+        context_menu.setStyleSheet(style)
         
         context_menu.setCursor(Qt.CursorShape.PointingHandCursor)
 
@@ -70,26 +70,21 @@ class ItemManager:
         
     @staticmethod
     def _item_delete(notebook, path):
-        print(f"Delete action triggered on item: '{notebook}' \n")
         
         from core.Dialogs.NotebookRemoval import NotebookRemoval
         model = NotebookRemoval()
         
         warn = model.show_warning(notebook)
         
-        if not warn:
+        if not warn:  # TODO: Even has been triggered when clicking on the Cancel button in the warning dialog
             return print("An error occurred, please try again")
         
         if os.path.isdir(path):
             directory_content = [os.path.join(root, file) for root, dirs, files in os.walk(path) for file in files]
             
             if directory_content:
-                print("Directory is not empty, delete the files first before trying again")
-                # TODO: Return tiny dialog with an 'OK' button
                 model.show_error(notebook)
             else:
-                # TODO: has an issue with removing the last directory, also deletes the actual
-                #  'notebooks' directory. QTreeView would show project-files from this point
                 os.rmdir(path)
                 
         # TODO:
@@ -101,7 +96,8 @@ class ItemManager:
     
     @staticmethod
     def _item_edit(notebook, path):
-        print(f"Edit action triggered on item: '{notebook}'")
+        
+        pass
         
         # TODO:
         #  1) Find out on how to spot differences between TreeView -items
