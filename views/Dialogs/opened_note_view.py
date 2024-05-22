@@ -83,7 +83,7 @@ class OpenedNoteView(QDialog, WindowController):
         spacer_widget.setMinimumSize(865, 25)
         spacer_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
 
-        # TODO: Out of proportion when window has been scaled to match the full size
+        # TODO: Button out of proportion when window has been scaled to match the full size
 
         layout = QHBoxLayout()
         layout.addWidget(spacer_widget)
