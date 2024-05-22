@@ -85,23 +85,4 @@ class WindowController:
         
         # Set active view status
         WindowController.active_window = view
-    
-    @staticmethod
-    def manage_notes_dialog(notebook):
-        from core.Controllers.ManageNotesController import ManageNotesController
-        from views.Dialogs.manage_notes_view import ManageNotesView
         
-        # Set the view controller and collect the data for the view itself
-        view_controller = ManageNotesController()
-        view_data = view_controller.get_view_data()
-        
-        # Assign the view and fill it with the data that was collected, show it after as an application window
-        view = ManageNotesView(view_data)
-        view.show()
-        
-        # Hide (supposed to be) 'options_dialog' when it is active
-        if WindowController.active_window:
-            WindowController.active_window.hide()
-        
-        # Set active view status
-        WindowController.active_window = view

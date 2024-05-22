@@ -21,22 +21,40 @@ class Events:
         self.notebook_information = notebook_information
     
     def mousePressEvent(self, event):
-        # When the right mouse button has been clicked
+        
+        """
+        
+            1) Locate the item's index position and set the readable name
+            2) Set collections containing both the item name and system-level location towards notebook directories
+            3) List collections containing system-level locations towards note files
+            4) Loop through both path collections and add the elements to a new List
+            5) Call other functionality such as a context-menu and bound actions
+        
+        """
+        
         if event.button() == Qt.MouseButton.RightButton:
-            # Get index position of the item
-            index = self.tree_view.indexAt(event.pos())
-            item_name = index.data(Qt.ItemDataRole.DisplayRole)
             
-            for collection in self.notebook_information:
-                for key, value in collection.items():
-                    if not value.endswith('.txt') and key == item_name:
-                        data = {
-                            "notebook": key,
-                            "notebook_path": value
-                        }
+            index = self.tree_view.indexAt(event.pos())  # 1
+            item_name = index.data(Qt.ItemDataRole.DisplayRole)  # 1
             
-                        item_manager = ItemManager()
-                        item_manager.item_actions(event, data)
+            directory_information = {name: path for name, path in self.notebook_information[0].items()}  # 2
+            file_information = {name: path for name, path in self.notebook_information[1].items()}  # 2
+            
+            selected_directory_information = [path for path in directory_information.values() if f"/{item_name}" in path]  # 3
+            selected_file_information = [path for path in file_information.values() if f"/{item_name}/" in path]  # 3
+            
+            # 4 - block
+            collection = []
+            for directory_path in selected_directory_information:
+                collection.append(directory_path)
+                for file_path in selected_file_information:
+                    collection.append(file_path)
+            
+            # 5
+            item_manager = ItemManager()
+            item_manager.item_actions(event, item_name, collection)
+            
         else:
+            
             # Return to the normal behavior
             QTreeView.mousePressEvent(self.tree_view, event)

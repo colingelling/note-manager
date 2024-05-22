@@ -86,8 +86,8 @@ class NotebookCollection(QFileSystemModel):
             for source in collection_items:
                 for root, dirs, files in os.walk(source):
                     for file in files:
-                        file_result = file.strip('.txt')
-                        collection["files"].append(file_result)
+                        file_name = file.strip('.txt')
+                        collection["files"].append(file_name)
                         collection["path_values"].append(os.path.join(source, file))
 
         return collection
