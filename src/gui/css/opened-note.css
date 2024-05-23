@@ -25,6 +25,10 @@ QMenu::item {
     color: #000;
 }
 
+#moveNoteTitle_label {
+    color: #000;
+}
+
 #noteDescription_label {
     color: #000;
 }

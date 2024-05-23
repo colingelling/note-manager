@@ -28,7 +28,7 @@ class OpenedNoteView(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.setMinimumSize(996, 764)
+        self.setMinimumSize(996, 833)
 
         self.load_style()
 
@@ -113,6 +113,8 @@ class OpenedNoteView(QDialog, WindowController):
         # Filling input fields
         ui.noteTitle_lineEdit.setText(self.file_name)
         ui.noteDescription_textEdit.setPlainText(self.file_content)
+        
+        ui.moveNoteTitle_label.setText("Move this note to another notebook")
 
         # TODO: Temporary, find out why indexes could be empty at first. Also why 'dict()' would be
         #  a requirement to use sometimes
