@@ -23,9 +23,9 @@ class ItemManager:
         
             1) Set the context-menu
             2) Unpack the context-menu List with object references
-            3) Bind List elements and methods
-            4) Iterate through both Lists in order to connect with the action methods
-            5) Execute the context-menu
+            3) Fill a list with both pairs, for editing and deleting
+            4) Iterate through the List, bind actions to their function and pass additional parameters
+            5) Execute the context-menu and set the location for it pointing to the mouse cursor
         
         """
         
@@ -36,11 +36,13 @@ class ItemManager:
         context_menu, delete_action, edit_action = contextmenu_package
         
         # 3
-        actions = [delete_action, edit_action]
-        functions = [self._item_delete, self._item_edit]
+        action_method_pairs = [
+            (delete_action, self._item_delete),
+            (edit_action, self._item_edit)
+        ]
         
         # 4
-        for action, function in zip(actions, functions):
+        for action, function in action_method_pairs:
             action.triggered.connect(partial(function, item, data))
             
         # 5
