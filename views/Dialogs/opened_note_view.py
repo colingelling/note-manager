@@ -11,7 +11,7 @@ from functools import partial
 
 from core.Controllers.WindowController import WindowController
 from core.Manage.NoteChanges import ManageNote
-from core.Models.ReadNote import ReadNote
+# from core.Models.ReadNote import ReadNote
 
 
 class OpenedNoteView(QDialog, WindowController):
@@ -28,7 +28,7 @@ class OpenedNoteView(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.setMinimumSize(996, 833)
+        self.setMinimumSize(996, 867)
 
         self.load_style()
 
@@ -101,7 +101,7 @@ class OpenedNoteView(QDialog, WindowController):
         ui.TitleWidget.setMinimumWidth(955)
         ui.DescriptionWidget.setMinimumWidth(955)
 
-        ui.noteTitle_lineEdit.setMinimumSize(955, 30)
+        ui.noteTitle_lineEdit.setMinimumSize(955, 45)
         ui.noteDescription_textEdit.setMinimumSize(955, 562)
 
         ui.noteTitle_label.setText("Title")
@@ -115,6 +115,11 @@ class OpenedNoteView(QDialog, WindowController):
         ui.noteDescription_textEdit.setPlainText(self.file_content)
         
         ui.moveNoteTitle_label.setText("Move this note to another notebook")
+        
+        ui.moveNote_comboBox.setMinimumSize(100, 45)
+        ui.moveNote_comboBox.setMaximumSize(16777215, 45)
+        
+        ui.moveNote_comboBox.setCurrentText(self.parent_directory)
 
         # TODO: Temporary, find out why indexes could be empty at first. Also why 'dict()' would be
         #  a requirement to use sometimes

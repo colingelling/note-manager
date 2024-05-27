@@ -29,6 +29,12 @@ QMenu::item {
     color: #000;
 }
 
+#moveNote_comboBox {
+    border: 1px solid rgba(130, 130, 130, 0.86);
+    border-radius: 4px;
+    padding: 6px;
+}
+
 #noteDescription_label {
     color: #000;
 }
