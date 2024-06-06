@@ -18,6 +18,6 @@ class CreateNoteController:
 	
 	@staticmethod
 	def _get_notebooks():
-		from core.Collections.NotebookCollection import NotebookCollection
+		from core.Collectables.NotebookCollector import NotebookCollection
 		collection_obj = NotebookCollection()
 		return collection_obj.get_notebook_information('*', '*')

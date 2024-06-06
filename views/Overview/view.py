@@ -10,6 +10,8 @@ from PyQt6.QtGui import QFontDatabase
 
 from core.Controllers.WindowController import WindowController
 
+from views.Overview.components import ViewComponents
+
 
 class Overview(QMainWindow, WindowController):
 
@@ -67,21 +69,18 @@ class Overview(QMainWindow, WindowController):
 
         ui.midContentWidget.setMinimumSize(16777215, 315)
         ui.midContentWidget.setMaximumSize(16777215, 315)
-
-        notebook_storage_path = None
-        notebook_information = None
         
-        for key, value in self.view_data.items():  # TODO: Think of an improved solution about storing and using this
-            if "notebook_storage" in key:
-                notebook_storage_path = value
+        if not self.view_data['notebook_information']:
+            print(f"notebook_information returned to be empty")
+        
+        notebook_storage_path = [value for key, value in self.view_data.items() if "notebook_storage_path" in key]
+        notebook_information = {key: collection for key, collection in self.view_data["notebook_information"].items()}
+        
+        if not notebook_storage_path and not notebook_information:
+            return print("Something went wrong with the data that was processed")
             
-            if "notebook_information" in key:
-                notebook_information = value
-
-        if notebook_storage_path and notebook_information:
-            from views.Overview.components import ViewComponents
-            components_obj = ViewComponents()
-            components_obj.notebook_manager(ui, notebook_storage_path, notebook_information)
-            components_obj.activity_table(ui)
-            components_obj.embedded_notes(ui)
-            components_obj.notepad(ui)
+        components_obj = ViewComponents()
+        components_obj.notebook_manager(ui, notebook_storage_path[0], notebook_information)
+        components_obj.activity_table(ui)
+        components_obj.embedded_notes(ui)
+        components_obj.notepad(ui)

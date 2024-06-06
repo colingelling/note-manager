@@ -18,7 +18,7 @@ class ReadNote(QFileSystemModel):
     def data(self, index: QModelIndex, role: int = ...) -> object:
         if role == Qt.ItemDataRole.DisplayRole:
             file_info = self.fileInfo(index)
-            return self.read(file_info.filePath(), '')
+            return self.read(file_info.filePath())
 
         return super().data(index, role)
 
@@ -37,22 +37,23 @@ class ReadNote(QFileSystemModel):
         return [note_title, description_string]
 
     @staticmethod
-    def read(path, notebook_information):
+    def read(notebook_information):
 
-        notebook = None
+        directory = None
 
         file_path = None
         file_name = None
+        
+        listed_notebook = [value for key, value in notebook_information.items() if key == 'notebooks']
+        listed_note_path = [value for key, value in notebook_information.items() if key == 'note_path_values']
+        
+        from pathlib import Path
+        file_name = Path(listed_note_path[0][0]).stem
+        
+        directory = listed_notebook[0][0]
+        file_path = listed_note_path[0][0]
 
-        for collection in notebook_information:
-            for key, value in collection.items():
-                if '.txt' not in value:
-                    notebook = key
-                else:
-                    file_path = value
-                    file_name = key
-
-        with open(path, "r") as file:
+        with open(file_path, "r") as file:
             content = file.read()
 
             separate_description = content.split(file_name + '\n\n')
@@ -61,7 +62,7 @@ class ReadNote(QFileSystemModel):
             file_information = {
                 "filePath": file_path,
                 "fileName": file_name,
-                "parentDirectory": notebook,
+                "parentDirectory": directory,
                 "fileContent": description_text
             }
 

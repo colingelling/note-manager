@@ -34,22 +34,32 @@ class Events:
         
         if event.button() == Qt.MouseButton.RightButton:
             
-            index = self.tree_view.indexAt(event.pos())  # 1
-            item_name = index.data(Qt.ItemDataRole.DisplayRole)  # 1
+            # 1
+            index = self.tree_view.indexAt(event.pos())
+            item_name = index.data(Qt.ItemDataRole.DisplayRole)
+        
+            # 2
+            directory_information = [
+                value for key, collection in self.notebook_information.items()
+                if key == 'notebook_path_values'
+                for value in collection
+                if f"/{item_name}" in value
+            ]
             
-            directory_information = {name: path for name, path in self.notebook_information[0].items()}  # 2
-            file_information = {name: path for name, path in self.notebook_information[1].items()}  # 2
-            
-            selected_directory_information = [path for path in directory_information.values() if f"/{item_name}" in path]  # 3
-            selected_file_information = [path for path in file_information.values() if f"/{item_name}/" in path]  # 3
-            
-            # 4 - block
+            file_information = [
+                value for key, collection in self.notebook_information.items()
+                if key == 'note_path_values'
+                for value in collection
+                if f"/{item_name}/" in value
+            ]
+    
+            # 4
             collection = []
-            for directory_path in selected_directory_information:
+            for directory_path in directory_information:
                 collection.append(directory_path)
-                for file_path in selected_file_information:
+                for file_path in file_information:
                     collection.append(file_path)
-            
+
             # 5
             item_manager = ItemManager()
             item_manager.item_actions(event, item_name, collection)

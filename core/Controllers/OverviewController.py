@@ -5,18 +5,22 @@
 
 """
 
+from core.Collectables.NotebookCollector import NotebookCollector
+
 
 class OverviewController:
 
     """
     This class is responsible for processing raw data before it will get passed into the view
     """
-
+    
     notebook_storage_path = None
     notebook_information = None
 
     def __init__(self):
         super().__init__()
+        
+        self.collector_model = NotebookCollector()
     
     @staticmethod
     def _set_notebook_storage():
@@ -24,15 +28,13 @@ class OverviewController:
         access_model = NotebookStorage()
         OverviewController.notebook_storage_path = access_model.get_notebook_storage_path()
         
-    @staticmethod
-    def _set_notebook_information():
-        from core.Collections.NotebookCollection import NotebookCollection
-        collection_model = NotebookCollection()
-        OverviewController.notebook_information = collection_model.get_notebook_information('*', '*')
+    def _set_notebook_information(self):
+        model = self.collector_model
+        OverviewController.notebook_information = model.get_notebook_information('*', '*')
 
     def get_view_data(self):
-        self._set_notebook_information()
         self._set_notebook_storage()
+        self._set_notebook_information()
         
         data = ({
             "notebook_storage_path": self.notebook_storage_path,
