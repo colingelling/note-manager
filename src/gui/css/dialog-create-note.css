@@ -36,6 +36,10 @@
     color: #000;
 }
 
+#notebookSelector_comboBox Q {
+    background: #fff;
+}
+
 #noteDescriptionLabel {
     color: #000;
 }

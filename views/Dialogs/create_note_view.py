@@ -8,7 +8,7 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QComboBox
 
 from core.Controllers.WindowController import WindowController
 
@@ -75,7 +75,24 @@ class CreateNoteView(QDialog, WindowController):
         
         # Show an empty ComoBox upon launch of this dialog
         ui.notebookSelector_comboBox.addItem("")
+        # ui.notebookSelector_comboBox.view().parentWidget().setStyleSheet('background-color: #fff;')
         
+        ui.notebookSelector_comboBox.setStyleSheet(
+            """
+            QComboBox {
+                combobox-popup: 0;
+                border-radius: 5px;
+                padding: 5px;
+                background-color: #fff;
+                min-width: 100px;
+            }
+            QComboBox QAbstractItemView {
+                background: #fff;
+                color: #333;
+                padding: 0.3rem;
+            }
+            """
+        )
         # Add the names of all notebook directories into the ComboBox
         ui.notebookSelector_comboBox.addItems(self.notebook_directories)
 
