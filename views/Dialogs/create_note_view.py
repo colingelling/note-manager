@@ -22,14 +22,9 @@ class CreateNoteView(QDialog, WindowController):
         
         self.notebook_directories = []
         self.notebook_path_information = []
-
-        # Declaration of view_data elements
-        for collection in view_data:
-            for key, value in collection.items():
-                if "notebook" in key:
-                    self.notebook_directories.append(key)
-                if "/" in value:
-                    self.notebook_path_information.append(value)
+        
+        self.notebook_directories = view_data["notebooks"]
+        self.notebook_path_information = view_data["notebook_path_values"]
 
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
@@ -116,7 +111,6 @@ class CreateNoteView(QDialog, WindowController):
         
         for path_value in self.notebook_path_information:
             if f"/{selected_notebook}/" in path_value + '/' and '.txt' not in path_value:
-                # Store the note
                 from core.Models.StoreNote import StoreNote
                 obj = StoreNote()
                 obj.store_note(path_value, note_template)
