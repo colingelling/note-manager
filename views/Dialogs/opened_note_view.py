@@ -11,11 +11,13 @@ from functools import partial
 
 from core.Controllers.WindowController import WindowController
 from core.Manage.NoteChanges import ManageNote
-# from core.Models.ReadNote import ReadNote
 
 
 class OpenedNoteView(QDialog, WindowController):
 
+    notebooks = []
+    notebook_path_values = []
+    
     file_name = ''
     file_path = ''
     parent_directory = ''
@@ -52,15 +54,20 @@ class OpenedNoteView(QDialog, WindowController):
         self.setWindowTitle(window_subj)
 
         # Declaration of view_data elements
-        for key, value in dict(self.view_data).items():
-            if key == "fileName":
-                self.file_name = value
-            if key == "filePath":
-                self.file_path = value
-            if key == "parentDirectory":
-                self.parent_directory = value
-            if key == "fileContent":
-                self.file_content = value
+        for collection in self.view_data:
+            for key, element in collection.items():
+                if key == "notebooks":
+                    self.notebooks = element
+                if key == "notebook_path_values":
+                    self.notebook_path_values = element
+                if key == "fileName":
+                    self.file_name = element
+                if key == "filePath":
+                    self.file_path = element
+                if key == "parentDirectory":
+                    self.parent_directory = element  # TODO: Wrong notebook output, chooses randomly
+                if key == "fileContent":
+                    self.file_content = element
 
         # Set window title
         # TODO: Does not update actively, window has to be refreshed manually before seeing change
@@ -108,19 +115,22 @@ class OpenedNoteView(QDialog, WindowController):
         ui.noteTitle_lineEdit.setText(self.file_name)
         ui.noteDescription_textEdit.setPlainText(self.file_content)
         
-        ui.moveNoteTitle_label.setText("Notebook")
+        ui.moveNoteTitle_label.setText("The notebook of this note")
         
         ui.moveNote_comboBox.setMinimumSize(100, 45)
         ui.moveNote_comboBox.setMaximumSize(16777215, 45)
         
         ui.moveNote_comboBox.setCurrentText(self.parent_directory)
+        
+        for notebook in self.notebooks:
+            ui.moveNote_comboBox.addItem(notebook)
 
         # TODO: Temporary, find out why indexes could be empty at first. Also why 'dict()' would be
         #  a requirement to use sometimes
         if self.view_data:
             manager = ManageNote()
             save_note.triggered.connect(partial(manager.handle_changes, self.view_data, ui))
-            delete_note.triggered.connect(partial(manager.handle_delete, OpenedNoteView, self.view_data['filePath']))
+            delete_note.triggered.connect(partial(manager.handle_delete, OpenedNoteView, self.file_path))
 
     @staticmethod
     def close_window():

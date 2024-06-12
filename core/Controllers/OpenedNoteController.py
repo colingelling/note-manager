@@ -30,10 +30,21 @@ class OpenedNoteController:
         self._set_notebook_information()
         
         model = self.read_model
-
-        if self.passed_note and self.notebook_information:
-            note_information = model.read(self.notebook_information)
-            return note_information
+        
+        if not self.passed_note:
+            return print("There is an issue with the note being passed as it seems not to have any value")
+        
+        if not self.notebook_information:
+            return print("There is an issue with the retrieval of the notebook collection, currently it doesn't contain value")
+        
+        note_information = model.read(self.notebook_information)
+        
+        data = [
+            self.notebooks,
+            note_information
+        ]
+        
+        return data
 
     def _set_notebook_storage(self):
         model = self.notebook_storage_access_model
@@ -57,3 +68,6 @@ class OpenedNoteController:
         note_name = Path(absolute_path).stem
 
         self.notebook_information = model.get_notebook_information(notebook_name, note_name)
+        
+        # TODO: There is an issue with this still receiving note information
+        self.notebooks = model.get_notebook_information('*', '')
