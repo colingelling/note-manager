@@ -19,8 +19,8 @@ QMenu::item {
 }
 
 #noteTitle_lineEdit {
-    border: 1px solid rgba(130, 130, 130, 0.86);
-    border-radius: 4px;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.79);
+    border-radius: 0;
     padding: 6px;
     color: #000;
 }
@@ -30,18 +30,90 @@ QMenu::item {
 }
 
 #moveNote_comboBox {
-    border: 1px solid rgba(130, 130, 130, 0.86);
-    border-radius: 4px;
-    padding: 6px;
-}
-
-#noteDescription_label {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.79);
+    border-radius: 0;
+    background: #fff;
+    padding: 8px;
     color: #000;
 }
 
+QComboBox QAbstractItemView {
+    background-color: #fff;
+    padding: 0.6rem;
+    color: #333;
+}
+
+/* Vertical Scrollbar */
+QComboBox QAbstractItemView QScrollBar:vertical {
+    border: none;
+    background-color: #1f1f1f;
+    width: 7px;
+    margin: 0;
+}
+
+QComboBox QAbstractItemView QScrollBar::handle:vertical {
+    background-color: rgba(113, 113, 113, 0.83);
+    border-radius: 7px;
+    min-height: 20px;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-line:vertical {
+    subcontrol-position: bottom;
+    background: none;
+    height: 0;
+}
+
+QComboBox QAbstractItemView QScrollBar::sub-line:vertical {
+    background: none;
+    height: 0;
+    subcontrol-position: top;
+}
+
+QComboBox QAbstractItemView QScrollBar::up-arrow:vertical,
+QComboBox QAbstractItemView QScrollBar::down-arrow:vertical {
+    background: none;
+}
+
+QComboBox QAbstractItemView QScrollBar::add-page:vertical,
+QComboBox QAbstractItemView QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QComboBox QAbstractItemView::item {
+    background-color: #fff;
+    padding: 6px 12px;
+    color: #000;
+    border: none;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #333;
+    color: #fff;
+    border: none;
+}
+
+QComboBox QAbstractItemView::item:focus {
+    outline: none;
+    border: none;
+}
+
+QComboBox:focus {
+    border: none;
+    outline: none;
+}
+
+QComboBox {
+    background-color: #fff;
+    border-radius: 5px;
+    combobox-popup: 0;
+    min-width: 100px;
+    padding: 5px;
+}
+
 #noteDescription_textEdit {
-    border: 1px solid rgba(130, 130, 130, 0.86);
-    border-radius: 4px;
-    padding: 6px;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.79);
+    border-radius: 0;
+    background: #fff;
+    padding: 0 8px 0 0;
     color: #000;
 }

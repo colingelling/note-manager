@@ -104,17 +104,11 @@ class OpenedNoteView(QDialog, WindowController):
         ui.noteTitle_lineEdit.setMinimumSize(955, 45)
         ui.noteDescription_textEdit.setMinimumSize(955, 562)
 
-        ui.noteTitle_label.setText("Title")
-        ui.noteTitle_label.adjustSize()
-
-        ui.noteDescription_label.setText("Description")
-        ui.noteDescription_label.adjustSize()
-
         # Filling input fields
         ui.noteTitle_lineEdit.setText(self.file_name)
         ui.noteDescription_textEdit.setPlainText(self.file_content)
         
-        ui.moveNoteTitle_label.setText("Move this note to another notebook")
+        ui.moveNoteTitle_label.setText("Notebook")
         
         ui.moveNote_comboBox.setMinimumSize(100, 45)
         ui.moveNote_comboBox.setMaximumSize(16777215, 45)

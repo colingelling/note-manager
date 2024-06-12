@@ -8,7 +8,7 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
-from PyQt6.QtWidgets import QDialog, QComboBox
+from PyQt6.QtWidgets import QDialog
 
 from core.Controllers.WindowController import WindowController
 
@@ -29,7 +29,7 @@ class CreateNoteView(QDialog, WindowController):
         # set Ui (must happen before doing anything else because any alterations to the window won't work)
         self.ui = self.load_ui()
 
-        self.setMinimumSize(800, 698)
+        self.setMinimumSize(800, 766)
 
         self.load_style()
 
@@ -61,10 +61,8 @@ class CreateNoteView(QDialog, WindowController):
         ui.descriptionText.setText("Add a note by entering the title, a description and confirm by pressing the button "
                                    "if you're done!")
         ui.descriptionText.adjustSize()
-
-        # Declare first input label content (Name and note title)
-        ui.noteNameLabel.setText("What should the title of your note be?")
-        ui.noteNameLabel.adjustSize()
+        
+        ui.noteName_lineEdit.setPlaceholderText("What should the title of your note be?")
 
         # Declare label content for the ComboBox into selecting a notebook for binding purposes
         ui.notebookSelectorLabel.setText("Select a notebook for this note")
@@ -73,32 +71,15 @@ class CreateNoteView(QDialog, WindowController):
         # Enable the ComboBox
         ui.notebookSelector_comboBox.setEnabled(True)
         
+        ui.notebookSelector_comboBox.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        
         # Show an empty ComoBox upon launch of this dialog
         ui.notebookSelector_comboBox.addItem("")
-        # ui.notebookSelector_comboBox.view().parentWidget().setStyleSheet('background-color: #fff;')
         
-        ui.notebookSelector_comboBox.setStyleSheet(
-            """
-            QComboBox {
-                combobox-popup: 0;
-                border-radius: 5px;
-                padding: 5px;
-                background-color: #fff;
-                min-width: 100px;
-            }
-            QComboBox QAbstractItemView {
-                background: #fff;
-                color: #333;
-                padding: 0.3rem;
-            }
-            """
-        )
         # Add the names of all notebook directories into the ComboBox
         ui.notebookSelector_comboBox.addItems(self.notebook_directories)
-
-        # Declare label content for adding a note description
-        ui.noteDescriptionLabel.setText("What should the description of your note be?")
-        ui.noteDescriptionLabel.adjustSize()
+        
+        ui.noteDescription_textEdit.setPlaceholderText("What should the description of your note be?")
 
         # Set a different pointer status for the save button
         ui.addNoteButton.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
