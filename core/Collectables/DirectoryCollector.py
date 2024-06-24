@@ -53,7 +53,8 @@ class DirectoryCollector:
                 filtered_collection['directories'] = [notebook_name]
                 filtered_collection['path_values'] = [notebook_path]
                 return filtered_collection
-        
-        # If no match is found, return the original collection or handle it as needed
-        return collection
+            elif selector == '*':
+                return collection
+            elif not selector:
+                return collection.clear()
         

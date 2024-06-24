@@ -120,6 +120,12 @@ class OpenedNoteView(QDialog, WindowController):
         ui.moveNote_comboBox.setMinimumSize(100, 45)
         ui.moveNote_comboBox.setMaximumSize(16777215, 45)
         
+        # TODO: For the ability to move a note to another notebook different from its current parent directory;
+        #  1) Sort out any issues around what the value of self.parent_directory is
+        #  2) Add the other notebooks as well, make sure that the parent directory does not appear twice
+        #  3) Figure out how the technical side of this should do its thing
+        #  4) Add functionality for being able to move a file to another directory using move from path to path
+        
         ui.moveNote_comboBox.setCurrentText(self.parent_directory)
         
         for notebook in self.notebooks:

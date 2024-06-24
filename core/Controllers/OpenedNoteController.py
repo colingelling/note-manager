@@ -18,11 +18,11 @@ class OpenedNoteController:
         self.passed_note = file
 
         self.notebook_storage_path = None
+        
         self.notebook_information = None
         self.notebooks = None
         
         self.notebook_storage_access_model = NotebookStorage()
-        self.data_model = NotebookCollector()
         self.read_model = ReadNote()
 
     def get_view_data(self):
@@ -35,13 +35,14 @@ class OpenedNoteController:
             return print("There is an issue with the note being passed as it seems not to have any value")
         
         if not self.notebook_information:
-            return print("There is an issue with the retrieval of the notebook collection, currently it doesn't contain value")
+            return print("There is an issue with the retrieval of the notebook collection, currently it doesn't "
+                         "contain value")
         
         note_information = model.read(self.notebook_information)
         
         data = [
-            self.notebooks,
-            note_information
+            note_information,
+            self.notebooks
         ]
         
         return data
@@ -52,8 +53,6 @@ class OpenedNoteController:
 
     def _set_notebook_information(self):
         # Retrieve note informational collection
-        
-        model = self.data_model
 
         absolute_path = self.passed_note
 
@@ -66,8 +65,10 @@ class OpenedNoteController:
         
         notebook_name = directory
         note_name = Path(absolute_path).stem
-
-        self.notebook_information = model.get_notebook_information(notebook_name, note_name)
         
-        # TODO: There is an issue with this still receiving note information
-        self.notebooks = model.get_notebook_information('*', '')
+        # Collect notebook information based on filters
+        model_instance_a = NotebookCollector()
+        self.notebook_information = model_instance_a.get_notebook_information(notebook_name, note_name)
+        
+        model_instance_b = NotebookCollector()
+        self.notebooks = model_instance_b.get_notebook_information('*', '')  # still overrides line above

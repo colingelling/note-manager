@@ -29,17 +29,11 @@ class FileCollector:
         collection = template
         
         scanned_results = [element for value in path_values for element in os.scandir(value) if element.is_file()]
-        
-        # for element in os.scandir(next(iter(path_values))):
-        #     print(f"element: '{element}'")
-        #     if element.is_file():
-        #         print(f"element is a file: '{element}'")
 
-        # scanned_results = [element for element in os.scandir(next(iter(path_values))) if element.is_file()]
-        
         for output in scanned_results:
             file = output.name
             file_path = output.path
+            
             collection["files"].append(file)
             collection["path_values"].append(file_path)
 
@@ -53,33 +47,24 @@ class FileCollector:
           collection after
         """
         
+        # Declare and describe an empty collection template
         filtered_collection = {
             "files": [],
             "path_values": []
         }
         
-        for note_name, note_path in zip(collection['files'], collection['path_values']):
-            if note_name == selector + ".txt":
-                filtered_collection['files'] = [note_name]
-                filtered_collection['path_values'] = [note_path]
+        # print(f"FileCollector's collection: '{collection}'")
+        
+        # Pack two collections of values together, iterate through them and filter on particular or all values
+        # and return it eventually
+        for note_file, note_path in zip(collection['files'], collection['path_values']):
+            if note_file == selector + ".txt":
+                filtered_collection["files"] = [note_file]
+                filtered_collection["path_values"] = [note_path]
                 return filtered_collection
+            elif selector == '*':
+                return collection
+            elif not selector:
+                return collection.clear()
             
         return collection
-        
-        # # Iterate through the lists associated with file names and absolute path keys simultaneously, two types of
-        # # values join the iteration process and use the attributes to keep them separated
-        # for notebook_name, notebook_path in collection.items():
-        #     for note_name, note_path in zip(
-        #             self.file_information['files'],
-        #             self.file_information['path_values']
-        #     ):
-        #
-        #         if note_name == selector:
-        #             collection.clear()
-        #
-        #             collection['files'] = note_name
-        #             collection['path_values'] = note_path
-        #
-        #             return collection
-        #         elif selector == '*':
-        #             return collection
