@@ -17,17 +17,21 @@ class EditNote(QFileSystemModel):
 
         self.file_path = None
 
-    def save_changes(self, data, title, description):
+    def save_changes(self, data, title, parent_notebook, description):
+        
+        # TODO: refined_data is a temporary solution
+        
+        refined_data = {key: value for collection in data for key, value in collection.items()}
 
         # Declare and retrieve values from the data model
-        file_path = data['filePath']
-        file_name = data['fileName']
-        file_content = data['fileContent']
+        file_path = refined_data['filePath']
+        file_name = refined_data['fileName']
+        file_content = refined_data['fileContent']
 
         # Verify that the main dictionary's fileName matches to the original name of the note being opened, then replace
         # the original with the new value
         if file_name is not title:
-            data.update({
+            refined_data.update({
                 'fileName': title
             })
 
@@ -45,14 +49,14 @@ class EditNote(QFileSystemModel):
                 updated_file = value
 
         # Update the main dictionary, add the temporary
-        for key, value in dict(data).items():
+        for key, value in refined_data.items():
             if key == 'filePath' and value == file_path:
-                data.update({
+                refined_data.update({
                     'filePath': updated_file
                 })
 
         # Store the description content in the main dictionary
-        data.update({
+        refined_data.update({
             'fileContent': description
         })
 

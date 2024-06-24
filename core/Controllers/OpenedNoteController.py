@@ -66,9 +66,11 @@ class OpenedNoteController:
         notebook_name = directory
         note_name = Path(absolute_path).stem
         
-        # Collect notebook information based on filters
+        # Collect notebook information based on filters for an opened note
         model_instance_a = NotebookCollector()
         self.notebook_information = model_instance_a.get_notebook_information(notebook_name, note_name)
         
+        # Collect notebook information based on filters for retrieval of all notebooks
         model_instance_b = NotebookCollector()
-        self.notebooks = model_instance_b.get_notebook_information('*', '')  # still overrides line above
+        self.notebooks = model_instance_b.get_notebook_information('*', '')
+        
