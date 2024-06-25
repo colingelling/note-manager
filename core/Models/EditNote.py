@@ -17,31 +17,48 @@ class EditNote(QFileSystemModel):
 
         self.file_path = None
 
-    def save_changes(self, data, title, parent_notebook, description):
+    def save_changes(self, obj, data, title, parent_notebook, description):
         
-        # TODO: refined_data is a temporary solution
-        
-        refined_data = {key: value for collection in data for key, value in collection.items()}
+        # Extract data set
+        unpacked_data = {key: value for collection in data for key, value in collection.items()}
 
-        # Declare and retrieve values from the data model
-        file_path = refined_data['filePath']
-        file_name = refined_data['fileName']
-        file_content = refined_data['fileContent']
+        # Declare data values as properties
+        file_path = unpacked_data['filePath']
+        file_name = unpacked_data['fileName']
+        parent_directory = unpacked_data['parentDirectory']
+        file_content = unpacked_data['fileContent']
 
         # Verify that the main dictionary's fileName matches to the original name of the note being opened, then replace
         # the original with the new value
         if file_name is not title:
-            refined_data.update({
+            unpacked_data.update({
                 'fileName': title
             })
+        
+        old_file_path = file_path
+            
+        if parent_notebook is not parent_directory:
+            
+            unpacked_data.update({
+                'parentDirectory': parent_notebook
+            })
+            
+            if f"/{parent_notebook}/" not in file_path:
+                new_file_path = old_file_path.replace(f"/{parent_directory}/", f"/{parent_notebook}/")
+                unpacked_data.update({'filePath': new_file_path})
+        
+        path_data = {
+            'old_file_path': old_file_path,
+            'new_file_path': unpacked_data['filePath']
+        }
 
-        # Prepare the file values 'absolute path' of both the temporally saved copy of the original and the new file
-        updated_files = self._prepare_updated_files(file_path, file_name, title)
+        # Prepare the file values 'absolute path' of both the temporarily saved copy of the original and the new file
+        updated_files = self._prepare_updated_files(path_data, file_name, title)
 
         temporary_file = None
         updated_file = None
 
-        # Assigning values from dictionary (updated_files)
+        # Assigning values from dictionary (updated_files) in order to use them
         for key, value in updated_files.items():
             if key == 'temp_file':
                 temporary_file = value
@@ -49,32 +66,32 @@ class EditNote(QFileSystemModel):
                 updated_file = value
 
         # Update the main dictionary, add the temporary
-        for key, value in refined_data.items():
+        for key, value in unpacked_data.items():
             if key == 'filePath' and value == file_path:
-                refined_data.update({
+                unpacked_data.update({
                     'filePath': updated_file
                 })
 
         # Store the description content in the main dictionary
-        refined_data.update({
+        unpacked_data.update({
             'fileContent': description
         })
 
-        # Make a backup from the original file
-        self._make_temporary_note(file_path, temporary_file)
+        # Make a backup of the original file
+        self._make_temporary_note(old_file_path, temporary_file)
 
-        # Set the file template containing the content that will be put inside the new file
+        # Set the file template containing the content description for the new file
         file_template = ''.join(title + "\n\n" + description)
 
         # Verify that the creation of temporary_file has been succeeded. When true, create a new file in order to
-        # replace the original but with the correct values.
+        # replace the original but with correct values
         if os.path.exists(temporary_file):
             self._make_new_note(updated_file, file_template)
         else:
             message = "Application closed due to an issue where the backup of the original file did not succeed."
             exit(message)  # TODO: Refer to a popup dialog displaying the text above
 
-        # Verify that the new version of the file has been created, when true the temporally saved copy of the original
+        # Verify that the new file version has been created. If true, the temporarily saved copy of the original
         # will be removed
         if os.path.exists(updated_file):
             # We do not need the temporarily stored file anymore
@@ -84,16 +101,23 @@ class EditNote(QFileSystemModel):
         else:
             # Revert changes
             self._revert_backup(temporary_file, file_path)
+        
+        # Whenever the parent notebook has been set to change, close the window after task completion
+        if parent_notebook is not parent_directory:
+            return obj.close_window()
 
-    def _prepare_updated_files(self, file_path, file_name, updated_title):
+    def _prepare_updated_files(self, data, file_name, updated_title):
 
         """
         Prepare both the temporarily stored file as a copy of the original file and the new file based on the changed
         values, the file values are in absolute path format.
         """
+        
+        old_path = data['old_file_path']
+        new_path = data['new_file_path']
 
-        temporary_file = self._prepare_temporary_note(file_path, file_name)
-        updated_file = self._prepare_new_note(file_path, file_name, updated_title)
+        temporary_file = self._prepare_temporary_note(old_path, file_name)
+        updated_file = self._prepare_new_note(new_path, file_name, updated_title)
 
         return {'temp_file': temporary_file, 'updated_file': updated_file}
 

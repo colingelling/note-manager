@@ -65,7 +65,7 @@ class OpenedNoteView(QDialog, WindowController):
                 if key == "filePath":
                     self.file_path = element
                 if key == "parentDirectory":
-                    self.parent_directory = element  # TODO: Wrong notebook output, chooses randomly
+                    self.parent_directory = element
                 if key == "fileContent":
                     self.file_content = element
 
@@ -120,26 +120,35 @@ class OpenedNoteView(QDialog, WindowController):
         ui.moveNote_comboBox.setMinimumSize(100, 45)
         ui.moveNote_comboBox.setMaximumSize(16777215, 45)
         
-        # TODO: For the ability to move a note to another notebook different from its current parent directory;
-        #  1) Sort out any issues around what the value of self.parent_directory is
-        #  - Check, issue do not appear since the model was fixed
-        #  2) Add the other notebooks as well, make sure that the parent directory does not appear twice
-        #  - Check
-        #  3) Figure out how the technical side of this should do its thing
-        #  4) Add functionality for being able to move a file to another directory using move from path to path
-        
         for notebook in self.notebooks:
             ui.moveNote_comboBox.addItem(notebook)
             
         ui.moveNote_comboBox.setCurrentText(self.parent_directory)
         
-        print(f"View data", self.view_data)
+        # Prepare the data
+        refined_data = {key: value for collection in self.view_data for key, value in collection.items()}
+        
+        key = 'filePath'
+        file_path = {key: refined_data[key]}
+        
+        key = 'fileName'
+        file_name = {key: refined_data[key]}
+        
+        key = 'parentDirectory'
+        parent_directory = {key: refined_data[key]}
+        
+        key = 'fileContent'
+        file_content = {key: refined_data[key]}
+        
+        file_data = [
+            file_path, file_name, parent_directory, file_content
+        ]
 
         # TODO: Temporary, find out why indexes could be empty at first. Also why 'dict()' would be
         #  a requirement to use sometimes
         if self.view_data:
             manager = ManageNote()
-            save_note.triggered.connect(partial(manager.handle_changes, self.view_data, ui))
+            save_note.triggered.connect(partial(manager.handle_changes, OpenedNoteView, ui, file_data))
             delete_note.triggered.connect(partial(manager.handle_delete, OpenedNoteView, self.file_path))
 
     @staticmethod
