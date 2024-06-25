@@ -14,14 +14,23 @@ v0.7.2_contextmenu_additions
 v0.7.4_delete_notebook_button
 v0.7.4.1.create_notes_fix
 v0.7.4.2_architecture_improvements
+v0.7.4.4_improved_contextmenu_ui_references
+v0.7.4.6_improved_deleting_notebooks
+v0.8.2_imported_notebooks_comboBox
+v0.8.1_readded_openednote_selector
+v0.8.2.2_revised_notebook_collection_model
+v0.8.2.3_improved_note_creation_ui
+v0.8.2.4_comboBox_notebooks_opened_note
+v0.8.2.5_notebook_collection_improvements
+v0.8.2.6_moving_notes_between_directories
 v0.x_additional -> (containing documentation)
 
-Note that there is a step between 0.4 and 0.6. Preparations to the data-model could be v0.5, but that is because of
-little human mistakes in the learning process.
+Note that there could be steps of 0.2 instead of 0.1, e.g. from v0.7.2 to v0.7.4. These kind of changes are bigger than
+for one step at a time -versions.
 
 The following structure has been followed for the branches above:
 
 - X = Main version
 - x.X = Major version of a subject inside the main version
 - x.x.X = Contains fixes or improvements being made behind the functionality of a subject
-- x.x.x.X = Minor additional changes to a piece of singularly used functionality behind a subject
+- x.x.x.X = (Minor) additional changes to a piece of singularly used functionality behind a subject
