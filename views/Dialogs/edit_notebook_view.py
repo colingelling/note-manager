@@ -98,7 +98,5 @@ class EditNotebookView(QDialog, WindowController):
                 
                 # TODO: There is an issue occurring with the view_data;
                 #  path values towards note files are in the same list as the notebook path
-                
-                
 
         self.close()

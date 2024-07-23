@@ -90,6 +90,8 @@ class WindowController:
     def edit_notebook_dialog(data):
         from views.Dialogs.edit_notebook_view import EditNotebookView
         
+        # print(f"Passed to the view: '{data}'")
+        
         view = EditNotebookView(data)
         view.show()
         
