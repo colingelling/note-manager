@@ -47,7 +47,7 @@ class WindowController:
         if WindowController.active_window:
             WindowController.active_window.hide()
         
-        # Reassign view object
+        # Re-assign view object
         WindowController.active_window = view
 
     @staticmethod
@@ -84,5 +84,15 @@ class WindowController:
         view.show()
         
         # Set active view status
+        WindowController.active_window = view
+    
+    @staticmethod
+    def edit_notebook_dialog(data):
+        from views.Dialogs.edit_notebook_view import EditNotebookView
+        
+        view = EditNotebookView(data)
+        view.show()
+        
+        # Re-assign view object
         WindowController.active_window = view
         

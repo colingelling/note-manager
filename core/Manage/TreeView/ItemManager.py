@@ -96,7 +96,9 @@ class ItemManager:
     @staticmethod
     def _item_edit(notebook, path):
         
-        pass
+        from core.Dialogs.EditNotebook import EditNotebook
+        model = EditNotebook()
+        model.show_dialog(notebook, path)
         
         # TODO:
         #  1) Find out on how to spot differences between TreeView -items
