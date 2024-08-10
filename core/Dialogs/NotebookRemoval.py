@@ -18,7 +18,9 @@ class NotebookRemoval:
 		self.dialog_buttons = None
 		self.removal_request = None
 	
-	def show_dialogs(self, item, data):
+	def show_dialogs(self, item_data):
+		
+		# TODO: Fix use of item_data
 		
 		"""
 		
@@ -32,11 +34,11 @@ class NotebookRemoval:
 		"""
 		
 		# 1
-		self.show_warning(item)
+		self.show_warning(item_data)
 		
 		# 2
-		notebook_path = [element for element in data if os.path.isdir(element)]
-		note_path = [element for element in data if os.path.isfile(element)]
+		notebook_path = [element for element in item_data if os.path.isdir(element)]
+		note_path = [element for element in item_data if os.path.isfile(element)]
 		
 		# 3
 		if self.removal_request == "Yes":
@@ -44,7 +46,7 @@ class NotebookRemoval:
 				if not os.listdir(value):
 					self._remove_path_dir(value)
 				else:
-					self.show_final_warning(item, notebook_path, note_path)
+					self.show_final_warning(item_data, notebook_path, note_path)
 	
 	def show_warning(self, item):
 		

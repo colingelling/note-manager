@@ -54,15 +54,23 @@ class Events:
             ]
     
             # 4
-            collection = []
-            for directory_path in directory_information:
-                collection.append(directory_path)
-                for file_path in file_information:
-                    collection.append(file_path)
+            item_data = {}
+            for value in directory_information:
+                item_data.update({
+                    'directory': item_name,
+                    'directory_path_value': value
+                })
+            
+            item_data.update({
+                'file_path_values': []
+            })
+            
+            for value in file_information:
+                item_data['file_path_values'].append(value)
 
             # 5
             item_manager = ItemManager()
-            item_manager.item_actions(event, item_name, collection)
+            item_manager.item_actions(event, item_data)
             
         else:
             

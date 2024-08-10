@@ -57,6 +57,10 @@ class NotebookCollector:
 
         if not self.notebook_information:
             return print("Something went wrong with processing the data")
+        
+        print("-----------------------------------------------")
+        print(f"Notebook information: '{self.notebook_information}'")
+        print("-----------------------------------------------")
 
         return self.notebook_information
     

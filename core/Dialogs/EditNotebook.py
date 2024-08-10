@@ -12,15 +12,12 @@ class EditNotebook:
 		self.removal_request = None
 	
 	@staticmethod
-	def show_dialog(item, path_values):
+	def show_dialog(item_value, notebook_value, notebook_path_value, note_path_values):
 		
-		notebook_path = [notebook_path for notebook_path in path_values if '.txt' not in notebook_path]
-		note_path_collection = [note_path for note_path in path_values if '.txt' in note_path]
-		
-		data = {
-			"notebook": item,
-			"notebook_path": notebook_path,
-			"note_path_values": note_path_collection
+		data = {  # Also returned to have empty values, except for the 'item'
+			"notebook": item_value,
+			"notebook_path": notebook_path_value,
+			"note_path_values": note_path_values
 		}
 		
 		from core.Controllers.WindowController import WindowController

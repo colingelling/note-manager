@@ -28,7 +28,7 @@ class DirectoryCollector:
         for root, dirs, files in os.walk(source):
             for directory in dirs:
                 collection["directories"].append(directory)
-                collection["path_values"].append(os.path.join(source, directory))
+                collection["path_values"].append(os.path.join(source, directory + "/"))
         
         return collection
     

@@ -24,7 +24,7 @@ class Overview(QMainWindow, WindowController):
         """
         Load resources and define window properties
         """
-
+        
         self.view_data = view_data
 
         self.ui = self.load_ui()

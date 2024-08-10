@@ -17,7 +17,7 @@ class ItemManager:
     def __init__(self):
         super().__init__()
         
-    def item_actions(self, event, item, data):
+    def item_actions(self, event, item_data):
         
         """
         
@@ -41,7 +41,7 @@ class ItemManager:
         
         # 4
         for action, function in zip(actions, functions):
-            action.triggered.connect(partial(function, item, data))
+            action.triggered.connect(partial(function, item_data))
             
         # 5
         context_menu.exec(event.globalPosition().toPoint())
@@ -86,19 +86,19 @@ class ItemManager:
         return [context_menu, delete_action, edit_action]
         
     @staticmethod
-    def _item_delete(item, data):
+    def _item_delete(item_data):
         
         # Use the readable item and the collected data to show dialog windows
         from core.Dialogs.NotebookRemoval import NotebookRemoval
         model = NotebookRemoval()
-        model.show_dialogs(item, data)
+        model.show_dialogs(item_data)
     
     @staticmethod
-    def _item_edit(notebook, path):
+    def _item_edit(item_data):
         
-        from core.Dialogs.EditNotebook import EditNotebook
-        model = EditNotebook()
-        model.show_dialog(notebook, path)
+        from core.Controllers.WindowController import WindowController
+        controller = WindowController()
+        return controller.edit_notebook_dialog(item_data)
         
         # TODO:
         #  1) Find out on how to spot differences between TreeView -items
