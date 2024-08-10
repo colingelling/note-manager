@@ -31,6 +31,12 @@ class OverviewController:
     def _set_notebook_information(self):
         model = self.collector_model
         OverviewController.notebook_information = model.get_notebook_information('*', '*')
+        
+    def _update_notebook_information(self):
+        # TODO:
+        #  1) This function would be triggered by the button coming from edit_notebook_view -> through a signal?
+        #  2) _set_notebook_information would be requested again
+        pass
 
     def get_view_data(self):
         self._set_notebook_storage()
