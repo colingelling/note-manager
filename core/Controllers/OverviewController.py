@@ -21,30 +21,32 @@ class OverviewController:
         super().__init__()
         
         self.collector_model = NotebookCollector()
+        self._set_notebook_information()
     
-    @staticmethod
-    def _set_notebook_storage():
-        from core.Manage.NotebookStorage import NotebookStorage
-        access_model = NotebookStorage()
-        OverviewController.notebook_storage_path = access_model.get_notebook_storage_path()
-        
     def _set_notebook_information(self):
         model = self.collector_model
-        OverviewController.notebook_information = model.get_notebook_information('*', '*')
+        notebook_information = model.get_notebook_information('*', '*')
         
-    def _update_notebook_information(self):
-        # TODO:
-        #  1) This function would be triggered by the button coming from edit_notebook_view -> through a signal?
-        #  2) _set_notebook_information would be requested again
-        pass
+    @staticmethod
+    def get_notebook_storage():
+        return OverviewController.notebook_storage_path
+    
+    @staticmethod
+    def get_notebook_information():
+        return OverviewController.notebook_information
 
-    def get_view_data(self):
-        self._set_notebook_storage()
-        self._set_notebook_information()
+    def data_handler(self):
         
-        data = ({
-            "notebook_storage_path": self.notebook_storage_path,
-            "notebook_information": self.notebook_information
-        })
+        self.get_notebook_storage()
+        self.get_notebook_information()
+        
+        from core.Manage.Data.NotebookInformation import NotebookInformation
+        data_model = NotebookInformation()
+        data_model.dump_json()
 
-        return data
+        # data = ({
+        #     "notebook_storage_path": self.notebook_storage_path,
+        #     "notebook_information": self.notebook_information
+        # })
+        #
+        # return data

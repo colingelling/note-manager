@@ -156,6 +156,8 @@ class EditNotebookView(QDialog, WindowController):
                 # from views.Overview.view import Overview
                 # Overview.notebook_information.update()
                 
+                print(f"View data: '{self.view_data}'")
+                
                 
         
         #         print("-----------------------------------------------------------------------------")

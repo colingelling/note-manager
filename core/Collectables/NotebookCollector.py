@@ -35,7 +35,7 @@ class NotebookCollector:
         # Retrieve root storage path -> application storage
         from core.Manage.NotebookStorage import NotebookStorage
         handler = NotebookStorage()
-        resource_path = handler.get_notebook_storage_path()
+        resource_path = handler.get_notebook_storage()
         
         # Verify existence of the root storage path and collect directory names and their path values
         if not os.path.isdir(resource_path):
@@ -57,10 +57,6 @@ class NotebookCollector:
 
         if not self.notebook_information:
             return print("Something went wrong with processing the data")
-        
-        print("-----------------------------------------------")
-        print(f"Notebook information: '{self.notebook_information}'")
-        print("-----------------------------------------------")
 
         return self.notebook_information
     

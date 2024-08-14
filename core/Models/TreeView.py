@@ -25,12 +25,18 @@ class TreeView:
         # Instantiate QTreeView and set the data onto it
         self.tree_view = QTreeView()
         self.tree_view.setModel(data_model)
+        
+        data_model.layoutChanged.connect(self.layoutChanged)
+        data_model.layoutChanged.emit()
 
         # Customize default fields, columns and rows
         self.customize_tree(self.tree_view)
 
         return self.tree_view
 
+    def layoutChanged(self):
+        print("hoi")
+        
     @staticmethod
     def customize_tree(tree):
         # Hide column names

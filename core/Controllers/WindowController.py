@@ -19,7 +19,7 @@ class WindowController:
 
             # Set the view controller and collect the data for the view itself
             view_controller = OverviewController()
-            view_data = view_controller.get_view_data()
+            view_data = view_controller.data_handler()
 
             # Assign the view and fill it with the data that was collected, show it after as an application window
             WindowController.overview_instance = Overview(view_data)
